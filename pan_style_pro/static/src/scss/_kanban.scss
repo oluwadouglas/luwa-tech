@@ -1,0 +1,227 @@
+// Pantalytics kanban view overrides
+
+// ─── Board container ──────────────────────────────────────────────────────────
+
+.o_kanban_view {
+  gap: var(--pan-space-3) !important;
+}
+
+
+// ─── Column / group ───────────────────────────────────────────────────────────
+
+.o_kanban_group {
+  background-color: rgba(0, 0, 0, 0.025) !important;
+  border: 1px solid var(--pan-border) !important;
+  border-radius: var(--pan-radius-lg) !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+
+  // Cards inside — geen extra horizontale margin, kolom padding regelt spacing
+  .o_kanban_record {
+    margin: 0 var(--pan-space-2) var(--pan-space-2) !important;
+    width: calc(100% - var(--pan-space-4)) !important;
+
+    &:first-of-type {
+      margin-top: var(--pan-space-2) !important;
+    }
+  }
+}
+
+// ─── Mobile grouped kanban ───────────────────────────────────────────────────
+// Horizontal scroll-snap between columns; vertical scroll must pass through to
+// the page so long columns are reachable. overflow-y: hidden on .o_kanban_grouped
+// and overflow: hidden on .o_kanban_group both clipped vertical content.
+
+@media (max-width: 767.98px) {
+  .o_kanban_grouped {
+    overflow-x: scroll !important;
+    overflow-y: visible !important;
+    scroll-snap-type: x mandatory;
+  }
+
+  .o_kanban_group {
+    overflow: visible !important;
+  }
+
+  .o_kanban_record {
+    touch-action: pan-y;
+  }
+}
+
+// ─── Folded column ───────────────────────────────────────────────────────────
+// Vercel-style: thin vertical strip with rotated title, click to unfold
+
+.o_kanban_group.o_column_folded {
+  background-color: rgba(0, 0, 0, 0.015) !important;
+  border: 1px solid var(--pan-border) !important;
+  border-radius: var(--pan-radius-lg) !important;
+  overflow: visible !important;
+  cursor: col-resize !important;
+  transition: background-color 0.15s ease !important;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .o_kanban_header {
+    border-bottom: none !important;
+  }
+
+  .o_column_title {
+    white-space: nowrap !important;
+  }
+
+  .o_column_unfold {
+    color: var(--pan-text-secondary) !important;
+
+    &:hover {
+      color: var(--pan-text) !important;
+    }
+  }
+}
+
+// ─── Column header ────────────────────────────────────────────────────────────
+
+// Odoo stacks two rows in the header: the title, and under it the counter
+// (progress bar and total). A flex row here squeezed the counter to the
+// width of its total and the progress bar to nothing.
+.o_kanban_header {
+  padding: var(--pan-space-3) var(--pan-space-3) var(--pan-space-2) !important;
+  border-bottom: 1px solid var(--pan-border) !important;
+}
+
+.o_kanban_header_title {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--pan-space-2) !important;
+  font-family: var(--pan-font-body) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  color: var(--pan-text) !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+
+  // Column title text — truncate gracefully
+  .o_column_title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+// Header action buttons (quick-add, kebab menu)
+.o_kanban_header .o_kanban_quick_add,
+.o_kanban_header .o_column_unfold {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  border-radius: var(--pan-radius-sm) !important;
+  color: var(--pan-text-secondary) !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+  flex-shrink: 0 !important;
+
+  &:hover {
+    background-color: var(--pan-border) !important;
+    color: var(--pan-text) !important;
+  }
+}
+
+// ─── Progress bar ─────────────────────────────────────────────────────────────
+
+// Left as Odoo draws it. .o_column_progress is the .progress element itself,
+// and its segments are bg-success / bg-warning / bg-danger: on time, almost
+// late, late. Colour is status, never the accent.
+
+// ─── Load more ────────────────────────────────────────────────────────────────
+
+.o_kanban_load_more {
+  display: block !important;
+  width: 100% !important;
+  padding: var(--pan-space-2) var(--pan-space-3) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  color: var(--pan-text-secondary) !important;
+  text-align: center !important;
+  background: transparent !important;
+  border: none !important;
+  border-top: 1px solid var(--pan-border) !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease, background-color 0.15s ease !important;
+
+  &:hover {
+    color: var(--pan-text) !important;
+    background-color: var(--pan-border) !important;
+    text-decoration: none !important;
+  }
+}
+
+// ─── Empty column state ───────────────────────────────────────────────────────
+
+.o_kanban_group_show_empty {
+  .o_kanban_no_results {
+    padding: var(--pan-space-4) var(--pan-space-3) !important;
+    text-align: center !important;
+    color: var(--pan-text-secondary) !important;
+    font-size: 0.8125rem !important;
+  }
+}
+
+// ─── Quick-create form ────────────────────────────────────────────────────────
+
+.o_kanban_quick_create {
+  margin: var(--pan-space-2) var(--pan-space-3) var(--pan-space-3) !important;
+  border: 1px solid var(--pan-border) !important;
+  border-top: 2px solid var(--pan-accent) !important;
+  border-radius: var(--pan-radius-lg) !important;
+  box-shadow: var(--pan-shadow-sm) !important;
+  padding: var(--pan-space-3) !important;
+
+  // Inputs inside quick-create inherit global input styles;
+  // just tighten spacing
+  .o_field_widget,
+  .o_input {
+    margin-bottom: var(--pan-space-2) !important;
+  }
+
+  // Action buttons row
+  .o_kanban_add,
+  .o_kanban_edit,
+  .o_kanban_discard {
+    border-radius: var(--pan-radius-md) !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    padding: var(--pan-space-1) var(--pan-space-3) !important;
+    transition: background-color 0.15s ease, border-color 0.15s ease !important;
+  }
+
+  .o_kanban_add {
+    background-color: var(--pan-accent) !important;
+    border-color: var(--pan-accent) !important;
+    color: var(--pan-accent-foreground) !important;
+
+    &:hover {
+      background-color: var(--pan-accent-hover) !important;
+      border-color: var(--pan-accent-hover) !important;
+    }
+  }
+
+  .o_kanban_discard {
+    background: transparent !important;
+    border-color: var(--pan-border-strong) !important;
+    color: var(--pan-text-secondary) !important;
+
+    &:hover {
+      border-color: var(--pan-border-strong) !important;
+      color: var(--pan-text) !important;
+      background-color: var(--pan-border) !important;
+    }
+  }
+}
+

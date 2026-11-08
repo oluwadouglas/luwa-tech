@@ -1,0 +1,201 @@
+// Pantalytics layout overrides
+
+// ─── Navbar ───────────────────────────────────────────────────────────────────
+
+// Override Odoo's navbar CSS custom properties
+.o_main_navbar {
+  --NavBar-entry-color: var(--pan-text);
+  --NavBar-entry-color--hover: var(--pan-text);
+  --NavBar-entry-backgroundColor: transparent;
+  --NavBar-entry-backgroundColor--hover: rgba(0, 0, 0, 0.04);
+  --NavBar-entry-backgroundColor--focus: rgba(0, 0, 0, 0.04);
+  --NavBar-entry-backgroundColor--active: rgba(var(--pan-accent-rgb), 0.12);
+  --NavBar-entry-borderColor-active: var(--pan-accent);
+  --NavBar-brand-color: var(--pan-text);
+
+  height: var(--pan-navbar-height) !important;
+  min-height: var(--pan-navbar-height) !important;
+  background-color: var(--pan-navbar-bg) !important;
+  color: var(--pan-text) !important;
+  border-bottom: 1px solid var(--pan-navbar-border) !important;
+  box-shadow: var(--pan-shadow-xs) !important;
+  padding: 0 var(--pan-space-3) !important;
+  display: flex !important;
+  align-items: center !important;
+
+  // Override all text/link colors — needed for Community's white-on-purple defaults
+  a, button, .o_nav_entry, .o_menu_brand, .dropdown-toggle, .o_menu_toggle {
+    color: var(--pan-text) !important;
+  }
+
+  // Menu entries
+  .o_nav_entry,
+  .o_menu_brand,
+  .dropdown-toggle {
+    border-radius: var(--pan-radius-md) !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04) !important;
+    }
+  }
+
+  // Active entry accent
+  .o_nav_entry.active,
+  .o_nav_entry[aria-expanded="true"] {
+    background-color: rgba(var(--pan-accent-rgb), 0.12) !important;
+    color: var(--pan-accent) !important;
+  }
+
+  // Systray icons
+  .o_menu_systray {
+    .dropdown-toggle, a, button {
+      color: var(--pan-text-secondary) !important;
+
+      &:hover {
+        color: var(--pan-text) !important;
+      }
+    }
+  }
+
+  .o_menu_toggle,
+  .o_nav_entry,
+  .o_menu_sections,
+  .o_menu_brand {
+    align-self: center !important;
+  }
+}
+
+// Override Odoo's own navbar height variable at root level
+:root {
+  --o-navbar-height: var(--pan-navbar-height);
+}
+
+// ─── Home menu background ─────────────────────────────────────────────────────
+
+// Verwijder Odoo Enterprise's lavendel gradient — clean achtergrond
+.o_home_menu_background {
+  background-image: none !important;
+}
+
+// ─── List / table views ───────────────────────────────────────────────────────
+
+.o_list_table {
+  // Subtielere borders
+  --ListRenderer-border-color: var(--pan-border);
+
+  thead th {
+    border-bottom: 1px solid var(--pan-border-strong) !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    color: var(--pan-text-secondary) !important;
+    padding-top: var(--pan-space-2) !important;
+    padding-bottom: var(--pan-space-2) !important;
+  }
+
+  tbody td {
+    border-bottom: 1px solid var(--pan-border) !important;
+    padding-top: var(--pan-space-2) !important;
+    padding-bottom: var(--pan-space-2) !important;
+    color: var(--pan-text) !important;
+  }
+
+  tbody tr:hover td {
+    background-color: rgba(var(--pan-accent-rgb), 0.04) !important;
+  }
+
+  tfoot td {
+    border-top: 1px solid var(--pan-border-strong) !important;
+  }
+}
+
+// ─── Form views ───────────────────────────────────────────────────────────────
+
+.o_form_view {
+  background-color: var(--pan-bg-secondary, #f5f5f5) !important;
+}
+
+.o_form_sheet_bg {
+  padding: 0 var(--pan-space-5) var(--pan-space-5) !important;
+  background-color: var(--pan-bg-secondary, #f5f5f5) !important;
+
+  // Statusbar sticks below control panel — solid bg prevents content bleed-through
+  .o_form_statusbar {
+    background-color: var(--pan-bg-secondary, #f5f5f5) !important;
+    padding-top: var(--pan-space-3) !important;
+  }
+
+  // If there's no statusbar, add top padding to the sheet directly
+  &:not(:has(.o_form_statusbar)) {
+    padding-top: var(--pan-space-5) !important;
+  }
+}
+
+.o_form_sheet {
+  border-radius: var(--pan-radius-lg) !important;
+  border: 1px solid var(--pan-border) !important;
+  box-shadow: var(--pan-shadow-sm) !important;
+}
+
+// Sectie headers in formulieren
+.o_horizontal_separator {
+  color: var(--pan-text-secondary) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid var(--pan-border) !important;
+  padding-bottom: var(--pan-space-2) !important;
+  margin-bottom: var(--pan-space-3) !important;
+}
+
+// ─── Formulierkolommen ────────────────────────────────────────────────────────
+
+// Kolommen mogen elkaar niet overlappen.
+// Odoo's .grid gebruikt `repeat(var(--columns), 1fr)` — en 1fr is
+// minmax(auto, 1fr), dus een kolom waarvan de min-content breder is dan zijn
+// track schuift over de volgende kolom heen. Zichtbaar op het productformulier:
+// de cursieve helptekst onder Facturatiebeleid loopt door de labels Categorie
+// en Referentie rechts. Onze merkfonts zijn breder dan Odoo's default, dus bij
+// ons valt het eerder om. Tracks begrenzen en de tekst laten afbreken.
+.o_form_view .o_group.grid:not(.o_inner_group) {
+  grid-template-columns: repeat(var(--columns, 12), minmax(0, 1fr)) !important;
+
+  // Grid items houden min-width: auto (= min-content) — expliciet op 0 zetten,
+  // anders puilt het item alsnog buiten zijn track uit.
+  > * {
+    min-width: 0 !important;
+  }
+}
+
+// In een smal paneel (Documenten, split view) krijgt elke helft zo weinig
+// ruimte dat het veld naast een label van 150px op bijna 0 uitkomt en een
+// datum letter voor letter afbreekt. Onder 40rem staan de kolommen onder
+// elkaar. Gemeten op de groep zelf, niet op het venster.
+.o_form_view .o_group.grid:not(.o_inner_group) {
+  container-type: inline-size;
+}
+
+@container (max-width: 40rem) {
+  .o_form_view .o_group.grid:not(.o_inner_group) > * {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+.o_form_view .o_inner_group > .o_cell {
+  min-width: 0 !important;
+  overflow-wrap: break-word;
+}
+
+// ─── Buttons na een many2many_checkboxes veld ─────────────────────────────────
+
+// Odoo 19 zet in o.a. het product-formulier (Voorraad > Routes) een button
+// inline achter een many2many_checkboxes veld. Dat veld pakt de volle
+// kolombreedte, dus de button loopt rechts uit zijn kolom en komt bovenop het
+// label van de buurgroep ("Gewicht"). Dat label ligt later in de DOM en vangt
+// de klik, waardoor de button niet meer werkt. Forceer eigen regel.
+.o_form_view .o_field_many2many_checkboxes + .btn {
+  display: block !important;
+  float: none !important;
+  clear: both !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+}

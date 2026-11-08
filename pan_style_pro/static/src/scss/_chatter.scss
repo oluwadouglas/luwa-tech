@@ -1,0 +1,266 @@
+// Pantalytics chatter overrides
+// Styles the mail chatter: topbar, messages, composer, followers, resize handle
+// (the handle also sits before the attachment preview on vendor bills)
+
+// ─── Chatter resize handle ─────────────────────────────────────────────────
+
+.pan-chatter-resize-handle {
+  width: 12px;
+  cursor: col-resize;
+  flex-shrink: 0;
+  align-self: stretch;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Thin separator line (always visible)
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    background-color: var(--pan-border);
+    transition: background-color 0.2s;
+  }
+
+  // Pill indicator — solid, covers the line
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 6px;
+    height: 28px;
+    border-radius: 6px;
+    background-color: var(--pan-bg, #ffffff);
+    border: 1px solid var(--pan-border);
+    transition: border-color 0.15s;
+  }
+
+  &:hover,
+  &:active {
+    &::before {
+      background-color: var(--pan-accent);
+    }
+    &::after {
+      border-color: var(--pan-accent);
+      height: 36px;
+    }
+  }
+
+  // ── Collapsed state: a button right next to the form ──
+  // Odoo caps the form at 1400px and pushes everything after it to the far
+  // right; there the button got lost in empty space, so it hugs the form.
+
+  &.pan-chatter-collapsed {
+    width: 48px;
+    cursor: pointer;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+}
+
+// Chatter hidden: the button hugs the form
+.pan-chatter-collapsed:not(.pan-handle-left) {
+  margin-right: auto;
+}
+
+.o_form_sheet_bg:has(+ .pan-chatter-resize-handle.pan-chatter-collapsed:not(.pan-handle-left)) {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+// Next to a PDF the handle hides the form, on its left: mirror the icon
+.pan-handle-left .pan-chatter-toggle .oi {
+  transform: scaleX(-1);
+}
+
+// Collapsed panel: zero width, not display:none. The PDF viewer needs a
+// layout box or it logs errors; !important beats Odoo's min-width.
+
+.o_form_view .pan-panel-collapsed {
+  flex: 0 0 0 !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden;
+}
+
+// While dragging: keep the cursor, no text selection, and stop the PDF
+// preview iframe from swallowing mouse events
+
+body.pan-resizing {
+  cursor: col-resize;
+  user-select: none;
+
+  iframe {
+    pointer-events: none;
+  }
+}
+
+// ─── Toggle: icon only, top of the handle ───────────────────────────────
+
+.pan-chatter-toggle {
+  position: absolute;
+  top: var(--pan-space-2);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--pan-radius-md);
+  background: transparent;
+  color: var(--pan-text-secondary);
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+
+  .pan-chatter-resize-handle:hover &,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: var(--pan-accent);
+  }
+
+  // Collapsed: an outline button, the only way back to the panel
+  .pan-chatter-collapsed & {
+    top: var(--pan-space-3);
+    width: 32px;
+    height: 32px;
+    opacity: 1;
+    border: 1px solid var(--pan-border-strong);
+    background-color: var(--pan-bg);
+    color: var(--pan-text);
+
+    &:hover {
+      color: var(--pan-text);
+      background-color: var(--pan-bg-secondary);
+    }
+  }
+}
+
+// ─── Chatter topbar ─────────────────────────────────────────────────────────
+
+.o-mail-Chatter-topbar {
+  gap: var(--pan-space-1);
+}
+
+// Active composer button — accent highlight
+.o-mail-Chatter-sendMessage.btn-primary,
+.o-mail-Chatter-logNote.btn-primary {
+  background-color: var(--pan-accent) !important;
+  border-color: var(--pan-accent) !important;
+
+  &:hover,
+  &:focus {
+    background-color: var(--pan-accent-hover) !important;
+    border-color: var(--pan-accent-hover) !important;
+  }
+}
+
+// Action link buttons — accent color on hover
+.o-mail-Chatter-topbar .btn-link.text-action {
+  color: var(--pan-text-secondary) !important;
+  transition: color 0.15s ease !important;
+
+  &:hover {
+    color: var(--pan-accent) !important;
+  }
+}
+
+// ─── Messages ───────────────────────────────────────────────────────────────
+
+.o-mail-Message {
+  border-radius: var(--pan-radius-lg) !important;
+  transition: background-color 0.15s ease !important;
+}
+
+// Message action buttons (reply, mark as todo, etc.)
+.o-mail-Message-actions {
+  border-radius: var(--pan-radius-md) !important;
+  box-shadow: var(--pan-shadow-xs) !important;
+  border-color: var(--pan-border) !important;
+}
+
+// Starred message accent
+.o-mail-Message-moreMenu .fa-star {
+  color: var(--pan-accent) !important;
+}
+
+// ─── Composer ───────────────────────────────────────────────────────────────
+
+.o-mail-Composer {
+  border-radius: var(--pan-radius-lg) !important;
+}
+
+.o-mail-Composer-input .o-mail-Composer-textarea {
+  border-radius: var(--pan-radius-md) !important;
+
+  &:focus {
+    border-color: var(--pan-accent) !important;
+    box-shadow: 0 0 0 3px rgba(var(--pan-accent-rgb), 0.2) !important;
+  }
+}
+
+// Send button in composer — accent
+.o-mail-Composer-actions .o-mail-Composer-send {
+  background-color: var(--pan-accent) !important;
+
+  &:hover {
+    background-color: var(--pan-accent-hover) !important;
+  }
+}
+
+// ─── Followers ──────────────────────────────────────────────────────────────
+
+.o-mail-Followers-button {
+  transition: color 0.15s ease !important;
+
+  &:hover {
+    color: var(--pan-accent) !important;
+  }
+}
+
+.o-mail-Followers-dropdown {
+  border-radius: var(--pan-radius-lg) !important;
+  box-shadow: var(--pan-shadow-lg) !important;
+  border-color: var(--pan-border) !important;
+}
+
+// ─── Attachment box ─────────────────────────────────────────────────────────
+
+.o-mail-AttachmentCard {
+  border-radius: var(--pan-radius-md) !important;
+  border-color: var(--pan-border) !important;
+  transition: box-shadow 0.15s ease !important;
+
+  &:hover {
+    box-shadow: var(--pan-shadow-sm) !important;
+  }
+}
+
+// ─── Activity ───────────────────────────────────────────────────────────────
+
+.o-mail-Activity {
+  border-radius: var(--pan-radius-md) !important;
+  border-color: var(--pan-border) !important;
+}

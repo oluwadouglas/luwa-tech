@@ -1,0 +1,73 @@
+// Pantalytics notifications & alerts overrides
+
+// ─── Toast notifications (.o_notification_manager) ────────────────────────────
+
+.o_notification_manager .o_notification {
+  // No shadow, so a floating toast needs the stronger edge
+  border: 1px solid var(--pan-border-strong) !important;
+  border-radius: var(--pan-radius-lg) !important;
+  box-shadow: var(--pan-shadow-md) !important;
+  font-family: var(--pan-font-body) !important;
+  padding: var(--pan-space-3) var(--pan-space-4) !important;
+  min-width: 280px !important;
+  max-width: 400px !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+
+  // ── Inner elements ───────────────────────────────────────────────────────
+
+  .o_notification_content {
+    font-size: 0.8125rem !important;
+    color: var(--pan-text-secondary) !important;
+    line-height: 1.5 !important;
+  }
+
+  .o_notification_close {
+    opacity: 0.6 !important;
+    transition: opacity 0.15s ease !important;
+    border: none !important;
+
+    &:hover {
+      opacity: 1 !important;
+    }
+  }
+
+}
+
+// ─── Bootstrap alerts (used in form views) ────────────────────────────────────
+
+.alert {
+  border-radius: var(--pan-radius-md) !important;
+  border: 1px solid var(--pan-border) !important;
+  border-left: 4px solid var(--pan-border-strong) !important;
+  color: var(--pan-text) !important;
+  font-family: var(--pan-font-body) !important;
+  font-size: 0.8125rem !important;
+  padding: var(--pan-space-3) var(--pan-space-4) !important;
+  box-shadow: none !important;
+
+  // ── Semantic variants ────────────────────────────────────────────────────
+
+  // Info is not a status, so it stays neutral
+  &.alert-info {
+    background-color: var(--pan-bg-secondary) !important;
+  }
+
+  @each $state in success, warning, danger {
+    &.alert-#{$state} {
+      border-left-color: rgba(var(--pan-#{$state}-rgb), 1) !important;
+      background-color: rgba(var(--pan-#{$state}-rgb), 0.06) !important;
+    }
+  }
+
+  // ── Links inside alerts ──────────────────────────────────────────────────
+
+  a,
+  .alert-link {
+    color: var(--pan-accent) !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      color: var(--pan-accent-hover) !important;
+    }
+  }
+}

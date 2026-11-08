@@ -1,0 +1,24 @@
+// Pantalytics typography
+// Fonts are self-hosted — no Google CDN
+
+// The @font-face lives in _fonts.scss, which the login bundle loads too.
+
+body,
+.o_web_client {
+  font-family: var(--pan-font-body) !important;
+}
+
+// Preserve icon fonts — our body font-family override must not break these
+.oi {
+  font-family: 'odoo_ui_icons' !important;
+}
+.fa {
+  font-family: 'FontAwesome' !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+.o_form_label,
+.o_main_navbar .o_menu_brand {
+  font-family: var(--pan-font-heading) !important;
+  font-weight: 500 !important;
+}
