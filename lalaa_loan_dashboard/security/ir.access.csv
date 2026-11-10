@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,operation,domain
+access_dashboard_manager,dashboard_manager,model_lalaa_loan_dashboard,lalaa_loan.group_loan_manager,crud,
+access_dashboard_officer,dashboard_officer,model_lalaa_loan_dashboard,lalaa_loan.group_loan_officer,r,
+access_dashboard_auditor,dashboard_auditor,model_lalaa_loan_dashboard,lalaa_loan.group_loan_auditor,r,

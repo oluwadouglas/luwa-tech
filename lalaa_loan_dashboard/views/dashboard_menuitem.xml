@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Client action for the OWL Dashboard -->
+        <record id="action_lalaa_loan_dashboard" model="ir.actions.client">
+            <field name="name">Executive Dashboard</field>
+            <field name="tag">lalaa_loan_dashboard.main</field>
+        </record>
+
+        <!-- Override Top level menu to point to new Dashboard -->
+        <menuitem id="lalaa_loan.menu_loan_root"
+                  name="Loans"
+                  web_icon="lalaa_loan,static/description/icon.png"
+                  sequence="50"
+                  action="action_lalaa_loan_dashboard"/>
+
+        <!-- Override existing Dashboard Menu Item -->
+        <menuitem id="lalaa_loan.menu_loan_dashboard"
+                  name="Dashboard"
+                  parent="lalaa_loan.menu_loan_root"
+                  action="action_lalaa_loan_dashboard"
+                  sequence="1"
+                  groups="lalaa_loan.group_loan_manager,lalaa_loan.group_loan_auditor" />
+    </data>
+</odoo>

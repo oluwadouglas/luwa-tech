@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="lalaa_loan_dashboard.MainDashboard" owl="1">
+        <div class="o_dashboard o_lalaa_dashboard h-100 d-flex flex-column bg-view position-relative">
+            <!-- Header -->
+            <div class="o_dashboard_header d-flex justify-content-end align-items-center p-3 sticky-top position-absolute w-100" style="z-index: 10;">
+                <div class="o_dashboard_actions">
+                    <button class="btn btn-secondary shadow-sm rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255,255,255,0.5);" t-on-click="this.loadData" title="Refresh Dashboard">
+                        <i class="fa fa-refresh text-white" t-att-class="{'fa-spin': this.state.isLoading}"/>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-grow-1 overflow-auto position-relative">
+                <!-- Loading State -->
+            <div t-if="this.state.isLoading" class="d-flex justify-content-center align-items-center h-50">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div t-else="" class="p-4 pb-5 mb-5">
+                
+                <!-- Compliance Alerts -->
+                <div t-if="this.state.data.compliance.length > 0" class="mb-4">
+                    <t t-foreach="this.state.data.compliance" t-as="alert" t-key="alert_index">
+                        <div t-attf-class="alert alert-{{alert.type}} alert-dismissible fade show d-flex align-items-center shadow-sm" role="alert">
+                            <i t-attf-class="fa fa-{{alert.type === 'danger' ? 'exclamation-triangle' : 'info-circle'}} fs-4 me-3"/>
+                            <div>
+                                <h5 class="alert-heading mb-1">Compliance Alert</h5>
+                                <p class="mb-0" t-esc="alert.message"/>
+                            </div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Headline KPIs -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-body p-4 position-relative">
+                                <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                                    <i class="fa fa-money fa-3x text-primary"/>
+                                </div>
+                                <h6 class="text-light text-uppercase fw-semibold mb-2">Total Money Out</h6>
+                                <h3 class="fw-bold mb-0 text-dark" t-esc="this.formatCurrency(this.state.data.headline.gross_loan_portfolio)"/>
+                            </div>
+                            <div class="card-footer bg-transparent border-top p-3">
+                                <small class="text-muted fw-medium">Total outstanding principal</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 col-xl-3" t-on-click="this.openActiveLoans" style="cursor: pointer;">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-body p-4 position-relative">
+                                <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                                    <i class="fa fa-users fa-3x text-success"/>
+                                </div>
+                                <h6 class="text-light text-uppercase fw-semibold mb-2">Active Borrowers</h6>
+                                <h3 class="fw-bold mb-0 text-dark" t-esc="this.state.data.headline.active_loans_count"/>
+                            </div>
+                            <div class="card-footer bg-transparent border-top p-3">
+                                <small class="text-muted fw-medium">Currently open accounts</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-body p-4 position-relative">
+                                <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                                    <i class="fa fa-rocket fa-3x text-info"/>
+                                </div>
+                                <h6 class="text-light text-uppercase fw-semibold mb-2">Disbursed YTD</h6>
+                                <h3 class="fw-bold mb-0 text-dark" t-esc="this.formatCurrency(this.state.data.headline.disbursed_ytd)"/>
+                            </div>
+                            <div class="card-footer bg-transparent border-top p-3">
+                                <small class="text-muted fw-medium">Total disbursements this year</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-3">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-body p-4 position-relative">
+                                <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                                    <i class="fa fa-bullseye fa-3x text-warning"/>
+                                </div>
+                                <h6 class="text-light text-uppercase fw-semibold mb-2">Month Target</h6>
+                                <h3 class="fw-bold mb-0 text-dark">
+                                    <t t-if="this.state.data.headline.target_achievement > 0" t-esc="this.formatPercent(this.state.data.headline.target_achievement)"/>
+                                    <t t-else="">No Target Set</t>
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-transparent border-top p-3">
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" role="progressbar" t-attf-style="width: {{this.Math.min(this.state.data.headline.target_achievement, 100)}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="row g-4 mb-4">
+                    <!-- Portfolio Quality -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                <h5 class="card-title fw-bold text-dark mb-0">Portfolio Quality</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row align-items-center h-100">
+                                    <div class="col-md-6">
+                                        <div style="height: 250px;">
+                                            <canvas t-ref="this.portfolioChartRef"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex flex-column gap-3">
+                                            <div class="p-3 bg-light rounded-3">
+                                                <div class="text-light small fw-semibold text-uppercase mb-1">Loans in Arrears (Late)</div>
+                                                <div class="fs-4 fw-bold text-warning" t-esc="this.formatPercent(this.state.data.portfolio.par_30_ratio)"/>
+                                            </div>
+                                            <div class="p-3 bg-light rounded-3">
+                                                <div class="text-light small fw-semibold text-uppercase mb-1">Severely Late (>90 Days)</div>
+                                                <div class="fs-4 fw-bold text-danger" t-esc="this.formatPercent(this.state.data.portfolio.npl_ratio)"/>
+                                            </div>
+                                            <div class="p-3 bg-light rounded-3">
+                                                <div class="text-light small fw-semibold text-uppercase mb-1">Protection (Provisions)</div>
+                                                <div class="fs-4 fw-bold text-primary" t-esc="this.formatPercent(this.state.data.portfolio.provision_coverage)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collections -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+                                <h5 class="card-title fw-bold text-dark mb-0">Expected Collections vs Arrears</h5>
+                                <span t-attf-class="badge fs-6 {{this.state.data.collections.collection_ratio >= 80 ? 'bg-success' : (this.state.data.collections.collection_ratio &lt; 50 ? 'bg-danger' : 'bg-secondary')}}">
+                                    Ratio: <t t-esc="this.formatPercent(this.state.data.collections.collection_ratio)"/>
+                                </span>
+                            </div>
+                            <div class="card-body p-4">
+                                <div style="height: 250px;">
+                                    <canvas t-ref="this.collectionsChartRef"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Row -->
+                <div class="row g-4">
+                    <!-- Profitability -->
+                    <div class="col-12 col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                <h5 class="card-title fw-bold text-dark mb-0">Profitability (YTD)</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                        <span class="text-light fw-medium">Interest Income</span>
+                                        <span class="fw-bold text-success" t-esc="this.formatCurrency(this.state.data.profitability.interest_income_ytd)"/>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                        <span class="text-light fw-medium">Total Revenue</span>
+                                        <span class="fw-bold text-dark" t-esc="this.formatCurrency(this.state.data.profitability.total_revenue_ytd)"/>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-light fw-medium">Avg Loan Size</span>
+                                        <span class="fw-bold text-primary" t-esc="this.formatCurrency(this.state.data.profitability.avg_loan_size)"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liquidity & Pipeline -->
+                    <div class="col-12 col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                <h5 class="card-title fw-bold text-dark mb-0">Money Movement</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="p-3 bg-light rounded-3 text-center border-start border-4 border-secondary">
+                                        <div class="text-light small fw-semibold text-uppercase mb-1">Expected Collections (Next 30 Days)</div>
+                                        <div class="fs-4 fw-bold text-dark" t-esc="this.formatCurrency(this.state.data.liquidity.expected_inflows_30d)"/>
+                                    </div>
+                                    <div class="p-3 bg-light rounded-3 text-center border-start border-4 border-secondary" t-on-click="this.openPendingApplications" style="cursor: pointer;">
+                                        <div class="text-light small fw-semibold text-uppercase mb-1">Pending Loan Requests (<t t-esc="this.state.data.pipeline.pending_applications_count"/>)</div>
+                                        <div class="fs-4 fw-bold text-dark" t-esc="this.formatCurrency(this.state.data.pipeline.pending_applications_amount)"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Borrowers -->
+                    <div class="col-12 col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                                <h5 class="card-title fw-bold text-dark mb-0">Top Borrowers</h5>
+                            </div>
+                            <div class="card-body p-4">
+                                <t t-foreach="this.state.data.top_borrowers" t-as="borrower" t-key="borrower.name">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded-3">
+                                        <span class="text-truncate fw-medium" style="max-width: 60%;" t-esc="borrower.name"/>
+                                        <span class="fw-bold text-dark" t-esc="this.formatCurrency(borrower.balance)"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+
+            <!-- Sticky Footer -->
+            <div class="w-100 py-2" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.2);">
+                <p class="text-center fs-6 fw-bold m-0" style="color: white !important; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">
+                    A product of <a href="https://luwatech.it/" target="_blank" class="text-decoration-underline" style="color: white !important;">LuwaTech</a>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>

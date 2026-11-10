@@ -1,0 +1,68 @@
+.o_lalaa_dashboard {
+    /* Vibrant modern background for the glassmorphism effect */
+    .bg-view {
+        background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%) !important;
+        background-attachment: fixed !important;
+    }
+    
+    .o_dashboard_header {
+        background: transparent !important;
+        border-bottom: none !important;
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #fff;
+            
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+        }
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.25) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25) !important;
+        }
+
+        .card-header {
+            background: transparent !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+            
+            .card-title {
+                color: #fff !important;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            }
+        }
+
+        .text-dark {
+            color: #fff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .text-muted {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        .bg-light {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Ensure charts text are somewhat visible or just leave default since Chart.js draws on canvas */
+    }
+    
+    /* Ensure ChartJS renders correctly within its container */
+    canvas {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
