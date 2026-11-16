@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_luwa_subscription_plan_user,luwa.subscription.plan user,model_luwa_subscription_plan,base.group_user,1,0,0,0
+access_luwa_subscription_plan_salesman,luwa.subscription.plan salesman,model_luwa_subscription_plan,sales_team.group_sale_salesman,1,1,1,0
+access_luwa_subscription_plan_manager,luwa.subscription.plan manager,model_luwa_subscription_plan,sales_team.group_sale_manager,1,1,1,1
+access_luwa_subscription_plan_public,luwa.subscription.plan public,model_luwa_subscription_plan,base.group_public,1,0,0,0
+access_luwa_subscription_plan_portal,luwa.subscription.plan portal,model_luwa_subscription_plan,base.group_portal,1,0,0,0
+access_luwa_subscription_user,luwa.subscription user,model_luwa_subscription,base.group_user,1,0,0,0
+access_luwa_subscription_salesman,luwa.subscription salesman,model_luwa_subscription,sales_team.group_sale_salesman,1,1,1,0
+access_luwa_subscription_manager,luwa.subscription manager,model_luwa_subscription,sales_team.group_sale_manager,1,1,1,1
+access_luwa_project_signoff_user,luwa.project.signoff.user,model_luwa_project_signoff,base.group_user,1,1,1,1
+access_luwa_project_signoff_line_user,luwa.project.signoff.line.user,model_luwa_project_signoff_line,base.group_user,1,1,1,1

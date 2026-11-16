@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Billing Plans -->
+        <record id="plan_monthly" model="luwa.subscription.plan">
+            <field name="name">Monthly Subscription</field>
+            <field name="code">MONTHLY</field>
+            <field name="billing_interval">1</field>
+            <field name="billing_unit">month</field>
+            <field name="description">Recurring monthly billing cycle for Luwa Tech E-Commerce and Digital Marketing subscriptions.</field>
+        </record>
+
+        <record id="plan_annual" model="luwa.subscription.plan">
+            <field name="name">Annual Subscription</field>
+            <field name="code">ANNUAL</field>
+            <field name="billing_interval">1</field>
+            <field name="billing_unit">year</field>
+            <field name="description">Recurring yearly billing cycle for Luwa Tech subscriptions.</field>
+        </record>
+
+        <!-- eCommerce Public Categories -->
+        <record id="categ_ecommerce_subscriptions" model="product.public.category">
+            <field name="name">E-Commerce Subscriptions</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="categ_marketing_subscriptions" model="product.public.category">
+            <field name="name">Digital Marketing Subscriptions</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <!-- Product 1: E-Commerce Starter Subscription ($19) -->
+        <record id="product_ecom_starter_sub" model="product.template">
+            <field name="name">E-Commerce Starter Subscription (Minimal Invoicing &amp; Stock Management)</field>
+            <field name="default_code">LUWA-SUB-ECOM-65K</field>
+            <field name="type">service</field>
+            <field name="list_price">19.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="True"/>
+            <field name="subscription_category">ecommerce</field>
+            <field name="subscription_plan_id" ref="plan_monthly"/>
+            <field name="subscription_tier">starter</field>
+            <field name="subscription_badge">Starter • $19/mo</field>
+            <field name="includes_ecommerce" eval="True"/>
+            <field name="includes_invoicing" eval="True"/>
+            <field name="includes_stock_management" eval="True"/>
+            <field name="includes_payment_gateway" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_ecommerce_subscriptions'))]"/>
+            <field name="website_sequence">10</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/ecom-starter-65k.png"/>
+            <field name="description_sale">E-Commerce subscription module with online storefront, minimal invoicing, and real-time stock management — $19 per month.</field>
+            <field name="subscription_features">Online E-Commerce Storefront &amp; Product Catalog
+Minimal Invoicing &amp; Customer Receipts
+Real-Time Stock &amp; Inventory Management
+Shopping Cart &amp; Order Tracking Dashboard
+SSL Cloud Hosting &amp; Email Support</field>
+        </record>
+
+        <!-- Product 2: E-Commerce Complete Subscription with Payment Gateway ($29) -->
+        <record id="product_ecom_complete_sub" model="product.template">
+            <field name="name">E-Commerce Complete Subscription (With Payment Gateway)</field>
+            <field name="default_code">LUWA-SUB-ECOM-100K</field>
+            <field name="type">service</field>
+            <field name="list_price">29.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="True"/>
+            <field name="subscription_category">ecommerce</field>
+            <field name="subscription_plan_id" ref="plan_monthly"/>
+            <field name="subscription_tier">complete</field>
+            <field name="subscription_badge">Complete + Payment Gateway</field>
+            <field name="includes_ecommerce" eval="True"/>
+            <field name="includes_invoicing" eval="True"/>
+            <field name="includes_stock_management" eval="True"/>
+            <field name="includes_payment_gateway" eval="True"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_ecommerce_subscriptions'))]"/>
+            <field name="website_sequence">5</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/ecom-complete-100k.png"/>
+            <field name="description_sale">Complete E-Commerce subscription module with invoicing, stock management, and integrated payment gateway (MTN MoMo, Airtel Money &amp; Card Checkout) — $29 per month.</field>
+            <field name="subscription_features">Everything in Starter (E-Commerce Store, Minimal Invoicing &amp; Stock Management)
+Integrated Payment Gateway (MTN MoMo, Airtel Money &amp; Visa/Mastercard)
+Automated Payment Reconciliation &amp; Instant Order Confirmation
+Full Customer Portal, Order History &amp; Automated Invoices
+Priority Cloud Hosting &amp; 24/7 Technical Support</field>
+        </record>
+
+        <!-- Product 3: Digital Marketing Starter Subscription ($115) -->
+        <record id="product_dm_starter_sub" model="product.template">
+            <field name="name">Digital Marketing Starter Subscription (DMaaS)</field>
+            <field name="default_code">LUWA-SUB-DM-400K</field>
+            <field name="type">service</field>
+            <field name="list_price">115.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="True"/>
+            <field name="subscription_category">marketing</field>
+            <field name="subscription_plan_id" ref="plan_monthly"/>
+            <field name="subscription_tier">starter</field>
+            <field name="subscription_badge">DMaaS Starter • Excl. Ad Spend</field>
+            <field name="subscription_note">Agency service fee only — ad spend &amp; media budgets are billed separately.</field>
+            <field name="includes_ecommerce" eval="False"/>
+            <field name="includes_invoicing" eval="False"/>
+            <field name="includes_stock_management" eval="False"/>
+            <field name="includes_payment_gateway" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_marketing_subscriptions'))]"/>
+            <field name="website_sequence">12</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/dm-starter-400k.png"/>
+            <field name="description_sale">Digital Marketing as a Service (Starter): social media management, SEO &amp; Google Business optimization, campaign setup &amp; monthly analytics — $115/month (excludes ad spend budgets).</field>
+            <field name="subscription_features">Social Media Management (Up to 3 Channels, 12 Branded Posts/Mo)
+On-Page SEO &amp; Google Business Profile Optimization
+Meta &amp; Google Ads Campaign Setup (Ad Budget Billed Separately)
+Creative Copywriting &amp; Branded Campaign Graphics
+Monthly Performance, Traffic &amp; Lead Report</field>
+        </record>
+
+        <!-- Product 4: Digital Marketing Premium Subscription ($225) -->
+        <record id="product_dm_premium_sub" model="product.template">
+            <field name="name">Digital Marketing Premium Subscription (Full-Funnel DMaaS)</field>
+            <field name="default_code">LUWA-SUB-DM-800K</field>
+            <field name="type">service</field>
+            <field name="list_price">225.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="True"/>
+            <field name="subscription_category">marketing</field>
+            <field name="subscription_plan_id" ref="plan_monthly"/>
+            <field name="subscription_tier">complete</field>
+            <field name="subscription_badge">DMaaS Premium • Excl. Ad Spend</field>
+            <field name="subscription_note">Agency service fee only — ad spend &amp; media budgets are billed separately.</field>
+            <field name="includes_ecommerce" eval="False"/>
+            <field name="includes_invoicing" eval="False"/>
+            <field name="includes_stock_management" eval="False"/>
+            <field name="includes_payment_gateway" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_marketing_subscriptions'))]"/>
+            <field name="website_sequence">14</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/dm-premium-800k.png"/>
+            <field name="description_sale">Digital Marketing as a Service (Premium): full-funnel growth across 4+ channels, technical SEO, paid media &amp; retargeting management, WhatsApp/Email automation — $225/month (excludes ad spend).</field>
+            <field name="subscription_features">Everything in Starter + Daily Multi-Channel Management (4+ Platforms)
+Full Technical SEO, Blog Content &amp; Conversion Landing Pages
+Google Ads, Meta Ads &amp; Retargeting Optimization (Ad Budget Separate)
+Automated WhatsApp, SMS &amp; Email Lead Nurturing Funnels
+Bi-Weekly Growth Strategy Calls &amp; Dedicated Account Manager</field>
+        </record>
+    </data>
+</odoo>

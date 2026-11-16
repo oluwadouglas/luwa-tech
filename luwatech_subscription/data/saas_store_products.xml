@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Store Public Categories -->
+        <record id="categ_luwa_saas_systems" model="product.public.category">
+            <field name="name">Luwa SaaS Systems</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <record id="categ_enterprise_erp_crm" model="product.public.category">
+            <field name="name">Enterprise ERP &amp; CRM</field>
+            <field name="sequence">3</field>
+        </record>
+
+        <record id="categ_integrations_apis" model="product.public.category">
+            <field name="name">Integrations &amp; APIs</field>
+            <field name="sequence">4</field>
+        </record>
+
+        <!-- 1. Luwa eShule — School Management System -->
+        <record id="product_luwa_eshule" model="product.template">
+            <field name="name">Luwa eShule — School Management System</field>
+            <field name="default_code">LUWA-ESHULE-001</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_luwa_saas_systems'))]"/>
+            <field name="website_sequence">20</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/luwa-eshule.png"/>
+            <field name="description_sale">Complete School Management System for nursery, primary, secondary &amp; tertiary institutions: admissions, school fees &amp; Mobile Money reconciliation, exams &amp; report cards, attendance, timetable, library, and parent/student portal.</field>
+        </record>
+
+        <!-- 2. Luwa eTari — Hospital Management System -->
+        <record id="product_luwa_etari" model="product.template">
+            <field name="name">Luwa eTari — Hospital Management System</field>
+            <field name="default_code">LUWA-ETARI-001</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_luwa_saas_systems'))]"/>
+            <field name="website_sequence">25</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/luwa-etari.png"/>
+            <field name="description_sale">Comprehensive Hospital &amp; Clinic Management System (HMS): patient registration &amp; EMR, OPD/IPD ward management, doctor consultations, laboratory &amp; radiology, pharmacy stock, insurance billing &amp; Mobile Money checkout.</field>
+        </record>
+
+        <!-- 3. EFRIS & Mobile Money Integration -->
+        <record id="product_efris_momo_integration" model="product.template">
+            <field name="name">EFRIS &amp; Mobile Money Integration (URA EFRIS, MTN MoMo &amp; Airtel Money)</field>
+            <field name="default_code">LUWA-INT-EFRIS-MOMO</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_integrations_apis'))]"/>
+            <field name="website_sequence">15</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/efris-momo-integration.png"/>
+            <field name="description_sale">Seamless URA EFRIS tax fiscalization, MTN MoMo &amp; Airtel Money payment collection and disbursement integration for custom ERPs, e-commerce stores, SAP, Zoho, and Microsoft Dynamics 365.</field>
+        </record>
+
+        <!-- 4. WhatsApp Integration as a Service -->
+        <record id="product_whatsapp_integration" model="product.template">
+            <field name="name">WhatsApp Integration as a Service (WhatsApp Business API)</field>
+            <field name="default_code">LUWA-INT-WHATSAPP</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_integrations_apis'))]"/>
+            <field name="website_sequence">18</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/whatsapp-integration.png"/>
+            <field name="description_sale">Managed WhatsApp Business API integration as a service: automated order &amp; invoice alerts, Mobile Money payment receipts, CRM/ERP sync, and multi-agent customer support workflows.</field>
+        </record>
+
+        <!-- 5. Zoho CRM & Enterprise Suite -->
+        <record id="product_zoho_suite" model="product.template">
+            <field name="name">Zoho CRM &amp; Enterprise Suite</field>
+            <field name="default_code">LUWA-ZOHO-001</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_enterprise_erp_crm'))]"/>
+            <field name="website_sequence">30</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/zoho-product.png"/>
+            <field name="description_sale">Official Zoho licensing, implementation &amp; integration: Zoho One, Zoho CRM, Zoho Books, Zoho Inventory, and Zoho People integrated with MTN MoMo, Airtel Money, WhatsApp &amp; URA EFRIS.</field>
+        </record>
+
+        <!-- 6. Microsoft Dynamics 365 ERP & CRM -->
+        <record id="product_ms_dynamics" model="product.template">
+            <field name="name">Microsoft Dynamics 365 ERP &amp; CRM</field>
+            <field name="default_code">LUWA-DYNAMICS-001</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_enterprise_erp_crm'))]"/>
+            <field name="website_sequence">35</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/dynamics-product.png"/>
+            <field name="description_sale">Microsoft Dynamics 365 Business Central, Finance &amp; Sales implementation, licensing, custom workflows, and East African banking, Mobile Money &amp; tax compliance integration.</field>
+        </record>
+
+        <!-- 7. SAP Business One & Enterprise ERP -->
+        <record id="product_sap_erp" model="product.template">
+            <field name="name">SAP Business One &amp; Enterprise ERP</field>
+            <field name="default_code">LUWA-SAP-001</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="sale_ok" eval="True"/>
+            <field name="purchase_ok" eval="False"/>
+            <field name="website_published" eval="True"/>
+            <field name="is_subscription" eval="False"/>
+            <field name="public_categ_ids" eval="[(4, ref('categ_enterprise_erp_crm'))]"/>
+            <field name="website_sequence">40</field>
+            <field name="image_1920" type="base64" file="luwatech_subscription/static/src/img/sap-product.png"/>
+            <field name="description_sale">SAP Business One &amp; SAP S/4HANA ERP licensing, deployment, custom add-ons, and real-time API integration with MTN MoMo, Airtel Money, banks &amp; URA EFRIS.</field>
+        </record>
+    </data>
+</odoo>
