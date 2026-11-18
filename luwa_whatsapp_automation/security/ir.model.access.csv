@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_luwa_whatsapp_config_user,luwa.whatsapp.config.user,model_luwa_whatsapp_config,base.group_user,1,1,1,0
+access_luwa_whatsapp_message_user,luwa.whatsapp.message.user,model_luwa_whatsapp_message,base.group_user,1,1,1,0
+access_luwa_whatsapp_composer_user,luwa.whatsapp.composer.user,model_luwa_whatsapp_composer,base.group_user,1,1,1,1
+access_luwa_whatsapp_campaign_user,luwa.whatsapp.campaign.user,model_luwa_whatsapp_campaign,base.group_user,1,1,1,1
+access_luwa_whatsapp_campaign_line_user,luwa.whatsapp.campaign.line.user,model_luwa_whatsapp_campaign_line,base.group_user,1,1,1,1
