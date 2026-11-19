@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Config Form View -->
+    <record id="view_luwa_whatsapp_config_form" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.config.form</field>
+        <field name="model">luwa.whatsapp.config</field>
+        <field name="arch" type="xml">
+            <form string="Luwa Tech WhatsApp Engine" create="false" delete="false">
+                <header>
+                    <button name="action_refresh_status" string="Refresh Status &amp; QR" type="object" class="btn-primary"/>
+                    <button name="action_open_campaigns" string="Marketing Campaigns (Anti-Ban)" type="object" class="btn-success" icon="fa-bullhorn"/>
+                    <button name="action_new_campaign" string="+ New Bulk Campaign" type="object" class="btn-secondary"/>
+                    <button name="action_force_new_qr" string="Generate Fresh QR" type="object" class="btn-secondary" invisible="connection_state == 'connected'"/>
+                    <button name="action_run_automations_now" string="Run Reminders Now" type="object" class="btn-secondary" invisible="connection_state != 'connected'"/>
+                    <button name="action_reset_premium_templates" string="Load Executive Templates" type="object" class="btn-secondary"/>
+                    <button name="action_logout_whatsapp" string="Disconnect Number" type="object" class="btn-danger" confirm="Disconnect your linked WhatsApp number from Luwa Tech?" invisible="connection_state != 'connected'"/>
+                    <field name="connection_state" widget="statusbar" statusbar_visible="disconnected,qr_pending,connected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_campaigns" type="object" class="oe_stat_button" icon="fa-bullhorn">
+                            <field name="campaign_count" widget="statinfo" string="Campaigns"/>
+                        </button>
+                        <button name="action_view_messages" type="object" class="oe_stat_button" icon="fa-whatsapp">
+                            <field name="message_count" widget="statinfo" string="WhatsApp Logs"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <div class="alert alert-success" role="status" invisible="connection_state != 'connected'">
+                        <strong>WhatsApp Connected!</strong>
+                        Linked Number: <strong><field name="connected_phone" readonly="1" class="oe_inline"/></strong>
+                        <span invisible="not connected_name"> (<field name="connected_name" readonly="1" class="oe_inline"/>)</span>.
+                        Direct messaging, multi-recipient broadcast, automatic PDF attachments, and scheduled reminders are active.
+                    </div>
+
+                    <div class="alert alert-warning" role="status" invisible="connection_state == 'connected'">
+                        <strong>Link Your WhatsApp Number via QR Code:</strong>
+                        Click <em>Refresh Status &amp; QR</em> if blank, then open WhatsApp on your phone -
+                        <strong>Settings / Menu - Linked Devices - Link a Device</strong> and scan the QR code below.
+                        Once scanned, click <em>Refresh Status &amp; QR</em> again.
+                    </div>
+
+                    <group invisible="connection_state == 'connected'">
+                        <group string="Scan QR Code to Pair">
+                            <field name="qr_image" widget="image" options="{'size': [280, 280]}" nolabel="1"/>
+                        </group>
+                        <group string="Live Bridge Info">
+                            <field name="queue_len"/>
+                            <field name="last_sync_at"/>
+                            <field name="last_error" invisible="not last_error"/>
+                        </group>
+                    </group>
+
+                    <group invisible="connection_state != 'connected'">
+                        <group string="Connected Device">
+                            <field name="connected_phone"/>
+                            <field name="connected_name"/>
+                        </group>
+                        <group string="Bridge Status">
+                            <field name="queue_len"/>
+                            <field name="last_sync_at"/>
+                            <field name="last_error" invisible="not last_error"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Bulk Marketing Campaigns (Anti-Ban)" name="campaigns_tab">
+                            <div class="alert alert-success py-2 mb-3" role="status">
+                                <strong>Anti-Ban Bulk Engine Active:</strong>
+                                Outbound messages are protected by <strong>Randomized Human Delays (12-26s)</strong>,
+                                <strong>Live Typing Presence Simulation</strong>,
+                                <strong>WhatsApp Number Registration Verification</strong>,
+                                <strong>Dynamic Greeting Rotation</strong>, and
+                                <strong>Hard Per-Minute / Hourly / 24h Caps</strong> (Max 8/min, 75/hour, 160-220/day).
+                            </div>
+                            <group>
+                                <group string="Live Anti-Ban Rate Monitor">
+                                    <field name="sent_last_minute"/>
+                                    <field name="sent_last_hour"/>
+                                    <field name="sent_last_24h"/>
+                                </group>
+                                <group string="Quick Campaign Actions">
+                                    <div>
+                                        <button name="action_new_campaign" string="+ Create New Bulk WhatsApp Campaign" type="object" class="btn-success me-2" icon="fa-plus"/>
+                                        <button name="action_open_campaigns" string="Open Full Campaigns Manager" type="object" class="btn-primary" icon="fa-bullhorn"/>
+                                    </div>
+                                </group>
+                            </group>
+                            <group string="Your WhatsApp Marketing Campaigns (Click any row to open &amp; launch)">
+                                <field name="campaign_ids" nolabel="1" readonly="1">
+                                    <list string="Marketing Campaigns">
+                                        <field name="name"/>
+                                        <field name="audience_source"/>
+                                        <field name="total_count"/>
+                                        <field name="sent_count"/>
+                                        <field name="pending_count"/>
+                                        <field name="skipped_count"/>
+                                        <field name="progress_pct" widget="progressbar"/>
+                                        <field name="state" widget="badge" decoration-info="state == 'ready'" decoration-primary="state == 'running'" decoration-warning="state == 'paused'" decoration-success="state == 'done'"/>
+                                        <field name="last_batch_at"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Automation Rules &amp; Templates" name="automations">
+                            <group>
+                                <group string="Real-Time Event Triggers &amp; PDF">
+                                    <field name="auto_attach_pdf"/>
+                                    <field name="auto_crm_ack"/>
+                                    <field name="auto_order_confirm"/>
+                                </group>
+                                <group string="Scheduled Hourly Reminders">
+                                    <field name="auto_quote_reminder"/>
+                                    <field name="quote_reminder_days" invisible="not auto_quote_reminder"/>
+                                    <field name="auto_invoice_reminder"/>
+                                    <field name="invoice_reminder_days" invisible="not auto_invoice_reminder"/>
+                                    <field name="auto_subscription_reminder"/>
+                                    <field name="subscription_reminder_days" invisible="not auto_subscription_reminder"/>
+                                </group>
+                            </group>
+                            <div class="text-muted small mb-2">
+                                Supported placeholders: <code>{partner_name}</code>, <code>{record_name}</code>, <code>{amount}</code>, <code>{currency}</code>, <code>{due_date}</code>, <code>{plan_name}</code>, <code>{portal_url}</code>
+                            </div>
+                            <group string="Executive Message Templates">
+                                <field name="tpl_crm_ack"/>
+                                <field name="tpl_order_confirm"/>
+                                <field name="tpl_quote_reminder"/>
+                                <field name="tpl_invoice_reminder"/>
+                                <field name="tpl_subscription_reminder"/>
+                            </group>
+                        </page>
+                        <page string="Quick Test Message" name="test_send">
+                            <group>
+                                <field name="test_phone" placeholder="e.g. 0772123456, 0754370995"/>
+                                <field name="test_message"/>
+                            </group>
+                            <button name="action_send_test_message" string="Send Test WhatsApp" type="object" class="btn-primary"/>
+                        </page>
+                        <page string="Isolated Bridge Settings" name="bridge_settings">
+                            <group>
+                                <field name="bridge_url"/>
+                                <field name="api_token" password="True"/>
+                            </group>
+                            <div class="alert alert-info" role="alert">
+                                Dedicated Luwa Tech WhatsApp daemon (<code>luwa-whatsapp</code>) running on loopback port <code>3010</code> (~68 MB disk, zero browser bloat), completely isolated from any other Odoo instance on the server.
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_luwa_whatsapp_config_list" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.config.list</field>
+        <field name="model">luwa.whatsapp.config</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Configuration" create="false" delete="false">
+                <field name="name"/>
+                <field name="connection_state" widget="badge" decoration-success="connection_state == 'connected'" decoration-warning="connection_state == 'qr_pending'" decoration-danger="connection_state == 'disconnected'"/>
+                <field name="connected_phone"/>
+                <field name="last_sync_at"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Message Logs Views -->
+    <record id="view_luwa_whatsapp_message_list" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.message.list</field>
+        <field name="model">luwa.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Message Logs" create="false" edit="false">
+                <field name="create_date" string="Date"/>
+                <field name="partner_id"/>
+                <field name="normalized_phone"/>
+                <field name="trigger_type"/>
+                <field name="record_ref"/>
+                <field name="attachment_name"/>
+                <field name="body"/>
+                <field name="state" widget="badge" decoration-success="state == 'sent'" decoration-warning="state == 'queued'" decoration-danger="state == 'failed'"/>
+                <field name="error_message" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_luwa_whatsapp_message_form" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.message.form</field>
+        <field name="model">luwa.whatsapp.message</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Message Log" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="recipient_phone"/>
+                            <field name="normalized_phone"/>
+                            <field name="attachment_name"/>
+                        </group>
+                        <group>
+                            <field name="trigger_type"/>
+                            <field name="state"/>
+                            <field name="record_ref"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <group string="Message Content">
+                        <field name="body" nolabel="1"/>
+                    </group>
+                    <group string="Error" invisible="not error_message">
+                        <field name="error_message" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Unified Multi-Recipient + Document Preview Composer Wizard -->
+    <record id="view_luwa_whatsapp_composer_form" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.composer.form</field>
+        <field name="model">luwa.whatsapp.composer</field>
+        <field name="arch" type="xml">
+            <form string="Send WhatsApp Message &amp; Document">
+                <div class="alert alert-info py-2 mb-3" role="status">
+                    <i class="fa fa-whatsapp me-1"/> <strong>Direct WhatsApp &amp; PDF Delivery:</strong>
+                    Select one or more recipients (or enter comma-separated numbers), verify the attached PDF document, and preview/edit the message below before sending.
+                </div>
+                <group>
+                    <group string="Recipients">
+                        <field name="partner_id" invisible="1"/>
+                        <field name="partner_ids" widget="many2many_tags" placeholder="Add one or more contacts..."/>
+                        <field name="phone" placeholder="e.g. 0754370995, 0787819453"/>
+                    </group>
+                    <group string="Document Attachment">
+                        <field name="attach_pdf"/>
+                        <field name="pdf_preview_name" invisible="not attach_pdf"/>
+                        <field name="custom_attachment" filename="custom_attachment_name"/>
+                        <field name="custom_attachment_name" invisible="1"/>
+                        <field name="queue_if_offline"/>
+                    </group>
+                </group>
+                <group string="Message Preview (Editable Before Sending)">
+                    <field name="message" nolabel="1" placeholder="Write or edit your WhatsApp message..."/>
+                </group>
+                <footer>
+                    <button name="action_send" string="Send WhatsApp &amp; PDF" type="object" class="btn-success" icon="fa-whatsapp"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Upgrade Top-Bar Systray Compose Whatsapp Message View with Multi-Recipient + PDF + Preview -->
+    <record id="whatsapp_send_message_view_form_luwa_upgrade" model="ir.ui.view">
+        <field name="name">whatsapp.send.message.form.luwa.upgrade</field>
+        <field name="model">whatsapp.send.message</field>
+        <field name="inherit_id" ref="whatsapp_mail_messaging.whatsapp_send_message_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="replace">
+                <form string="Send WhatsApp Message &amp; Document">
+                    <div class="alert alert-info py-2 mb-3" role="status">
+                        <i class="fa fa-whatsapp me-1"/> <strong>Direct WhatsApp &amp; PDF Delivery:</strong>
+                        Select one or more recipients (or enter comma-separated numbers), attach a PDF/document if needed, and preview/edit your message below.
+                    </div>
+                    <group>
+                        <group string="Recipients">
+                            <field name="partner_id" string="Primary Recipient"/>
+                            <field name="partner_ids" widget="many2many_tags" placeholder="Add more recipients..."/>
+                            <field name="mobile" string="Phone Number(s) (Comma-Separated)" placeholder="e.g. 0754370995, 0787819453"/>
+                        </group>
+                        <group string="Document Attachment">
+                            <field name="attach_pdf"/>
+                            <field name="custom_attachment" filename="custom_attachment_name"/>
+                            <field name="custom_attachment_name" invisible="1"/>
+                            <field name="image_1920" widget="image" class="oe_avatar" options="{'size': [64, 64]}" readonly="1" invisible="not partner_id"/>
+                        </group>
+                    </group>
+                    <group string="Message Preview (Editable Before Sending)">
+                        <field name="message" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="send_message" string="Send WhatsApp &amp; PDF" type="object" class="btn-success" icon="fa-whatsapp"/>
+                        <button name="cancel" string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Business Forms for Unified 1-Click Direct WhatsApp & Hide Legacy Duplicate Buttons -->
+    <record id="crm_lead_view_form_luwa_wa" model="ir.ui.view">
+        <field name="name">crm.lead.form.luwa.whatsapp</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_luwa_whatsapp" string="Send WhatsApp &amp; PDF" type="object" class="btn-success" icon="fa-whatsapp"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_view_form_luwa_wa" model="ir.ui.view">
+        <field name="name">sale.order.form.luwa.whatsapp</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="whatsapp_mail_messaging.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_send_whatsapp']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_open_luwa_whatsapp" string="Send WhatsApp &amp; PDF" type="object" class="btn-success" icon="fa-whatsapp"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="account_move_view_form_luwa_wa" model="ir.ui.view">
+        <field name="name">account.move.form.luwa.whatsapp</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="whatsapp_mail_messaging.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_send_whatsapp']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_open_luwa_whatsapp" string="Send WhatsApp &amp; PDF" type="object" class="btn-success" icon="fa-whatsapp" invisible="move_type not in ('out_invoice', 'out_refund')"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="luwa_subscription_view_form_luwa_wa" model="ir.ui.view">
+        <field name="name">luwa.subscription.form.luwa.whatsapp</field>
+        <field name="model">luwa.subscription</field>
+        <field name="inherit_id" ref="luwatech_subscription.view_luwa_subscription_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_open_luwa_whatsapp" string="Send WhatsApp &amp; PDF" type="object" class="btn-success" icon="fa-whatsapp"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Actions & Menus -->
+    <record id="action_luwa_whatsapp_config" model="ir.actions.act_window">
+        <field name="name">QR Pairing &amp; Automation</field>
+        <field name="res_model">luwa.whatsapp.config</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="luwa_whatsapp_automation.luwa_whatsapp_config_main"/>
+    </record>
+
+    <record id="action_luwa_whatsapp_messages" model="ir.actions.act_window">
+        <field name="name">Message Logs</field>
+        <field name="res_model">luwa.whatsapp.message</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_luwa_whatsapp_root"
+              name="WhatsApp Engine"
+              web_icon="luwa_whatsapp_automation,static/description/icon.png"
+              sequence="55"/>
+
+    <menuitem id="menu_luwa_whatsapp_config"
+              name="QR Pairing &amp; Automation"
+              parent="menu_luwa_whatsapp_root"
+              action="action_luwa_whatsapp_config"
+              sequence="10"/>
+
+    <menuitem id="menu_luwa_whatsapp_logs"
+              name="Message Logs"
+              parent="menu_luwa_whatsapp_root"
+              action="action_luwa_whatsapp_messages"
+              sequence="20"/>
+
+    <!-- Anti-Ban Bulk WhatsApp Marketing Campaigns -->
+    <record id="view_luwa_whatsapp_campaign_list" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.campaign.list</field>
+        <field name="model">luwa.whatsapp.campaign</field>
+        <field name="arch" type="xml">
+            <list string="WhatsApp Marketing Campaigns">
+                <field name="name"/>
+                <field name="audience_source"/>
+                <field name="total_count"/>
+                <field name="sent_count"/>
+                <field name="pending_count"/>
+                <field name="skipped_count"/>
+                <field name="progress_pct" widget="progressbar"/>
+                <field name="state" widget="badge" decoration-info="state == 'ready'" decoration-primary="state == 'running'" decoration-warning="state == 'paused'" decoration-success="state == 'done'"/>
+                <field name="last_batch_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_luwa_whatsapp_campaign_form" model="ir.ui.view">
+        <field name="name">luwa.whatsapp.campaign.form</field>
+        <field name="model">luwa.whatsapp.campaign</field>
+        <field name="arch" type="xml">
+            <form string="WhatsApp Marketing Campaign (Anti-Ban)">
+                <header>
+                    <button name="action_build_recipient_list" string="1. Build &amp; Deduplicate Audience" type="object" class="btn-secondary" invisible="state == 'running'"/>
+                    <button name="action_start_campaign" string="2. Start Safe Anti-Ban Campaign" type="object" class="btn-success" icon="fa-whatsapp" invisible="state in ('running', 'done')"/>
+                    <button name="action_send_next_batch_now" string="Send Next Safe Batch Now" type="object" class="btn-primary" invisible="state not in ('ready', 'running', 'paused')"/>
+                    <button name="action_pause_campaign" string="Pause Campaign" type="object" class="btn-warning" invisible="state != 'running'"/>
+                    <button name="action_reset_draft" string="Reset / Retry Failed" type="object" class="btn-secondary" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,ready,running,paused,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. November E-Commerce &amp; Subscriptions Promo"/>
+                        </h1>
+                    </div>
+
+                    <div class="alert alert-success py-2 mb-3" role="status">
+                        <i class="fa fa-shield me-1"/> <strong>5-Layer Anti-Ban Protection Enabled:</strong>
+                        Messages are sent gradually in small batches every 5 minutes with randomized human pauses (12-26s), simulated live typing presence, WhatsApp registration checks, dynamic greeting variations, and a 24-hour safety cap so your number stays safe.
+                    </div>
+
+                    <group>
+                        <group string="1. Target Audience Selection">
+                            <field name="audience_source"/>
+                            <field name="partner_ids" widget="many2many_tags" invisible="audience_source not in ('mixed',)" placeholder="Select contacts from Odoo..."/>
+                            <field name="raw_numbers" invisible="audience_source not in ('mixed', 'custom_numbers')" placeholder="Paste numbers (e.g. 0772123456, 0754370995 or 'John, 0772123456' per line)"/>
+                        </group>
+                        <group string="Live Campaign Progress">
+                            <field name="progress_pct" widget="progressbar"/>
+                            <field name="total_count"/>
+                            <field name="sent_count"/>
+                            <field name="pending_count"/>
+                            <field name="skipped_count"/>
+                            <field name="failed_count"/>
+                            <field name="last_batch_at"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Message &amp; PDF Attachment" name="content">
+                            <group>
+                                <group string="Optional PDF Flyer / Brochure">
+                                    <field name="attachment_file" filename="attachment_name"/>
+                                    <field name="attachment_name" invisible="1"/>
+                                </group>
+                                <group string="Personalization Placeholders">
+                                    <div class="text-muted small">
+                                        Use <code>{greeting}</code> (rotates Hello / Hi / Greetings / Good day), <code>{partner_name}</code> (recipient's name), and <code>{portal_url}</code>.
+                                    </div>
+                                </group>
+                            </group>
+                            <group string="Campaign Message Preview (Editable)">
+                                <field name="message_template" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Recipients Queue &amp; Delivery Status" name="recipients">
+                            <field name="line_ids">
+                                <list string="Campaign Recipients" editable="bottom">
+                                    <field name="recipient_name"/>
+                                    <field name="partner_id" optional="show"/>
+                                    <field name="phone"/>
+                                    <field name="normalized_phone" readonly="1"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'pending'" decoration-success="state == 'sent'" decoration-warning="state == 'skipped'" decoration-danger="state == 'failed'"/>
+                                    <field name="sent_at"/>
+                                    <field name="error_message"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Anti-Ban Safety Settings" name="antiban">
+                            <group>
+                                <group string="Trickle Pacing">
+                                    <field name="batch_size"/>
+                                    <field name="min_delay_sec"/>
+                                    <field name="max_delay_sec"/>
+                                    <field name="daily_limit"/>
+                                </group>
+                                <group string="Account Reputation Guards">
+                                    <field name="use_greeting_variation"/>
+                                    <field name="skip_unregistered"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_luwa_whatsapp_campaigns" model="ir.actions.act_window">
+        <field name="name">Marketing Campaigns (Anti-Ban)</field>
+        <field name="res_model">luwa.whatsapp.campaign</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_luwa_whatsapp_campaigns"
+              name="Marketing Campaigns"
+              parent="menu_luwa_whatsapp_root"
+              action="action_luwa_whatsapp_campaigns"
+              sequence="15"/>
+</odoo>
+
