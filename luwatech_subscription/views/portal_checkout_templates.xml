@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         1. Header Live Cart Counter, Wishlist & Client Portal Links
+         ============================================================ -->
+    <template id="luwatech_header_cart_and_portal" inherit_id="luwatech_website.luwatech_linoor_layout" name="Luwa Tech Header Live Cart Counter &amp; Client Portal" priority="105">
+        <xpath expr="//div[hasclass('mainmenu-six__right')]//a[@href='/shop/cart']" position="replace">
+            <t t-set="luwa_cart_qty" t-value="website_sale_order.cart_quantity if website_sale_order else 0"/>
+            <t t-set="luwa_wish_qty" t-value="len(request.env['product.wishlist'].current())"/>
+            <a href="/shop/wishlist"
+               t-attf-class="luwa-header-icon-btn o_wsale_my_wish #{'d-none' if not luwa_wish_qty else ''}"
+               title="Saved Wishlist" aria-label="Wishlist">
+                <i class="fa fa-heart"/>
+                <sup class="my_wish_quantity badge rounded-pill luwa-header-badge luwa-header-badge--cyan" t-out="luwa_wish_qty"/>
+            </a>
+            <a href="/shop/cart" class="luwa-header-cart-btn position-relative o_wsale_my_cart" title="View Order Cart" aria-label="Cart">
+                <i class="fa fa-shopping-bag"/>
+                <sup class="my_cart_quantity badge rounded-pill luwa-header-badge" t-out="luwa_cart_qty"/>
+            </a>
+            <a href="/my" class="luwa-header-portal-btn" title="Client Portal">
+                <i class="fas fa-user-circle"/>
+                <span t-if="not request.env.user._is_public()" t-out="request.env.user.partner_id.name.split(' ')[0]"/>
+                <span t-else="">Portal</span>
+            </a>
+        </xpath>
+
+        <xpath expr="//ul[hasclass('luwa-mobile-nav-list')]/li[last()]" position="after">
+            <t t-set="luwa_m_cart_qty" t-value="website_sale_order.cart_quantity if website_sale_order else 0"/>
+            <li>
+                <a href="/shop/cart" class="luwa-mnav-highlight">
+                    <i class="fas fa-shopping-cart luwa-mnav-icon"/> Order Cart
+                    <span class="my_cart_quantity luwa-nav-badge ms-2" t-out="luwa_m_cart_qty"/>
+                </a>
+            </li>
+            <li><a href="/shop/wishlist"><i class="fas fa-heart luwa-mnav-icon"/> Saved Wishlist</a></li>
+            <li>
+                <a href="/my">
+                    <i class="fas fa-user-shield luwa-mnav-icon"/>
+                    <span t-if="not request.env.user._is_public()">Client Portal (<t t-out="request.env.user.partner_id.name.split(' ')[0]"/>)</span>
+                    <span t-else="">Client Portal / Sign In</span>
+                </a>
+            </li>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         2. Cart Line Subscription Badge & Helpful Cart Banner/Actions
+         ============================================================ -->
+    <template id="luwa_cart_lines_subscription_badge" inherit_id="website_sale.cart_lines" name="Cart Line Subscription Badge" priority="30">
+        <xpath expr="//div[hasclass('o_cart_product')]//h6" position="after">
+            <div t-if="line.product_template_id.is_subscription" class="w-100 mt-1 mb-1">
+                <span class="luwa-cart-sub-pill">
+                    <i class="fas fa-sync-alt me-1"/>
+                    <t t-out="line.product_template_id.subscription_plan_id.name if line.product_template_id.subscription_plan_id else 'Monthly Subscription'"/>
+                </span>
+                <span t-if="line.product_template_id.includes_payment_gateway" class="luwa-cart-sub-pill luwa-cart-sub-pill--orange ms-1">
+                    <i class="fas fa-credit-card me-1"/> Payment Gateway Included
+                </span>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="luwa_cart_helpful_header_footer" inherit_id="website_sale.cart" name="Luwa Tech Cart Header &amp; Navigation Strip" priority="30">
+        <xpath expr="//div[@id='shop_cart']/div[1]" position="before">
+            <div class="luwa-cart-intro-banner mb-4">
+                <div>
+                    <span class="luwa-cart-intro-banner__kicker">Luwa Tech Secure Order Cart</span>
+                    <h2 class="luwa-cart-intro-banner__title">Review Your Selected Plans &amp; Products</h2>
+                </div>
+                <div class="luwa-cart-intro-banner__links">
+                    <a href="/subscriptions" class="btn btn-sm btn-outline-dark"><i class="fas fa-plus me-1"/> Add Subscription</a>
+                    <a href="/shop" class="btn btn-sm btn-outline-dark"><i class="fas fa-store me-1"/> Digital Store</a>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='shop_cart']" position="inside">
+            <div class="luwa-cart-support-strip mt-3">
+                <span><i class="fas fa-shield-alt me-1"/> Transparent USD pricing &amp; instant order tracking in your <a href="/my">Client Portal</a>.</span>
+                <a href="https://wa.me/256787819453" target="_blank" rel="noopener"><i class="fab fa-whatsapp me-1"/> Need help? Chat on WhatsApp</a>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Prevent duplicate wishlist clicks on <a> product detail button when already in wishlist -->
+    <template id="luwa_product_wishlist_btn_guard" inherit_id="website_sale_wishlist.product_add_to_wishlist" name="Guard Duplicate Wishlist Click on Product Page" priority="30">
+        <xpath expr="//a[@data-action='o_wishlist']" position="attributes">
+            <attribute name="t-attf-class" add="{{in_wish and 'disabled pe-none opacity-75 o_in_wishlist' or ''}}" separator=" "/>
+        </xpath>
+        <xpath expr="//a[@data-action='o_wishlist']/span" position="replace">
+            <span t-att-class="_span_classes">
+                <t t-if="in_wish">In your wishlist</t>
+                <t t-else="">Add to wishlist</t>
+            </span>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         3. Robust Custom Client Portal Dashboard (/my)
+         ============================================================ -->
+    <template id="luwa_portal_my_home_dashboard" inherit_id="portal.portal_my_home" name="Luwa Tech Custom Client Portal Dashboard" priority="15">
+        <xpath expr="//div[hasclass('o_portal_my_home')]" position="before">
+            <div class="luwa-portal-hero mb-4">
+                <div class="luwa-portal-hero__row">
+                    <div>
+                        <span class="luwa-portal-hero__kicker">Luwa Tech Client Portal</span>
+                        <h1 class="luwa-portal-hero__title">
+                            Welcome back, <t t-out="request.env.user.partner_id.name"/>
+                        </h1>
+                        <p class="luwa-portal-hero__sub">
+                            Manage your active E-Commerce &amp; Digital Marketing subscriptions, track orders, pay or download invoices, and access support from one place.
+                        </p>
+                    </div>
+                    <div class="luwa-portal-hero__actions">
+                        <a href="/my/subscriptions" class="luwa-portal-btn luwa-portal-btn--orange">
+                            <i class="fas fa-sync-alt me-1"/> My Subscriptions
+                        </a>
+                        <a href="/shop/cart" class="luwa-portal-btn luwa-portal-btn--ghost">
+                            <i class="fas fa-shopping-bag me-1"/> View Cart
+                        </a>
+                    </div>
+                </div>
+
+                <div class="luwa-portal-kpi-grid mt-4">
+                    <a href="/my/subscriptions?status=active" class="luwa-portal-kpi">
+                        <span class="luwa-portal-kpi__icon luwa-portal-kpi__icon--cyan"><i class="fas fa-check-circle"/></span>
+                        <div>
+                            <div class="luwa-portal-kpi__num" t-out="luwa_sub_active_count or 0"/>
+                            <div class="luwa-portal-kpi__label">Active Subscriptions</div>
+                        </div>
+                    </a>
+                    <a href="/my/subscriptions?status=draft" class="luwa-portal-kpi">
+                        <span class="luwa-portal-kpi__icon luwa-portal-kpi__icon--amber"><i class="fas fa-clock"/></span>
+                        <div>
+                            <div class="luwa-portal-kpi__num" t-out="luwa_sub_pending_count or 0"/>
+                            <div class="luwa-portal-kpi__label">Pending Activation</div>
+                        </div>
+                    </a>
+                    <a href="/my/orders" class="luwa-portal-kpi">
+                        <span class="luwa-portal-kpi__icon luwa-portal-kpi__icon--orange"><i class="fas fa-receipt"/></span>
+                        <div>
+                            <div class="luwa-portal-kpi__num" t-out="luwa_order_count or 0"/>
+                            <div class="luwa-portal-kpi__label">Sales Orders</div>
+                        </div>
+                    </a>
+                    <a href="/my/invoices" class="luwa-portal-kpi">
+                        <span class="luwa-portal-kpi__icon luwa-portal-kpi__icon--emerald"><i class="fas fa-file-invoice-dollar"/></span>
+                        <div>
+                            <div class="luwa-portal-kpi__num" t-out="luwa_invoice_count or 0"/>
+                            <div class="luwa-portal-kpi__label">Invoices</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="luwa-portal-quickbar mt-3">
+                    <a href="/subscriptions"><i class="fas fa-layer-group me-1"/> Browse Plans</a>
+                    <a href="/shop"><i class="fas fa-store me-1"/> Digital Store</a>
+                    <a href="/shop/wishlist"><i class="fas fa-heart me-1"/> Wishlist (<t t-out="luwa_wishlist_count or 0"/>)</a>
+                    <a href="/my/addresses"><i class="fas fa-map-marker-alt me-1"/> Billing Addresses</a>
+                    <a href="/my/security"><i class="fas fa-shield-alt me-1"/> Account Security</a>
+                    <a href="https://wa.me/256787819453" target="_blank" rel="noopener"><i class="fab fa-whatsapp me-1"/> WhatsApp Desk</a>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

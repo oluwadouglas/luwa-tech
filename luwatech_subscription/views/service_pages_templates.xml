@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         Dedicated Service Overview (/services) & Individual Pages (/services/<slug>)
+         ============================================================ -->
+    <template id="services_overview_page" name="Luwa Tech Services Overview">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="luwa-sub-hero">
+                    <div class="auto-container text-center">
+                        <span class="luwa-sub-hero__kicker">Digital Agency &#8226; Custom SaaS &#8226; Integrations &#8226; Training</span>
+                        <h1 class="luwa-sub-hero__title">Our Services &amp; Enterprise Solutions</h1>
+                        <p class="luwa-sub-hero__subtitle">
+                            Click any service below to explore dedicated deliverables, integration architectures, and subscription or custom plans tailored for your organization.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="luwa-sub-section">
+                    <div class="auto-container">
+                        <div class="row g-4">
+                            <t t-foreach="services" t-as="srv">
+                                <t t-set="is_orange" t-value="srv['accent'] == 'orange'"/>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <div t-attf-class="luwa-shop-card {{'luwa-shop-card--orange' if is_orange else ''}}">
+                                        <div class="luwa-shop-card__img">
+                                            <a t-attf-href="/services/#{srv['slug']}">
+                                                <img t-att-src="srv['image']" t-att-alt="srv['title']" loading="lazy"/>
+                                            </a>
+                                            <span t-attf-class="luwa-shop-card__badge {{'luwa-shop-card__badge--orange' if is_orange else ''}}"
+                                                  t-out="srv['kicker']"/>
+                                        </div>
+                                        <div class="luwa-shop-card__body">
+                                            <div class="luwa-shop-card__cat">
+                                                <i t-att-class="srv['icon'] + ' me-1'"/> Dedicated Service
+                                            </div>
+                                            <h3 class="luwa-shop-card__title">
+                                                <a t-attf-href="/services/#{srv['slug']}" t-out="srv['title']"/>
+                                            </h3>
+                                            <p class="luwa-shop-card__desc" t-out="srv['summary']"/>
+                                            <div class="luwa-shop-card__footer mt-auto">
+                                                <a t-attf-href="/services/#{srv['slug']}"
+                                                   t-attf-class="luwa-shop-card__btn w-100 justify-content-center {{'luwa-shop-card__btn--orange' if is_orange else ''}}">
+                                                    Explore Service <i class="fas fa-arrow-right ms-2"/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Also feature E-Commerce Subscriptions Pack directly under Services -->
+                            <div class="col-sm-12 col-md-6 col-lg-4">
+                                <div class="luwa-shop-card luwa-shop-card--orange">
+                                    <div class="luwa-shop-card__img">
+                                        <a href="/subscriptions">
+                                            <img src="/luwatech_subscription/static/src/img/ecom-complete-100k.png" alt="E-Commerce Subscriptions" loading="lazy"/>
+                                        </a>
+                                        <span class="luwa-shop-card__badge luwa-shop-card__badge--orange">Monthly Plans</span>
+                                    </div>
+                                    <div class="luwa-shop-card__body">
+                                        <div class="luwa-shop-card__cat">
+                                            <i class="fas fa-sync-alt me-1"/> Subscription Service
+                                        </div>
+                                        <h3 class="luwa-shop-card__title">
+                                            <a href="/subscriptions">E-Commerce Subscriptions</a>
+                                        </h3>
+                                        <p class="luwa-shop-card__desc">
+                                            Launch your online store with minimal invoicing &amp; stock management at $19/mo, or Complete with Payment Gateway at $29/mo.
+                                        </p>
+                                        <div class="luwa-shop-card__footer mt-auto">
+                                            <a href="/subscriptions" class="luwa-shop-card__btn luwa-shop-card__btn--orange w-100 justify-content-center">
+                                                View Plans <i class="fas fa-arrow-right ms-2"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <template id="service_detail_page" name="Luwa Tech Dedicated Service Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="luwa-sub-hero">
+                    <div class="auto-container">
+                        <div class="luwa-service-breadcrumb mb-3">
+                            <a href="/">Home</a>
+                            <span class="mx-2">/</span>
+                            <a href="/services">Services</a>
+                            <span class="mx-2">/</span>
+                            <span t-out="service['title']"/>
+                        </div>
+                        <span class="luwa-sub-hero__kicker" t-out="service['kicker']"/>
+                        <h1 class="luwa-sub-hero__title" t-out="service['title']"/>
+                        <p class="luwa-sub-hero__subtitle ms-0 text-start" t-out="service['summary']"/>
+                    </div>
+                </section>
+
+                <section class="luwa-sub-section">
+                    <div class="auto-container">
+                        <div class="row g-5 align-items-center">
+                            <div class="col-lg-6">
+                                <div class="luwa-service-media-card">
+                                    <img t-att-src="service['image']" t-att-alt="service['title']" class="img-fluid w-100"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="luwa-service-detail-card">
+                                    <span class="luwa-service-detail-tag">
+                                        <i t-att-class="service['icon'] + ' me-2'"/> What You Get
+                                    </span>
+                                    <h2 class="luwa-service-detail-heading">Key Capabilities &amp; Deliverables</h2>
+                                    <ul class="luwa-sub-card__features mt-4">
+                                        <t t-foreach="service['highlights']" t-as="item">
+                                            <li>
+                                                <i class="fas fa-check-circle"/>
+                                                <span t-out="item"/>
+                                            </li>
+                                        </t>
+                                    </ul>
+                                    <div class="d-flex flex-wrap gap-3 mt-4">
+                                        <a t-att-href="service['shop_url']" class="luwa-sub-btn luwa-sub-btn--orange">
+                                            <i class="fas fa-rocket me-2"/>
+                                            <t t-out="service['cta_label']"/>
+                                        </a>
+                                        <a href="/contactus" class="luwa-sub-btn-outline">
+                                            <i class="fas fa-phone-alt me-2"/> Talk to Our Team
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Related Services Quick Navigation -->
+                        <div class="luwa-related-services mt-5 pt-4">
+                            <h3 class="luwa-sub-compare__title mb-4">Explore Other Luwa Tech Services</h3>
+                            <div class="row g-3">
+                                <t t-foreach="other_services" t-as="osrv">
+                                    <div class="col-sm-6 col-lg-4">
+                                        <a t-attf-href="/services/#{osrv['slug']}" class="luwa-related-service-pill">
+                                            <i t-att-class="osrv['icon']"/>
+                                            <div>
+                                                <strong t-out="osrv['title']"/>
+                                                <small t-out="osrv['kicker']"/>
+                                            </div>
+                                            <i class="fas fa-arrow-right ms-auto"/>
+                                        </a>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

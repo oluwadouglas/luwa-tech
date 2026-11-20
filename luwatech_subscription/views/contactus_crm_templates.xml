@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         Luwa Tech Branded /contactus -> Direct to CRM (crm.lead)
+         ============================================================ -->
+    <template id="luwa_contactus_crm_page" inherit_id="website.contactus" name="Luwa Tech Contact Us (Direct to CRM)" priority="100">
+        <xpath expr="//t[@t-set='contactus_form_values']" position="after">
+            <t t-set="contactus_form_values" t-value="dict(contactus_form_values, **{
+                'contact_name': request.params.get('contact_name') or request.params.get('name', ''),
+                'partner_name': request.params.get('partner_name') or request.params.get('company', ''),
+                'name': request.params.get('subject', ''),
+                'description': request.params.get('description', ''),
+            })"/>
+        </xpath>
+
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure">
+                <section class="luwa-sub-hero">
+                    <div class="auto-container text-center">
+                        <span class="luwa-sub-hero__kicker">Kampala Digital Agency &amp; Custom Software Studio</span>
+                        <h1 class="luwa-sub-hero__title">Let's Build &amp; Grow Your Business</h1>
+                        <p class="luwa-sub-hero__subtitle">
+                            Send us a message below — every inquiry goes straight to our CRM pipeline and is routed immediately to our Kampala strategy and engineering team.
+                        </p>
+                    </div>
+                </section>
+
+                <section class="luwa-contact-section">
+                    <div class="auto-container">
+                        <div class="row g-4 align-items-start">
+                            <!-- CRM Lead Form -->
+                            <div class="col-lg-7">
+                                <div class="luwa-contact-card">
+                                    <div class="luwa-contact-card__head">
+                                        <span class="luwa-contact-card__badge"><i class="fas fa-bolt me-1"/> Direct CRM Routing</span>
+                                        <h2>Send Us a Message</h2>
+                                        <p>Tell us about your e-commerce store, marketing goals, API integration, or custom platform needs.</p>
+                                    </div>
+
+                                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                                        <form id="contactus_form"
+                                              action="/website/form/"
+                                              method="post"
+                                              enctype="multipart/form-data"
+                                              class="o_mark_required"
+                                              data-mark="*"
+                                              data-model_name="crm.lead"
+                                              data-success-mode="redirect"
+                                              data-success-page="/contactus-thank-you"
+                                              data-pre-fill="true">
+                                            <div class="s_website_form_rows row g-3 s_col_no_bgcolor">
+                                                <div class="col-md-6 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_name">
+                                                        <span class="s_website_form_label_content">Full Name</span>
+                                                        <span class="s_website_form_mark"> *</span>
+                                                    </label>
+                                                    <input id="luwa_contact_name" type="text" class="form-control s_website_form_input"
+                                                           name="contact_name" required="required" data-fill-with="name"
+                                                           placeholder="e.g. Grace Namukasa"/>
+                                                </div>
+
+                                                <div class="col-md-6 s_website_form_field s_website_form_required" data-type="tel" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_phone">
+                                                        <span class="s_website_form_label_content">Phone / WhatsApp</span>
+                                                        <span class="s_website_form_mark"> *</span>
+                                                    </label>
+                                                    <input id="luwa_contact_phone" type="tel" class="form-control s_website_form_input"
+                                                           name="phone" required="required" data-fill-with="phone"
+                                                           placeholder="e.g. +256 772 123 456"/>
+                                                </div>
+
+                                                <div class="col-md-6 s_website_form_field s_website_form_required s_website_form_model_required" data-type="email" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_email">
+                                                        <span class="s_website_form_label_content">Email Address</span>
+                                                        <span class="s_website_form_mark"> *</span>
+                                                    </label>
+                                                    <input id="luwa_contact_email" type="email" class="form-control s_website_form_input"
+                                                           name="email_from" required="required" data-fill-with="email"
+                                                           placeholder="you@company.com"/>
+                                                </div>
+
+                                                <div class="col-md-6 s_website_form_field" data-type="char" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_company">
+                                                        <span class="s_website_form_label_content">Company / Organization</span>
+                                                    </label>
+                                                    <input id="luwa_contact_company" type="text" class="form-control s_website_form_input"
+                                                           name="partner_name" data-fill-with="commercial_company_name"
+                                                           placeholder="Optional"/>
+                                                </div>
+
+                                                <div class="col-md-6 s_website_form_field s_website_form_custom" data-type="selection" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_service">
+                                                        <span class="s_website_form_label_content">Area of Interest</span>
+                                                    </label>
+                                                    <select id="luwa_contact_service" class="form-select s_website_form_input" name="Service Interest">
+                                                        <option value="Digital Marketing Retainer ($115 / $225 USD)">Digital Marketing Retainer ($115 / $225 USD)</option>
+                                                        <option value="E-Commerce Subscription ($19 / $29 USD)">E-Commerce Subscription ($19 / $29 USD)</option>
+                                                        <option value="EFRIS &amp; Mobile Money Integration">EFRIS &amp; Mobile Money Integration</option>
+                                                        <option value="WhatsApp Integration as a Service">WhatsApp Integration as a Service</option>
+                                                        <option value="Custom SaaS (Luwa eShule / eTari)">Custom SaaS (Luwa eShule / eTari)</option>
+                                                        <option value="SAP, Zoho &amp; MS Dynamics Connector">SAP, Zoho &amp; MS Dynamics Connector</option>
+                                                        <option value="IT Training &amp; Digital Academy">IT Training &amp; Digital Academy</option>
+                                                        <option value="General Inquiry">General Inquiry</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6 s_website_form_field s_website_form_required s_website_form_model_required" data-type="char" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_subject">
+                                                        <span class="s_website_form_label_content">Subject</span>
+                                                        <span class="s_website_form_mark"> *</span>
+                                                    </label>
+                                                    <input id="luwa_contact_subject" type="text" class="form-control s_website_form_input"
+                                                           name="name" required="required"
+                                                           t-att-value="request.params.get('subject', '')"
+                                                           placeholder="e.g. Online Store Setup or Marketing Plan"/>
+                                                </div>
+
+                                                <div class="col-12 s_website_form_field s_website_form_required" data-type="text" data-name="Field">
+                                                    <label class="form-label luwa-contact-label" for="luwa_contact_desc">
+                                                        <span class="s_website_form_label_content">Your Message / Project Details</span>
+                                                        <span class="s_website_form_mark"> *</span>
+                                                    </label>
+                                                    <textarea id="luwa_contact_desc" class="form-control s_website_form_input"
+                                                              name="description" required="required" rows="5"
+                                                              placeholder="Share your goals, timeline, or questions..."><t t-out="request.params.get('description', '')"/></textarea>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <span id="s_website_form_result"/>
+                                                </div>
+                                                <div class="col-12 pt-2 s_website_form_submit s_website_form_no_submit_label d-flex flex-wrap align-items-center justify-content-between gap-3" data-name="Submit Button">
+                                                    <span class="small text-muted">
+                                                        <i class="fas fa-lock me-1"/> Routed directly into our CRM &amp; Sales Desk
+                                                    </span>
+                                                    <button type="submit" class="btn btn-primary btn-lg s_website_form_send luwa-contact-submit-btn">
+                                                        Send Message <i class="fas fa-paper-plane ms-2"/>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </div>
+                            </div>
+
+                            <!-- Kampala Office Info & Quick Channels -->
+                            <div class="col-lg-5">
+                                <div class="luwa-contact-info-card">
+                                    <span class="luwa-contact-info-card__kicker">Kampala Headquarters</span>
+                                    <h3>Luwa Tech Digital Agency</h3>
+                                    <p class="luwa-contact-info-card__sub">
+                                        Visit our studio in Bukoto or connect directly with our engineering and growth specialists.
+                                    </p>
+
+                                    <ul class="luwa-contact-info-list list-unstyled">
+                                        <li>
+                                            <span class="luwa-contact-info-icon"><i class="fas fa-map-marker-alt"/></span>
+                                            <div>
+                                                <strong>Office Location</strong>
+                                                <span>Bukoto, Kampala, Uganda</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="luwa-contact-info-icon"><i class="fas fa-phone-alt"/></span>
+                                            <div>
+                                                <strong>Phone &amp; WhatsApp</strong>
+                                                <a href="tel:+256787819453">+256 787 819 453</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="luwa-contact-info-icon"><i class="fas fa-envelope"/></span>
+                                            <div>
+                                                <strong>Email Desk</strong>
+                                                <a href="mailto:info@luwatech.it">info@luwatech.it</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="luwa-contact-info-icon"><i class="fas fa-clock"/></span>
+                                            <div>
+                                                <strong>Business Hours (EAT)</strong>
+                                                <span>Mon – Fri: 8:30 AM – 6:00 PM · Sat: 9:00 AM – 2:00 PM</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <div class="luwa-contact-whatsapp-box mt-4">
+                                        <div>
+                                            <strong>Need an instant reply?</strong>
+                                            <span>Chat directly with our Kampala team on WhatsApp.</span>
+                                        </div>
+                                        <a href="https://wa.me/256787819453?text=Hello%20Luwa%20Tech%2C%20I%20would%20like%20to%20discuss%20a%20project."
+                                           target="_blank" rel="noopener"
+                                           class="luwa-contact-wa-btn">
+                                            <i class="fab fa-whatsapp me-1"/> Chat on WhatsApp
+                                        </a>
+                                    </div>
+
+                                    <div class="luwa-contact-quicklinks mt-4">
+                                        <a href="/subscriptions"><i class="fas fa-layer-group me-1"/> Subscription Plans</a>
+                                        <a href="/shop"><i class="fas fa-store me-1"/> Digital Store</a>
+                                        <a href="/my"><i class="fas fa-user-circle me-1"/> Client Portal</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Branded /contactus-thank-you Page -->
+    <template id="luwa_contactus_thanks_page" inherit_id="website.contactus_thanks_ir_ui_view" name="Luwa Tech Contact Thank You" priority="100">
+        <xpath expr="//div[@id='wrap']" position="replace">
+            <div id="wrap" class="oe_structure">
+                <section class="luwa-contact-section py-5">
+                    <div class="auto-container">
+                        <div class="luwa-contact-thanks-card mx-auto text-center">
+                            <div class="luwa-contact-thanks-icon">
+                                <i class="fas fa-check"/>
+                            </div>
+                            <span class="luwa-contact-card__badge mb-2">Logged Directly in CRM</span>
+                            <h1>Thank You! Your Message Is With Our Team.</h1>
+                            <p class="lead">
+                                We have received your inquiry and routed it directly to our Kampala growth and engineering pipeline. A specialist will reach out shortly via email or WhatsApp.
+                            </p>
+                            <div class="luwa-contact-thanks-meta">
+                                <span><i class="fas fa-map-marker-alt me-1"/> Bukoto, Kampala, Uganda</span>
+                                <span><i class="fas fa-phone-alt me-1"/> +256 787 819 453</span>
+                                <span><i class="fas fa-envelope me-1"/> info@luwatech.it</span>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                                <a href="/subscriptions" class="btn btn-primary">Explore Subscription Plans</a>
+                                <a href="/shop" class="btn btn-outline-dark">Visit Digital Store</a>
+                                <a href="/blog" class="btn btn-outline-dark">Read Insights Blog</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </xpath>
+    </template>
+</odoo>

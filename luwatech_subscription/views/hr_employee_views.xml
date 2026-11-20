@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_luwa_website_team" model="ir.ui.view">
+        <field name="name">hr.employee.form.luwa.website.team</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_toggle_website_publish"
+                        string="Published on Website"
+                        type="object"
+                        class="btn-success"
+                        icon="fa-globe"
+                        invisible="not is_published_website"/>
+                <button name="action_toggle_website_publish"
+                        string="Publish on Website"
+                        type="object"
+                        class="btn-secondary"
+                        icon="fa-globe"
+                        invisible="is_published_website"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Website &amp; Social Media (Our Team)" name="luwa_website_team">
+                    <div class="alert alert-info py-2 mb-3" role="status">
+                        <i class="fa fa-globe me-1"/> <strong>Live Website Team Sync:</strong>
+                        All fields below (including the employee photo, role, bio, and social links) sync directly to the Front Page (<code>/#team</code>) and the dedicated <code>/team</code> page when <em>Publish on Website</em> is enabled.
+                    </div>
+                    <group>
+                        <group string="Website Visibility, Photo &amp; Role">
+                            <field name="is_published_website" widget="boolean_toggle"/>
+                            <field name="image_1920" string="Website Profile Photo" widget="image" options="{'size': [140, 140]}"/>
+                            <field name="website_role" placeholder="e.g. Founder &amp; Chief Executive Officer"/>
+                            <field name="website_department_tag" placeholder="e.g. Executive Leadership"/>
+                            <field name="website_sequence"/>
+                        </group>
+                        <group string="Social Media &amp; Contact Links">
+                            <field name="social_linkedin" widget="url"/>
+                            <field name="social_twitter" widget="url"/>
+                            <field name="social_github" widget="url"/>
+                            <field name="social_instagram" widget="url"/>
+                            <field name="social_whatsapp"/>
+                        </group>
+                    </group>
+                    <group string="Short Public Bio (Displayed on Card)">
+                        <field name="website_bio" nolabel="1" placeholder="Write a short 1-2 sentence bio for the website..."/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_employee_tree_luwa_website_team" model="ir.ui.view">
+        <field name="name">hr.employee.list.luwa.website.team</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="is_published_website" widget="boolean_toggle" optional="show"/>
+                <field name="website_role" optional="show"/>
+                <field name="website_sequence" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
