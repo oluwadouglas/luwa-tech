@@ -1,0 +1,1330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================
+         0. Remove Odoo Brand Promotion & Generator Meta Tag Everywhere
+         ============================================================ -->
+    <template id="luwa_remove_brand_promotion" inherit_id="web.brand_promotion" name="Luwa Tech Remove Odoo Brand Promotion" priority="99">
+        <xpath expr="//div[hasclass('o_brand_promotion')]" position="replace">
+            <div class="o_brand_promotion">
+                <span>Powered by <strong>Luwa Tech Digital Agency</strong></span>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="luwa_remove_website_generator" inherit_id="website.layout" name="Luwa Tech Generator Meta Override" priority="99">
+        <xpath expr="//meta[@name='generator']" position="replace">
+            <meta name="generator" content="Luwa Tech"/>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         1. Shared Subscription Cards Grid Partial (E-Commerce & DMaaS)
+         ============================================================ -->
+    <template id="subscription_cards_grid" name="Luwa Tech Subscription Cards Grid">
+        <div class="row g-4 justify-content-center">
+            <t t-foreach="subscription_products" t-as="prod">
+                <t t-set="is_featured" t-value="prod.includes_payment_gateway or prod.subscription_tier == 'complete'"/>
+                <t t-set="is_marketing" t-value="prod.subscription_category == 'marketing'"/>
+                <t t-set="period_label" t-value="prod.subscription_plan_id.get_period_label() if prod.subscription_plan_id else 'month'"/>
+                <div class="col-sm-12 col-md-6 col-lg-5">
+                    <div t-attf-class="luwa-sub-card {{'luwa-sub-card--featured' if is_featured else ''}}">
+                        <div class="luwa-sub-card__media">
+                            <img t-attf-src="/web/image/product.template/#{prod.id}/image_512"
+                                 t-att-alt="prod.name" loading="lazy"/>
+                            <span t-attf-class="luwa-sub-card__badge {{'luwa-sub-card__badge--orange' if is_featured else ''}}">
+                                <t t-out="prod.subscription_badge or ('Complete + Payment Gateway' if is_featured else 'Starter Subscription')"/>
+                            </span>
+                        </div>
+                        <div class="luwa-sub-card__body">
+                            <div class="luwa-sub-card__eyebrow">
+                                <i class="fas fa-sync-alt me-1"/>
+                                <t t-if="is_marketing">Digital Marketing as a Service (DMaaS)</t>
+                                <t t-else="" t-out="prod.subscription_plan_id.name if prod.subscription_plan_id else 'Monthly Subscription'"/>
+                            </div>
+                            <h3 class="luwa-sub-card__title">
+                                <a t-att-href="prod.website_url">
+                                    <t t-out="prod.name"/>
+                                </a>
+                            </h3>
+                            <p class="luwa-sub-card__desc" t-if="prod.description_sale">
+                                <t t-out="prod.description_sale"/>
+                            </p>
+
+                            <div class="luwa-sub-card__price-box">
+                                <span class="luwa-sub-card__price"
+                                      t-field="prod.list_price"
+                                      t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                                <span class="luwa-sub-card__period">/ <t t-out="period_label"/></span>
+                            </div>
+
+                            <div t-if="prod.subscription_note" class="luwa-sub-note mb-3">
+                                <i class="fas fa-info-circle me-1"/>
+                                <span t-out="prod.subscription_note"/>
+                            </div>
+
+                            <!-- Included Module Pills -->
+                            <div class="luwa-sub-card__pills" t-if="is_marketing">
+                                <span class="luwa-sub-pill luwa-sub-pill--on">
+                                    <i class="fas fa-bullhorn"/> Social &amp; Content
+                                </span>
+                                <span class="luwa-sub-pill luwa-sub-pill--on">
+                                    <i class="fas fa-search"/> SEO &amp; Analytics
+                                </span>
+                                <span t-if="is_featured" class="luwa-sub-pill luwa-sub-pill--gateway">
+                                    <i class="fas fa-funnel-dollar"/> Full-Funnel Ads
+                                </span>
+                                <span class="luwa-sub-pill luwa-sub-pill--warn">
+                                    <i class="fas fa-exclamation-circle"/> Excl. Ad Spend
+                                </span>
+                            </div>
+                            <div class="luwa-sub-card__pills" t-else="">
+                                <span t-if="prod.includes_ecommerce" class="luwa-sub-pill luwa-sub-pill--on">
+                                    <i class="fas fa-shopping-bag"/> E-Commerce
+                                </span>
+                                <span t-if="prod.includes_invoicing" class="luwa-sub-pill luwa-sub-pill--on">
+                                    <i class="fas fa-file-invoice"/> Minimal Invoicing
+                                </span>
+                                <span t-if="prod.includes_stock_management" class="luwa-sub-pill luwa-sub-pill--on">
+                                    <i class="fas fa-boxes"/> Stock Management
+                                </span>
+                                <span t-if="prod.includes_payment_gateway" class="luwa-sub-pill luwa-sub-pill--gateway">
+                                    <i class="fas fa-credit-card"/> Payment Gateway
+                                </span>
+                                <span t-else="" class="luwa-sub-pill luwa-sub-pill--off">
+                                    <i class="fas fa-times-circle"/> No Payment Gateway
+                                </span>
+                            </div>
+
+                            <!-- Feature Checklist -->
+                            <ul class="luwa-sub-card__features" t-if="prod.subscription_features">
+                                <t t-foreach="prod.get_subscription_feature_list()" t-as="feat">
+                                    <li><i class="fas fa-check-circle"/> <span t-out="feat"/></li>
+                                </t>
+                            </ul>
+
+                            <div class="luwa-sub-card__actions">
+                                <a t-attf-href="/subscriptions/subscribe/#{prod.id}"
+                                   t-attf-class="luwa-sub-btn {{'luwa-sub-btn--orange' if is_featured else ''}}">
+                                    <i class="fas fa-rocket me-1"/> Subscribe Now
+                                </a>
+                                <a t-att-href="prod.website_url" class="luwa-sub-btn-outline">
+                                    View Details <i class="fas fa-arrow-right ms-1"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </template>
+
+    <!-- ============================================================
+         2. Dedicated /subscriptions Showcase Page (E-Commerce & Digital Marketing)
+         ============================================================ -->
+    <template id="subscriptions_showcase_page" name="Luwa Tech E-Commerce &amp; Digital Marketing Subscriptions">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="luwa-sub-hero">
+                    <div class="auto-container text-center">
+                        <span class="luwa-sub-hero__kicker">Digital Agency Retainers &amp; E-Commerce Plans</span>
+                        <h1 class="luwa-sub-hero__title">Subscription Tiers for E-Commerce &amp; Digital Marketing</h1>
+                        <p class="luwa-sub-hero__subtitle">
+                            Launch your online store from <strong>$19/month</strong> (or <strong>$29/month</strong> with payment gateway),
+                            or scale your brand with Digital Marketing as a Service at <strong>$115/month</strong> (Starter) or <strong>$225/month</strong> (Premium) — ad budgets billed separately.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- E-Commerce Subscriptions -->
+                <section class="luwa-sub-section" id="subscription-plans">
+                    <div class="auto-container">
+                        <div class="sec-title-six text-center mb-5">
+                            <p class="sec-title-six__text"><span>Online Storefront Tiers</span></p>
+                            <h2 class="sec-title-six__title">E-Commerce Subscription Packages</h2>
+                        </div>
+                        <t t-if="ecom_subscriptions">
+                            <t t-set="subscription_products" t-value="ecom_subscriptions"/>
+                            <t t-call="luwatech_subscription.subscription_cards_grid"/>
+                        </t>
+
+                        <!-- E-Commerce Comparison Table -->
+                        <div class="luwa-sub-compare mt-5">
+                            <h3 class="luwa-sub-compare__title text-center">Compare E-Commerce Subscription Modules</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered luwa-sub-compare__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Capability / Module</th>
+                                            <th class="text-center">Starter ($19/mo)</th>
+                                            <th class="text-center luwa-sub-compare__highlight">Complete + Payment Gateway ($29/mo)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Online E-Commerce Storefront &amp; Catalog</td>
+                                            <td class="text-center text-success"><i class="fas fa-check-circle"/> Included</td>
+                                            <td class="text-center text-success"><i class="fas fa-check-circle"/> Included</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minimal Invoicing &amp; Customer Receipts</td>
+                                            <td class="text-center text-success"><i class="fas fa-check-circle"/> Included</td>
+                                            <td class="text-center text-success"><i class="fas fa-check-circle"/> Included</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Real-Time Stock &amp; Inventory Management</td>
+                                            <td class="text-center text-success"><i class="fas fa-check-circle"/> Included</td>
+                                            <td class="text-center text-success"><i class="fas fa-check-circle"/> Included</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Integrated Payment Gateway (MTN MoMo, Airtel Money &amp; Cards)</td>
+                                            <td class="text-center text-muted"><i class="fas fa-minus-circle"/> Not Included</td>
+                                            <td class="text-center text-success fw-bold"><i class="fas fa-check-circle"/> Included</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Digital Marketing as a Service Subscriptions -->
+                <section class="luwa-sub-section bg-white border-top" id="marketing-plans" t-if="marketing_subscriptions">
+                    <div class="auto-container">
+                        <div class="sec-title-six text-center mb-5">
+                            <p class="sec-title-six__text"><span>Digital Marketing as a Service (DMaaS)</span></p>
+                            <h2 class="sec-title-six__title">Digital Marketing Agency Retainer Plans</h2>
+                            <p class="luwa-sub-home-lead">
+                                Dedicated agency management fees (<strong>$115/month Starter</strong> &amp; <strong>$225/month Premium</strong>).
+                                Paid media / ad spend budgets on Google &amp; Meta are separate from these agency fees.
+                            </p>
+                        </div>
+                        <t t-set="subscription_products" t-value="marketing_subscriptions"/>
+                        <t t-call="luwatech_subscription.subscription_cards_grid"/>
+
+                        <div class="luwa-sub-compare mt-5">
+                            <h3 class="luwa-sub-compare__title text-center">Compare Digital Marketing Packages (Excl. Ad Spend)</h3>
+                            <div class="table-responsive">
+                                <table class="table table-bordered luwa-sub-compare__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Agency Deliverable</th>
+                                            <th class="text-center">Starter ($115/mo)</th>
+                                            <th class="text-center luwa-sub-compare__highlight">Premium ($225/mo)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Social Media Management &amp; Creative Posts</td>
+                                            <td class="text-center">Up to 3 Channels (12 Posts/mo)</td>
+                                            <td class="text-center fw-bold">4+ Channels (Daily Active Management)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Search Engine Optimization (SEO)</td>
+                                            <td class="text-center">On-Page &amp; Google Business Profile</td>
+                                            <td class="text-center fw-bold">Full Technical SEO, Content &amp; Landing Pages</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Paid Ads Campaign Management (Ad Spend Separate)</td>
+                                            <td class="text-center">Campaign Setup &amp; Tracking</td>
+                                            <td class="text-center fw-bold">Full-Funnel Optimization &amp; Retargeting</td>
+                                        </tr>
+                                        <tr>
+                                            <td>WhatsApp, SMS &amp; Email Lead Automation</td>
+                                            <td class="text-center text-muted"><i class="fas fa-minus-circle"/> Optional Add-On</td>
+                                            <td class="text-center text-success fw-bold"><i class="fas fa-check-circle"/> Included</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Reporting &amp; Strategy Calls</td>
+                                            <td class="text-center">Monthly Performance Report</td>
+                                            <td class="text-center fw-bold">Bi-Weekly Calls + Dedicated Manager</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div t-if="not team_members" class="text-center py-5">
+                            <p class="text-light opacity-75 fs-5 mb-0">
+                                Team profiles are managed from Odoo Employees (toggle <strong>Publish on Website</strong> on any employee to display them here).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="luwa-team-watermark" aria-hidden="true">OUR TEAM</div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         3. Homepage Updates: Digital Agency Tone, Subscriptions, Store & Flowing Partners
+         ============================================================ -->
+    <template id="homepage_ecommerce_subscriptions" inherit_id="luwatech_website.luwatech_linoor_homepage" name="Homepage Digital Agency Tone, Subscriptions, Store &amp; Flowing Partners" priority="100">
+        <!-- Hero Slide 1 & 2: Left-Aligned Editorial Layout with Progressive Blur -->
+        <xpath expr="//section[hasclass('slider-six')]//div[hasclass('swiper-slide')][1]//div[hasclass('slider-six__content')]" position="replace">
+            <div class="slider-six__content">
+                <p class="slider-six__text"><span>Kampala's Creative Digital Agency &amp; Growth Studio</span></p>
+                <h2 class="slider-six__title">Grow Your Brand,<br/>Launch E-Commerce &amp;<br/>Scale Digitally</h2>
+                <p class="luwa-hero-sub">
+                    Full-funnel Digital Marketing retainers, Mobile Money &amp; EFRIS online stores, and custom SaaS platforms built in Kampala for high-growth teams.
+                </p>
+                <div class="luwa-hero-btns">
+                    <a href="/subscriptions" class="slider-six__btn thm-btn__six luwa-btn-orange">View Subscriptions</a>
+                    <a href="/services" class="slider-six__btn thm-btn__six">Explore Services</a>
+                </div>
+            </div>
+        </xpath>
+
+        <xpath expr="//section[hasclass('slider-six')]//div[hasclass('swiper-slide')][2]//div[hasclass('slider-six__content')]" position="replace">
+            <div class="slider-six__content">
+                <p class="slider-six__text"><span>Digital Marketing &#8226; Web &amp; E-Commerce &#8226; API Integrations</span></p>
+                <h2 class="slider-six__title">Creative Campaigns,<br/>Custom Apps &amp; Smart<br/>Integrations</h2>
+                <p class="luwa-hero-sub">
+                    Connect MTN MoMo, Airtel Money, URA EFRIS, WhatsApp Business API, SAP, Zoho, and Microsoft Dynamics 365 under one studio.
+                </p>
+                <div class="luwa-hero-btns">
+                    <a href="/subscriptions#marketing-plans" class="slider-six__btn thm-btn__six luwa-btn-orange">Marketing Retainers</a>
+                    <a href="/contactus" class="slider-six__btn thm-btn__six">Book a Strategy Call</a>
+                </div>
+            </div>
+        </xpath>
+
+        <!-- About Section: Digital Agency Cards, Cool Icons & Animated LUWA TECH Watermark -->
+        <xpath expr="//section[@id='about']" position="replace">
+            <section class="about-seven luwa-about-enhanced" id="about">
+                <div class="auto-container position-relative" style="z-index: 2;">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 col-lg-5">
+                            <div class="about-seven__images">
+                                <img src="/luwatech_website/static/src/images/update-01-10-2021/resources/about-seven-1-1.jpg?v=6" alt="Luwa Tech Kampala Digital Agency Team"/>
+                                <img src="/luwatech_website/static/src/images/update-01-10-2021/resources/about-seven-1-2.jpg?v=6" alt="Luwa Tech Ugandan Consultants"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-7">
+                            <div class="about-seven__content">
+                                <div class="sec-title-six text-start">
+                                    <p class="sec-title-six__text"><span>About Luwa Tech &#8212; Digital Agency, Kampala</span></p>
+                                    <h2 class="sec-title-six__title">Your Creative Digital Agency for Growth, E-Commerce &amp; Custom Platforms</h2>
+                                </div>
+                                <p class="about-seven__summery">
+                                    Based in Bukoto, Kampala, Luwa Tech is a modern Digital Agency, E-Commerce Studio, and Custom Software Builder trusted by 190+ growing East African brands. From monthly Digital Marketing retainers and conversion-ready online stores to custom platforms like <strong>Luwa eShule</strong> and <strong>Luwa eTari</strong>, we help businesses scale cleanly.
+                                </p>
+                                <div class="d-flex flex-wrap gap-3 mt-4">
+                                    <a href="/subscriptions" class="about-seven__btn thm-btn__six luwa-btn-orange">View Subscription Plans</a>
+                                    <a href="/team" class="about-seven__btn thm-btn__six">Meet Our Team</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4 Modern Digital Agency Feature Cards with Cool Icons -->
+                    <div class="row g-4 mt-5 pt-2">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="luwa-about-card luwa-about-card--cyan" style="transition-delay: 0ms;">
+                                <div class="luwa-about-card__icon">
+                                    <i class="fas fa-chart-line"/>
+                                </div>
+                                <h4 class="luwa-about-card__title">Growth Marketing &amp; SEO</h4>
+                                <p class="luwa-about-card__text">
+                                    Creative social campaigns, technical SEO, Google &amp; Meta Ads built to generate measurable leads.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="luwa-about-card luwa-about-card--orange" style="transition-delay: 80ms;">
+                                <div class="luwa-about-card__icon">
+                                    <i class="fas fa-shopping-bag"/>
+                                </div>
+                                <h4 class="luwa-about-card__title">E-Commerce &amp; MoMo</h4>
+                                <p class="luwa-about-card__text">
+                                    Monthly online stores with minimal invoicing, stock management &amp; instant Mobile Money checkout.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="luwa-about-card luwa-about-card--emerald" style="transition-delay: 160ms;">
+                                <div class="luwa-about-card__icon">
+                                    <i class="fas fa-layer-group"/>
+                                </div>
+                                <h4 class="luwa-about-card__title">Custom SaaS Studio</h4>
+                                <p class="luwa-about-card__text">
+                                    Purpose-built platforms including Luwa eShule for schools, Luwa eTari for hospitals &amp; web portals.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="luwa-about-card luwa-about-card--navy" style="transition-delay: 240ms;">
+                                <div class="luwa-about-card__icon">
+                                    <i class="fab fa-whatsapp"/>
+                                </div>
+                                <h4 class="luwa-about-card__title">WhatsApp &amp; EFRIS APIs</h4>
+                                <p class="luwa-about-card__text">
+                                    Automated WhatsApp Business alerts, URA EFRIS receipts &amp; real-time payment integrations.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Giant Scroll-Animated "LUWA TECH" Bottom Watermark -->
+                <div class="luwa-about-watermark" aria-hidden="true">LUWA TECH</div>
+            </section>
+        </xpath>
+
+        
+        <!-- Wire Homepage Newsletter Section (subscribe-one) to Odoo Email Marketing (mailing.list) -->
+        <xpath expr="//section[hasclass('subscribe-one')]" position="replace">
+            <section class="subscribe-one" id="subscribe-newsletter">
+                <div class="auto-container">
+                    <div class="row align-items-center">
+                        <div class="col-md-12 col-lg-6">
+                            <h3 class="subscribe-one__title">
+                                Get Digital Agency, Custom SaaS &amp; <br/> Training updates in Uganda
+                            </h3>
+                        </div>
+                        <div class="col-md-12 col-lg-6">
+                            <form action="/luwatech/newsletter/subscribe" method="post" class="subscribe-one__form luwa-newsletter-ajax-form">
+                                <input type="email" name="email" placeholder="Enter your business email address..." required="required" aria-label="Email Address"/>
+                                <button type="submit" aria-label="Subscribe to Mailing List"><i class="fa fa-paper-plane"/></button>
+                            </form>
+                            <div class="subscribe-one__validate luwa-subscribe-terms">
+                                <label class="d-inline-flex align-items-center gap-2 m-0" style="cursor:pointer;">
+                                    <input type="checkbox" name="agree_terms" checked="checked" required="required" style="width:16px;height:16px;accent-color:#00b4d8;"/>
+                                    <span>I agree to all terms and policies of the company</span>
+                                </label>
+                            </div>
+                            <div class="luwa-newsletter-feedback mt-2" style="display:none;font-size:14px;font-weight:700;"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+
+        <!-- Interactive Scrollable Mini-Browser Client Portfolio Section -->
+        <xpath expr="//section[@id='portfolio']" position="replace">
+            <section class="luwa-portfolio-showcase" id="portfolio">
+                <div class="auto-container">
+                    <div class="text-center mb-5">
+                        <span class="luwa-why-kicker">
+                            <span class="luwa-why-pulse"/> Live Client Platforms &amp; Websites We Built
+                        </span>
+                        <h2 class="luwa-portfolio-heading mt-2">Explore Real Client Websites (Scroll Inside Each Preview)</h2>
+                        <p class="luwa-portfolio-sub mx-auto">
+                            Every window below is a live capture of a real production platform engineered or scaled by Luwa Tech. Scroll directly inside any browser window to inspect the full page, or click to open the live client site.
+                        </p>
+                    </div>
+
+                    <div class="row g-4">
+                        <!-- Client 1: Mobiverse -->
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="luwa-browser-card">
+                                <div class="luwa-browser-bar">
+                                    <div class="luwa-browser-dots">
+                                        <span class="dot dot--red"/>
+                                        <span class="dot dot--yellow"/>
+                                        <span class="dot dot--green"/>
+                                    </div>
+                                    <a href="https://mobiverse.odoo.com" target="_blank" rel="noopener" class="luwa-browser-url">
+                                        <i class="fas fa-lock text-emerald me-1"/> mobiverse.odoo.com
+                                    </a>
+                                    <button type="button" class="luwa-browser-scroll-hint border-0" onclick="window.luwaOpenPortfolioPreview(this)" style="cursor:pointer;">
+                                        <i class="fas fa-expand-alt me-1"/> Click to Preview / Scroll
+                                    </button>
+                                </div>
+                                <div class="luwa-browser-viewport" tabindex="0" aria-label="Mobiverse Scrollable Website Preview">
+                                    <img src="/luwatech_website/static/src/images/portfolio/client-mobiverse-full.jpg?v=22"
+                                         alt="Mobiverse Live Website Preview"
+                                         class="luwa-browser-page-img"/>
+                                </div>
+                                <div class="luwa-browser-footer">
+                                    <div>
+                                        <span class="luwa-browser-cat">Odoo ERP &amp; Multi-Vendor E-Commerce</span>
+                                        <h3 class="luwa-browser-title">Mobiverse</h3>
+                                        <p class="luwa-browser-desc">Modern Odoo 18 storefront, automated inventory tracking, digital checkout &amp; B2B/B2C operations.</p>
+                                    </div>
+                                    <a href="https://mobiverse.odoo.com" target="_blank" rel="noopener" class="luwa-browser-visit-btn">
+                                        Visit Live Site <i class="fas fa-external-link-alt ms-1"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client 2: Die Brucke German Language School -->
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="luwa-browser-card luwa-browser-card--orange">
+                                <div class="luwa-browser-bar">
+                                    <div class="luwa-browser-dots">
+                                        <span class="dot dot--red"/>
+                                        <span class="dot dot--yellow"/>
+                                        <span class="dot dot--green"/>
+                                    </div>
+                                    <a href="https://www.diebruckegermanlangaugeschool.com/" target="_blank" rel="noopener" class="luwa-browser-url">
+                                        <i class="fas fa-lock text-emerald me-1"/> diebruckegermanlangaugeschool.com
+                                    </a>
+                                    <button type="button" class="luwa-browser-scroll-hint border-0" onclick="window.luwaOpenPortfolioPreview(this)" style="cursor:pointer;">
+                                        <i class="fas fa-expand-alt me-1"/> Click to Preview / Scroll
+                                    </button>
+                                </div>
+                                <div class="luwa-browser-viewport" tabindex="0" aria-label="Die Brucke German Language School Scrollable Website Preview">
+                                    <img src="/luwatech_website/static/src/images/portfolio/client-diebrucke-full.jpg?v=22"
+                                         alt="Die Brucke German Language School Live Website Preview"
+                                         class="luwa-browser-page-img"/>
+                                </div>
+                                <div class="luwa-browser-footer">
+                                    <div>
+                                        <span class="luwa-browser-cat luwa-browser-cat--orange">E-Learning &amp; Student Portal</span>
+                                        <h3 class="luwa-browser-title">Die Brucke German Language School</h3>
+                                        <p class="luwa-browser-desc">Interactive German language institute website, online course enrollment, digital classroom &amp; student management.</p>
+                                    </div>
+                                    <a href="https://www.diebruckegermanlangaugeschool.com/" target="_blank" rel="noopener" class="luwa-browser-visit-btn luwa-browser-visit-btn--orange">
+                                        Visit Live Site <i class="fas fa-external-link-alt ms-1"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client 3: Hanze Tours -->
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="luwa-browser-card">
+                                <div class="luwa-browser-bar">
+                                    <div class="luwa-browser-dots">
+                                        <span class="dot dot--red"/>
+                                        <span class="dot dot--yellow"/>
+                                        <span class="dot dot--green"/>
+                                    </div>
+                                    <a href="https://hanzetours.com/" target="_blank" rel="noopener" class="luwa-browser-url">
+                                        <i class="fas fa-lock text-emerald me-1"/> hanzetours.com
+                                    </a>
+                                    <button type="button" class="luwa-browser-scroll-hint border-0" onclick="window.luwaOpenPortfolioPreview(this)" style="cursor:pointer;">
+                                        <i class="fas fa-expand-alt me-1"/> Click to Preview / Scroll
+                                    </button>
+                                </div>
+                                <div class="luwa-browser-viewport" tabindex="0" aria-label="Hanze Tours Scrollable Website Preview">
+                                    <img src="/luwatech_website/static/src/images/portfolio/client-hanze-full.jpg?v=22"
+                                         alt="Hanze Tours Live Website Preview"
+                                         class="luwa-browser-page-img"/>
+                                </div>
+                                <div class="luwa-browser-footer">
+                                    <div>
+                                        <span class="luwa-browser-cat">Safari Booking &amp; Digital Marketing</span>
+                                        <h3 class="luwa-browser-title">Hanze Tours &amp; Safaris</h3>
+                                        <p class="luwa-browser-desc">East African safari booking portal, international SEO growth, custom itinerary builder &amp; lead conversion funnels.</p>
+                                    </div>
+                                    <a href="https://hanzetours.com/" target="_blank" rel="noopener" class="luwa-browser-visit-btn">
+                                        Visit Live Site <i class="fas fa-external-link-alt ms-1"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client 4: Khadon Tech Solutions -->
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="luwa-browser-card luwa-browser-card--orange">
+                                <div class="luwa-browser-bar">
+                                    <div class="luwa-browser-dots">
+                                        <span class="dot dot--red"/>
+                                        <span class="dot dot--yellow"/>
+                                        <span class="dot dot--green"/>
+                                    </div>
+                                    <a href="https://www.khadontechsolutions.com/" target="_blank" rel="noopener" class="luwa-browser-url">
+                                        <i class="fas fa-lock text-emerald me-1"/> www.khadontechsolutions.com
+                                    </a>
+                                    <button type="button" class="luwa-browser-scroll-hint border-0" onclick="window.luwaOpenPortfolioPreview(this)" style="cursor:pointer;">
+                                        <i class="fas fa-expand-alt me-1"/> Click to Preview / Scroll
+                                    </button>
+                                </div>
+                                <div class="luwa-browser-viewport" tabindex="0" aria-label="Khadon Tech Solutions Scrollable Website Preview">
+                                    <img src="/luwatech_website/static/src/images/portfolio/client-khadon-full.jpg?v=22"
+                                         alt="Khadon Tech Solutions Live Website Preview"
+                                         class="luwa-browser-page-img"/>
+                                </div>
+                                <div class="luwa-browser-footer">
+                                    <div>
+                                        <span class="luwa-browser-cat luwa-browser-cat--orange">E-Commerce Storefront</span>
+                                        <h3 class="luwa-browser-title">Khadon Tech Solutions</h3>
+                                        <p class="luwa-browser-desc">Full e-commerce hardware storefront, live catalog, Mobile Money checkout &amp; inventory management system.</p>
+                                    </div>
+                                    <a href="https://www.khadontechsolutions.com/" target="_blank" rel="noopener" class="luwa-browser-visit-btn luwa-browser-visit-btn--orange">
+                                        Visit Live Site <i class="fas fa-external-link-alt ms-1"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Interactive Click-to-Preview Full Website Modal -->
+                    <div id="luwaPortfolioPreviewModal" class="luwa-pmodal" onclick="if(event.target===this)this.classList.remove('is-open')">
+                        <div class="luwa-pmodal__dialog">
+                            <div class="luwa-pmodal__bar">
+                                <div class="luwa-browser-dots">
+                                    <span class="dot dot--red" onclick="document.getElementById('luwaPortfolioPreviewModal').classList.remove('is-open')" style="cursor:pointer;"/>
+                                    <span class="dot dot--yellow"/>
+                                    <span class="dot dot--green"/>
+                                </div>
+                                <a id="luwaPmodalUrl" href="#" target="_blank" rel="noopener" class="luwa-browser-url">
+                                    <i class="fas fa-lock text-emerald me-1"/> <span id="luwaPmodalDomain">client-website.com</span>
+                                </a>
+                                <div class="d-flex align-items-center gap-2">
+                                    <a id="luwaPmodalVisit" href="#" target="_blank" rel="noopener" class="luwa-browser-visit-btn py-1 px-3">
+                                        Open Live Website <i class="fas fa-external-link-alt ms-1"/>
+                                    </a>
+                                    <button type="button" class="luwa-pmodal__close" onclick="document.getElementById('luwaPortfolioPreviewModal').classList.remove('is-open')" aria-label="Close Preview">
+                                        <i class="fas fa-times"/>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="luwa-pmodal__viewport" style="max-height: 82vh; overflow-y: auto; background: #ffffff;">
+                                <img id="luwaPmodalImg" src="" alt="Client Website Full Preview" class="w-100 d-block"/>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        window.luwaOpenPortfolioPreview = function(el) {
+                            var card = el.closest('.luwa-browser-card');
+                            if (!card) return;
+                            var img = card.querySelector('.luwa-browser-page-img');
+                            var link = card.querySelector('.luwa-browser-url');
+                            var modal = document.getElementById('luwaPortfolioPreviewModal');
+                            if (!modal || !img || !link) return;
+                            document.getElementById('luwaPmodalImg').src = img.src;
+                            document.getElementById('luwaPmodalUrl').href = link.href;
+                            document.getElementById('luwaPmodalVisit').href = link.href;
+                            document.getElementById('luwaPmodalDomain').textContent = link.textContent.trim();
+                            modal.classList.add('is-open');
+                        };
+                        document.addEventListener('click', function(e) {
+                            var img = e.target.closest('.luwa-browser-page-img');
+                            if (img) {
+                                window.luwaOpenPortfolioPreview(img);
+                            }
+                        });
+                    </script>
+                </div>
+            </section>
+        </xpath>
+
+        <!-- Remove "What we're offering" Services section from main homepage -->
+        <xpath expr="//section[@id='services']" position="replace"/>
+
+        <!-- Remove SaaS Store & Subscription previews from main homepage (kept on /shop & /subscriptions) -->
+        <xpath expr="//section[@id='saas-shop']" position="replace"/>
+
+        <!-- Why Partner With Luwa Tech (#benefits): Modern Animated Bento Studio Showcase -->
+        <xpath expr="//section[@id='benefits']" position="replace">
+            <section class="luwa-why-section" id="benefits">
+                <!-- Animated Ambient Orbs -->
+                <div class="luwa-why-orb luwa-why-orb--1" aria-hidden="true"/>
+                <div class="luwa-why-orb luwa-why-orb--2" aria-hidden="true"/>
+                <div class="luwa-why-grid-bg" aria-hidden="true"/>
+
+                <div class="auto-container position-relative" style="z-index: 2;">
+                    <div class="row g-5 align-items-center">
+                        <!-- Left Column: Narrative + Live Studio Photo Card -->
+                        <div class="col-lg-6">
+                            <div class="luwa-why-reveal" style="transition-delay: 0ms;">
+                                <span class="luwa-why-kicker">
+                                    <span class="luwa-why-pulse"/> Why Partner With Luwa Tech
+                                </span>
+                                <h2 class="luwa-why-title">
+                                    Digital Agency, E-Commerce &amp; Custom Apps in <span class="luwa-why-gradient-text">One Studio</span>
+                                </h2>
+                                <p class="luwa-why-lead">
+                                    Whether you need high-converting digital marketing campaigns, an online store with Mobile Money &amp; EFRIS integration, WhatsApp Business automation, or custom SaaS platforms like <strong>Luwa eShule</strong> and <strong>Luwa eTari</strong>, our Kampala creative and engineering team delivers measurable growth.
+                                </p>
+
+                                <!-- Metric Pills -->
+                                <div class="luwa-why-stats">
+                                    <div class="luwa-why-stat">
+                                        <strong>190+</strong>
+                                        <span>Growing Brands</span>
+                                    </div>
+                                    <div class="luwa-why-stat">
+                                        <strong>99.9%</strong>
+                                        <span>Cloud Uptime</span>
+                                    </div>
+                                    <div class="luwa-why-stat">
+                                        <strong>Kampala</strong>
+                                        <span>Creative + Tech Hub</span>
+                                    </div>
+                                </div>
+
+                                <!-- Framed Team Photo with Floating Glass Tag -->
+                                <div class="luwa-why-photo-wrap mt-4">
+                                    <img src="/luwatech_website/static/src/images/update-01-10-2021/resources/about-six-1-1.jpg?v=6"
+                                         alt="Luwa Tech Kampala Digital Agency Team" class="img-fluid"/>
+                                    <div class="luwa-why-photo-badge">
+                                        <span class="luwa-why-pulse"/>
+                                        <div>
+                                            <strong>Luwa Tech Studio &#8226; Bukoto</strong>
+                                            <small>Strategy, Design, Code &amp; Growth</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: 3 Animated Interactive Pillar Cards -->
+                        <div class="col-lg-6">
+                            <div class="luwa-why-pillars">
+                                <a href="/services/digital-marketing" class="luwa-why-card luwa-why-card--cyan luwa-why-reveal" style="transition-delay: 90ms;">
+                                    <div class="luwa-why-card__icon">
+                                        <i class="fas fa-chart-line"/>
+                                    </div>
+                                    <div class="luwa-why-card__content">
+                                        <div class="luwa-why-card__top">
+                                            <h4>Performance Marketing &amp; SEO Growth</h4>
+                                            <span class="luwa-why-card__arrow"><i class="fas fa-arrow-right"/></span>
+                                        </div>
+                                        <p>Full-funnel social campaigns, technical SEO &amp; paid media retainers starting at $115/mo (excl. ad spend).</p>
+                                        <div class="luwa-why-card__tags">
+                                            <span>SEO &amp; Content</span>
+                                            <span>Google &amp; Meta Ads</span>
+                                            <span>Lead Funnels</span>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/subscriptions" class="luwa-why-card luwa-why-card--orange luwa-why-reveal" style="transition-delay: 190ms;">
+                                    <div class="luwa-why-card__icon">
+                                        <i class="fas fa-bolt"/>
+                                    </div>
+                                    <div class="luwa-why-card__content">
+                                        <div class="luwa-why-card__top">
+                                            <h4>E-Commerce, MoMo &amp; WhatsApp APIs</h4>
+                                            <span class="luwa-why-card__arrow"><i class="fas fa-arrow-right"/></span>
+                                        </div>
+                                        <p>Monthly online stores from $19/mo with invoicing, stock, MTN MoMo, Airtel Money, URA EFRIS &amp; WhatsApp alerts.</p>
+                                        <div class="luwa-why-card__tags">
+                                            <span>Online Storefront</span>
+                                            <span>MTN &amp; Airtel MoMo</span>
+                                            <span>URA EFRIS</span>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <a href="/services/custom-saas" class="luwa-why-card luwa-why-card--emerald luwa-why-reveal" style="transition-delay: 290ms;">
+                                    <div class="luwa-why-card__icon">
+                                        <i class="fas fa-cubes"/>
+                                    </div>
+                                    <div class="luwa-why-card__content">
+                                        <div class="luwa-why-card__top">
+                                            <h4>Custom SaaS &amp; Digital Tech Training</h4>
+                                            <span class="luwa-why-card__arrow"><i class="fas fa-arrow-right"/></span>
+                                        </div>
+                                        <p>Specialized cloud platforms like Luwa eShule &amp; Luwa eTari, bespoke web apps, and practical corporate IT bootcamps.</p>
+                                        <div class="luwa-why-card__tags">
+                                            <span>Luwa eShule</span>
+                                            <span>Luwa eTari</span>
+                                            <span>Tech Academy</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+
+        <!-- Flowing Infinite Horizontal Partner Logos Marquee (MTN, Airtel, EFRIS, Google, AWS, Meta &amp; Ecosystem) -->
+        <xpath expr="//section[hasclass('luwa-partners-section')]" position="replace">
+            <section class="sponsor-six luwa-partners-section" id="partners">
+                <div class="auto-container">
+                    <div class="text-center mb-4">
+                        <p class="luwa-partners-subtitle">Payments, Cloud, Ad Platforms &amp; Ecosystem Partners</p>
+                        <h3 class="luwa-partners-heading">Our Technology, Payment &amp; Platform Partners</h3>
+                    </div>
+                </div>
+                <div class="luwa-partner-marquee">
+                    <div class="luwa-partner-track">
+                        <a href="/services/efris-mobile-money" class="luwa-partner-logo-box" title="MTN Mobile Money">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-mtn.png?v=10" alt="MTN Logo"/>
+                        </a>
+                        <a href="/services/efris-mobile-money" class="luwa-partner-logo-box" title="Airtel Money">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-airtel.png?v=10" alt="Airtel Logo"/>
+                        </a>
+                        <a href="/services/efris-mobile-money" class="luwa-partner-logo-box" title="URA EFRIS Fiscalization">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-efris.png?v=10" alt="URA EFRIS Logo"/>
+                        </a>
+                        <a href="/services/digital-marketing" class="luwa-partner-logo-box" title="Google Ads &amp; Cloud">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-google.png?v=10" alt="Google Logo"/>
+                        </a>
+                        <a href="/services/custom-saas" class="luwa-partner-logo-box" title="Amazon Web Services (AWS)">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-aws.png?v=10" alt="AWS Logo"/>
+                        </a>
+                        <a href="/services/digital-marketing" class="luwa-partner-logo-box" title="Meta Business &amp; Ads">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-meta.png?v=10" alt="Meta Logo"/>
+                        </a>
+                        <a href="/services/whatsapp-integration" class="luwa-partner-logo-box" title="WhatsApp Business API">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-whatsapp.png?v=10" alt="WhatsApp Logo"/>
+                        </a>
+                        <a href="/shop?search=SAP" class="luwa-partner-logo-box" title="SAP">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-sap.png?v=10" alt="SAP Logo"/>
+                        </a>
+                        <a href="/shop?search=Dynamics" class="luwa-partner-logo-box" title="Microsoft Dynamics 365">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-dynamics.png?v=10" alt="Microsoft Dynamics 365 Logo"/>
+                        </a>
+                        <a href="/shop?search=Zoho" class="luwa-partner-logo-box" title="Zoho">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-zoho.png?v=10" alt="Zoho Logo"/>
+                        </a>
+                        <a href="/shop?search=eShule" class="luwa-partner-logo-box" title="Luwa eShule">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-eshule.png?v=10" alt="Luwa eShule Logo"/>
+                        </a>
+                        <a href="/shop?search=eTari" class="luwa-partner-logo-box" title="Luwa eTari">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-etari.png?v=10" alt="Luwa eTari Logo"/>
+                        </a>
+                        <!-- Seamless Loop Duplicate -->
+                        <a href="/services/efris-mobile-money" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-mtn.png?v=10" alt="MTN Logo"/>
+                        </a>
+                        <a href="/services/efris-mobile-money" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-airtel.png?v=10" alt="Airtel Logo"/>
+                        </a>
+                        <a href="/services/efris-mobile-money" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-efris.png?v=10" alt="URA EFRIS Logo"/>
+                        </a>
+                        <a href="/services/digital-marketing" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-google.png?v=10" alt="Google Logo"/>
+                        </a>
+                        <a href="/services/custom-saas" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-aws.png?v=10" alt="AWS Logo"/>
+                        </a>
+                        <a href="/services/digital-marketing" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-meta.png?v=10" alt="Meta Logo"/>
+                        </a>
+                        <a href="/services/whatsapp-integration" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-whatsapp.png?v=10" alt="WhatsApp Logo"/>
+                        </a>
+                        <a href="/shop?search=SAP" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-sap.png?v=10" alt="SAP Logo"/>
+                        </a>
+                        <a href="/shop?search=Dynamics" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-dynamics.png?v=10" alt="Microsoft Dynamics 365 Logo"/>
+                        </a>
+                        <a href="/shop?search=Zoho" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-zoho.png?v=10" alt="Zoho Logo"/>
+                        </a>
+                        <a href="/shop?search=eShule" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-eshule.png?v=10" alt="Luwa eShule Logo"/>
+                        </a>
+                        <a href="/shop?search=eTari" class="luwa-partner-logo-box" aria-hidden="true">
+                            <img src="/luwatech_website/static/src/images/update-01-10-2021/sponsor/sponsor-etari.png?v=10" alt="Luwa eTari Logo"/>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+
+        <!-- Remove Insights/Blog from main homepage; moved to dedicated /blog page -->
+        <xpath expr="//section[@id='insights']" position="replace"/>
+
+        <!-- Bottom CTA Banner -->
+        <xpath expr="//section[hasclass('video-six')]//div[hasclass('video-six__inner')]" position="replace">
+            <div class="video-six__inner">
+                <h3 class="video-six__title">Ready to grow your brand, launch e-commerce &amp; automate customer journeys?</h3>
+                <div class="video-six__video">
+                    <h3 class="video-six__video__text">View Subscriptions</h3>
+                    <a href="/subscriptions" class="video-six__btn">
+                        <i class="fas fa-shopping-bag"/>
+                        <span class="ripple"/>
+                    </a>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         4. Header, Fixed-Width Services Dropdown, Digital Agency Nav & Footer
+         ============================================================ -->
+    <template id="luwatech_layout_subscriptions_nav" inherit_id="luwatech_website.luwatech_linoor_layout" name="Luwa Tech Layout Services &amp; Digital Agency Nav" priority="100">
+        <!-- Group About, Why Us & Portfolio into one clean About dropdown -->
+        <xpath expr="//nav[hasclass('mainmenu-six')]//ul[hasclass('navigation')]/li[a[@href='/#about']]" position="replace">
+            <li class="dropdown">
+                <a href="/#about">About</a>
+                <ul>
+                    <li><a href="/#about">About Luwa Tech</a></li>
+                    <li><a href="/team">Our Team</a></li>
+                    <li><a href="/#benefits">Why Partner With Us</a></li>
+                    <li><a href="/#portfolio">Client Portfolio</a></li>
+                </ul>
+            </li>
+        </xpath>
+        <xpath expr="//nav[hasclass('mainmenu-six')]//ul[hasclass('navigation')]/li[a[@href='/#benefits']]" position="replace"/>
+        <xpath expr="//nav[hasclass('mainmenu-six')]//ul[hasclass('navigation')]/li[a[@href='/#portfolio']]" position="replace"/>
+
+        <!-- Services Dropdown with dedicated /services/* pages + clean Subscriptions item -->
+        <xpath expr="//nav[hasclass('mainmenu-six')]//ul[hasclass('navigation')]/li[a[@href='/#services']]" position="replace">
+            <li class="dropdown">
+                <a href="/services">Services</a>
+                <ul>
+                    <li><a href="/services">All Services Overview</a></li>
+                    <li><a href="/services/digital-marketing">Digital Marketing as a Service (DMaaS)</a></li>
+                    <li><a href="/services/web-eshop-mobile">Web, E-Shop &amp; Mobile Apps</a></li>
+                    <li><a href="/subscriptions">E-Commerce &amp; Marketing Subscriptions</a></li>
+                    <li><a href="/services/efris-mobile-money">EFRIS &amp; Mobile Money Integrations</a></li>
+                    <li><a href="/services/whatsapp-integration">WhatsApp Integration as a Service</a></li>
+                    <li><a href="/services/custom-saas">Custom SaaS (Luwa eShule &amp; eTari)</a></li>
+                    <li><a href="/services/enterprise-erp">SAP, Zoho &amp; MS Dynamics Connectors</a></li>
+                    <li><a href="/services/it-training">IT Training &amp; Digital Academy</a></li>
+                </ul>
+            </li>
+            <li><a href="/subscriptions" class="luwa-nav-shop-link">Subscriptions <span class="luwa-nav-badge luwa-nav-badge--cyan">Plans</span></a></li>
+        </xpath>
+
+        <!-- Clean, compact Store & Blog labels without pill clutter -->
+        <xpath expr="//nav[hasclass('mainmenu-six')]//ul[hasclass('navigation')]/li/a[@href='/shop']" position="replace">
+            <a href="/shop" class="luwa-nav-shop-link">Digital Store <span class="luwa-nav-badge">Shop</span></a>
+        </xpath>
+        <xpath expr="//nav[hasclass('mainmenu-six')]//ul[hasclass('navigation')]/li/a[@href='/#insights']" position="replace">
+            <a href="/blog">Blog</a>
+        </xpath>
+
+        <!-- Update Mobile Menu -->
+        <xpath expr="//ul[hasclass('luwa-mobile-nav-list')]/li[a[@href='/#services']]" position="replace">
+            <li><a href="/services"><i class="fas fa-rocket luwa-mnav-icon"/> All Services</a></li>
+            <li><a href="/subscriptions" class="luwa-mnav-highlight"><i class="fas fa-sync-alt luwa-mnav-icon"/> E-Commerce &amp; DMaaS Plans <span class="luwa-nav-badge">Plans</span></a></li>
+            <li><a href="/services/digital-marketing"><i class="fas fa-bullhorn luwa-mnav-icon"/> Digital Marketing (400k / 800k)</a></li>
+            <li><a href="/services/efris-mobile-money"><i class="fas fa-money-check-alt luwa-mnav-icon"/> EFRIS &amp; Mobile Money Integrations</a></li>
+            <li><a href="/services/whatsapp-integration"><i class="fab fa-whatsapp luwa-mnav-icon"/> WhatsApp Integration as a Service</a></li>
+            <li><a href="/services/custom-saas"><i class="fas fa-cloud luwa-mnav-icon"/> Custom SaaS (eShule &amp; eTari)</a></li>
+        </xpath>
+        <xpath expr="//ul[hasclass('luwa-mobile-nav-list')]/li[a[@href='/#insights']]" position="replace">
+            <li><a href="/blog"><i class="fas fa-newspaper luwa-mnav-icon"/> Blog &amp; Insights</a></li>
+        </xpath>
+
+        <!-- Update Footer Description & Links to Digital Agency Tone -->
+        <xpath expr="//p[hasclass('luwa-footer-desc')]" position="replace">
+            <p class="luwa-footer-desc">
+                Uganda's creative Digital Agency, E-Commerce &amp; Custom Software Studio — empowering growing brands with Digital Marketing as a Service, online stores, Mobile Money &amp; WhatsApp integrations, and custom cloud platforms.
+            </p>
+        </xpath>
+
+        <xpath expr="//ul[hasclass('luwa-footer-menu')]" position="replace">
+            <ul class="luwa-footer-menu list-unstyled">
+                <li><a href="/shop"><i class="fas fa-angle-right"/> Digital Products Store</a></li>
+                <li><a href="/subscriptions"><i class="fas fa-angle-right"/> E-Commerce &amp; DMaaS Subscriptions</a></li>
+                <li><a href="/services/digital-marketing"><i class="fas fa-angle-right"/> Digital Marketing (400k / 800k)</a></li>
+                <li><a href="/services/efris-mobile-money"><i class="fas fa-angle-right"/> EFRIS &amp; Mobile Money Integrations</a></li>
+                <li><a href="/services/whatsapp-integration"><i class="fas fa-angle-right"/> WhatsApp Integration as a Service</a></li>
+                <li><a href="/services/custom-saas"><i class="fas fa-angle-right"/> Custom SaaS (Luwa eShule &amp; eTari)</a></li>
+                <li><a href="/services/enterprise-erp"><i class="fas fa-angle-right"/> SAP, Zoho &amp; MS Dynamics Connectors</a></li>
+                <li><a href="/services/it-training"><i class="fas fa-angle-right"/> Corporate IT &amp; Digital Training</a></li>
+                <li><a href="/blog"><i class="fas fa-angle-right"/> Blog &amp; Agency Insights</a></li>
+            </ul>
+        </xpath>
+
+        
+        <!-- Wire Footer Growth Newsletter Form to Odoo Email Marketing (mailing.list) + Global AJAX Handler -->
+        <xpath expr="//form[hasclass('luwa-footer-form')]" position="replace">
+            <form class="luwa-footer-form luwa-newsletter-ajax-form" action="/luwatech/newsletter/subscribe" method="post">
+                <div class="luwa-footer-form__group">
+                    <input type="email" name="email" placeholder="Enter your work email..." required="required" aria-label="Work Email"/>
+                    <button type="submit" aria-label="Subscribe"><i class="fa fa-paper-plane"/></button>
+                </div>
+                <div class="luwa-newsletter-feedback mt-2" style="display:none;font-size:13px;font-weight:700;"/>
+                <p class="luwa-footer-form__note">
+                    <i class="fa fa-check-circle"/> We respect your privacy. Unsubscribe anytime.
+                </p>
+            </form>
+            <script type="text/javascript">
+                (function() {
+                    if (window.__luwaNewsletterBound) return;
+                    window.__luwaNewsletterBound = true;
+                    document.addEventListener('submit', function(e) {
+                        var form = e.target.closest('form.luwa-newsletter-ajax-form, form.subscribe-one__form, form.luwa-footer-form');
+                        if (!form) return;
+                        e.preventDefault();
+                        var emailInput = form.querySelector('input[type="email"], input[name="email"]');
+                        var btn = form.querySelector('button[type="submit"]');
+                        var feedback = form.parentElement.querySelector('.luwa-newsletter-feedback') || form.querySelector('.luwa-newsletter-feedback');
+                        if (!feedback) {
+                            feedback = document.createElement('div');
+                            feedback.className = 'luwa-newsletter-feedback mt-2';
+                            feedback.style.fontWeight = '700';
+                            feedback.style.fontSize = '14px';
+                            form.insertAdjacentElement('afterend', feedback);
+                        }
+                        var emailVal = emailInput ? emailInput.value.trim() : '';
+                        if (!emailVal) return;
+                        if (btn) btn.disabled = true;
+                        feedback.style.display = 'block';
+                        feedback.style.color = '#0284c7';
+                        feedback.textContent = 'Subscribing your email...';
+
+                        var body = new URLSearchParams();
+                        body.append('email', emailVal);
+                        body.append('ajax', '1');
+
+                        fetch('/luwatech/newsletter/subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: body.toString()
+                        })
+                        .then(function(r) { return r.json(); })
+                        .then(function(data) {
+                            if (data &amp;&amp; data.ok) {
+                                feedback.style.color = '#10b981';
+                                feedback.innerHTML = '&#10003; ' + (data.message || 'Subscribed to our mailing list!');
+                                if (emailInput) emailInput.value = '';
+                            } else {
+                                feedback.style.color = '#ef4444';
+                                feedback.textContent = (data &amp;&amp; data.message) || 'Could not subscribe. Please check your email.';
+                            }
+                        })
+                        .catch(function() {
+                            feedback.style.color = '#ef4444';
+                            feedback.textContent = 'Network error. Please try again.';
+                        })
+                        .finally(function() {
+                            if (btn) btn.disabled = false;
+                        });
+                    });
+                })();
+            </script>
+        </xpath>
+
+        <xpath expr="//div[hasclass('luwa-copyright-bar__links')]/a[@href='/#services']" position="attributes">
+            <attribute name="href">/services</attribute>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         5. /shop Product Tile & Product Detail Page Enhancements
+         ============================================================ -->
+    <template id="products_item_subscription_badge" inherit_id="website_sale.products_item" name="Shop Tile Subscription &amp; Custom Plan Badge">
+        <xpath expr="//div[hasclass('o_wsale_product_information_text')]" position="inside">
+            <div t-if="product.is_subscription" class="luwa-shop-sub-pill mt-1">
+                <span class="badge rounded-pill" style="background: linear-gradient(135deg, #00b4d8, #06d6a0); color: #fff; font-size: 11px;">
+                    <i class="fas fa-sync-alt me-1"/>
+                    <t t-out="product.subscription_badge or 'Monthly Subscription'"/>
+                </span>
+            </div>
+            <div t-elif="product.list_price &lt;= 0" class="luwa-shop-sub-pill mt-1">
+                <span class="badge rounded-pill" style="background: #0d1d2d; color: #fff; font-size: 11px;">
+                    <i class="fas fa-sliders-h me-1"/> Custom Plan
+                </span>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]/span[1]" position="after">
+            <span t-if="product.is_subscription" class="small text-muted ms-1">
+                / <t t-out="product.subscription_plan_id.get_period_label() if product.subscription_plan_id else 'month'"/>
+            </span>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]" position="inside">
+            <span t-if="not product.is_subscription and (not template_price_vals['price_reduce'] or product.list_price &lt;= 0)"
+                  class="luwa-custom-price-pill">
+                Custom Pricing
+            </span>
+        </xpath>
+    </template>
+
+    <template id="product_detail_subscription_info" inherit_id="website_sale.product" name="Product Page Subscription &amp; Custom Pricing Details">
+        <xpath expr="//div[hasclass('o_wsale_product_details_content_section_price')]" position="after">
+            <div t-if="product.is_subscription" class="luwa-product-sub-box mb-4">
+                <div class="luwa-product-sub-box__header">
+                    <span class="badge" style="background: #f26522; color: #fff;">
+                        <i class="fas fa-sync-alt me-1"/>
+                        <t t-out="product.subscription_plan_id.name if product.subscription_plan_id else 'Monthly Subscription'"/>
+                    </span>
+                    <span class="small text-muted ms-2">
+                        Billed every <t t-out="product.subscription_plan_id.get_period_label() if product.subscription_plan_id else 'month'"/>
+                    </span>
+                </div>
+
+                <div t-if="product.subscription_note" class="luwa-sub-note mt-2">
+                    <i class="fas fa-info-circle me-1"/>
+                    <span t-out="product.subscription_note"/>
+                </div>
+
+                <div class="luwa-sub-card__pills mt-2" t-if="product.subscription_category == 'marketing'">
+                    <span class="luwa-sub-pill luwa-sub-pill--on">
+                        <i class="fas fa-bullhorn"/> Social &amp; Content
+                    </span>
+                    <span class="luwa-sub-pill luwa-sub-pill--on">
+                        <i class="fas fa-search"/> SEO &amp; Analytics
+                    </span>
+                    <span class="luwa-sub-pill luwa-sub-pill--warn">
+                        <i class="fas fa-exclamation-circle"/> Ad Spend Separate
+                    </span>
+                </div>
+                <div class="luwa-sub-card__pills mt-2" t-else="">
+                    <span t-if="product.includes_ecommerce" class="luwa-sub-pill luwa-sub-pill--on">
+                        <i class="fas fa-shopping-bag"/> E-Commerce
+                    </span>
+                    <span t-if="product.includes_invoicing" class="luwa-sub-pill luwa-sub-pill--on">
+                        <i class="fas fa-file-invoice"/> Minimal Invoicing
+                    </span>
+                    <span t-if="product.includes_stock_management" class="luwa-sub-pill luwa-sub-pill--on">
+                        <i class="fas fa-boxes"/> Stock Management
+                    </span>
+                    <span t-if="product.includes_payment_gateway" class="luwa-sub-pill luwa-sub-pill--gateway">
+                        <i class="fas fa-credit-card"/> Payment Gateway Included
+                    </span>
+                    <span t-else="" class="luwa-sub-pill luwa-sub-pill--off">
+                        <i class="fas fa-times-circle"/> No Payment Gateway
+                    </span>
+                </div>
+
+                <ul class="luwa-sub-card__features mt-3 mb-0" t-if="product.subscription_features">
+                    <t t-foreach="product.get_subscription_feature_list()" t-as="feat">
+                        <li><i class="fas fa-check-circle"/> <span t-out="feat"/></li>
+                    </t>
+                </ul>
+            </div>
+            <div t-elif="product.list_price &lt;= 0" class="luwa-product-custom-box mb-4">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge" style="background: #0d1d2d; color: #fff;">
+                        <i class="fas fa-sliders-h me-1"/> Custom Plan
+                    </span>
+                    <span class="fw-bold" style="color: #f26522; font-size: 18px;">Custom Pricing</span>
+                </div>
+                <p class="mb-0 small text-muted">
+                    Pricing is tailored to your number of users, branches, and required integrations. Request a custom quote below and our Kampala team will respond promptly.
+                </p>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@id='contact_us_wrapper']//a[hasclass('btn_cta')]" position="replace">
+            <div class="d-flex flex-wrap gap-2 w-100">
+                <a t-attf-href="/contactus?subject=Quote%20%26%20Demo%20Request%3A%20#{product.name}"
+                   class="btn btn-primary btn_cta luwa-custom-cta-btn">
+                    <i class="fas fa-paper-plane me-2"/> Request Custom Pricing
+                </a>
+                <a t-attf-href="https://wa.me/256787819453?text=Hello%20Luwa%20Tech%2C%20I%20would%20like%20a%20custom%20quote%20and%20demo%20for%20#{product.name}"
+                   target="_blank" rel="noopener"
+                   class="btn btn-success"
+                   style="background:#25d366;border-color:#25d366;color:#fff;font-weight:700;padding:10px 18px;border-radius:8px;">
+                    <i class="fab fa-whatsapp me-2"/> Instant Quote on WhatsApp
+                </a>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ============================================================
+         6. Client Portal: /my/home & /my/subscriptions
+         ============================================================ -->
+    <template id="portal_my_home_subscriptions" name="Subscriptions Portal Entry" inherit_id="portal.portal_my_home" priority="25">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/sale/static/src/img/bag.svg'"/>
+                <t t-set="title">My Subscriptions</t>
+                <t t-set="url" t-value="'/my/subscriptions'"/>
+                <t t-set="text">View active &amp; pending E-Commerce and Marketing subscriptions and billing dates</t>
+                <t t-set="placeholder_count" t-value="'subscription_count'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </div>
+    </template>
+
+    <template id="portal_my_subscriptions" name="My Subscriptions">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <div class="container py-4">
+                <div class="luwa-portal-hero mb-4">
+                    <div class="luwa-portal-hero__row">
+                        <div>
+                            <span class="luwa-portal-hero__kicker">Luwa Tech Subscriptions</span>
+                            <h2 class="luwa-portal-hero__title mb-1">My Subscriptions &amp; Retainers</h2>
+                            <p class="luwa-portal-hero__sub mb-0">
+                                Track active plans, pending payment activations, billing amounts, and next renewal dates.
+                            </p>
+                        </div>
+                        <div class="luwa-portal-hero__actions">
+                            <a href="/subscriptions" class="luwa-portal-btn luwa-portal-btn--orange">
+                                <i class="fas fa-plus me-1"/> Add New Plan
+                            </a>
+                            <a href="/my" class="luwa-portal-btn luwa-portal-btn--ghost">
+                                <i class="fas fa-arrow-left me-1"/> Portal Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <a href="/my/subscriptions?status=all"
+                       t-attf-class="btn btn-sm {{'btn-primary' if status_filter == 'all' else 'btn-outline-dark'}}">
+                        All (<t t-out="total_count or 0"/>)
+                    </a>
+                    <a href="/my/subscriptions?status=active"
+                       t-attf-class="btn btn-sm {{'btn-primary' if status_filter == 'active' else 'btn-outline-dark'}}">
+                        Active (<t t-out="active_count or 0"/>)
+                    </a>
+                    <a href="/my/subscriptions?status=draft"
+                       t-attf-class="btn btn-sm {{'btn-primary' if status_filter == 'draft' else 'btn-outline-dark'}}">
+                        Pending Payment (<t t-out="pending_count or 0"/>)
+                    </a>
+                </div>
+
+                <div t-if="not subscriptions" class="luwa-portal-empty-card text-center p-5">
+                    <i class="fas fa-layer-group fa-2x mb-3" style="color:#f26522;"/>
+                    <h4>No subscriptions in this view yet</h4>
+                    <p class="text-muted mb-3">Launch an E-Commerce Store (from $19/mo) or Digital Marketing as a Service retainer (from $115/mo).</p>
+                    <a href="/subscriptions" class="btn btn-primary">Explore Subscription Plans</a>
+                </div>
+
+                <div t-if="subscriptions" class="table-responsive luwa-portal-table-wrap">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Package</th>
+                                <th>Plan</th>
+                                <th>Order</th>
+                                <th>Recurring Fee</th>
+                                <th>Next Billing</th>
+                                <th>Status</th>
+                                <th class="text-end">Support</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="subscriptions" t-as="sub">
+                                <td><strong t-out="sub.name"/></td>
+                                <td>
+                                    <div class="fw-bold text-dark" t-out="sub.product_tmpl_id.name"/>
+                                </td>
+                                <td t-out="sub.plan_id.name"/>
+                                <td>
+                                    <a t-if="sub.sale_order_id"
+                                       t-att-href="sub.sale_order_id.get_portal_url()"
+                                       class="fw-semibold text-decoration-none">
+                                        <t t-out="sub.sale_order_id.name"/>
+                                    </a>
+                                    <span t-else="" class="text-muted">—</span>
+                                </td>
+                                <td class="fw-bold">
+                                    <span t-field="sub.recurring_amount"
+                                          t-options="{'widget': 'monetary', 'display_currency': sub.currency_id}"/>
+                                </td>
+                                <td t-field="sub.next_billing_date"/>
+                                <td>
+                                    <span t-if="sub.state == 'active'" class="badge text-bg-success">Active</span>
+                                    <span t-elif="sub.state == 'draft'" class="badge text-bg-warning">Pending Payment</span>
+                                    <span t-elif="sub.state == 'paused'" class="badge text-bg-secondary">Paused</span>
+                                    <span t-else="" class="badge text-bg-dark" t-out="sub.state.title()"/>
+                                </td>
+                                <td class="text-end">
+                                    <a t-attf-href="https://wa.me/256787819453?text=Hello%20Luwa%20Tech%2C%20I%20need%20help%20with%20subscription%20{{sub.name}}"
+                                       target="_blank" rel="noopener"
+                                       class="btn btn-sm btn-outline-success">
+                                        <i class="fab fa-whatsapp"/> Help
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         Dedicated /team ("Our Team") Showcase Page Connected to hr.employee
+         ============================================================ -->
+        <template id="our_team_page" name="Luwa Tech Our Team Page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <section class="luwa-sub-hero">
+                    <div class="auto-container text-center">
+                        <span class="luwa-sub-hero__kicker">Kampala Digital Agency &amp; Engineering Studio</span>
+                        <h1 class="luwa-sub-hero__title">Meet the Team Behind Luwa Tech</h1>
+                        <p class="luwa-sub-hero__subtitle">
+                            A multidisciplinary team of software architects, e-commerce builders, cloud engineers, and digital growth strategists helping African brands scale.
+                        </p>
+                        <div class="luwa-sub-hero__actions">
+                            <a href="/contactus" class="thm-btn__six luwa-btn-orange">Work With Our Team</a>
+                            <a href="/#portfolio" class="thm-btn__six luwa-btn-outline-light">View Client Portfolio</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="luwa-team-section luwa-team-section--page">
+                    <div class="luwa-team-bg-glow luwa-team-bg-glow--1" aria-hidden="true"/>
+                    <div class="luwa-team-bg-glow luwa-team-bg-glow--2" aria-hidden="true"/>
+                    <div class="auto-container position-relative" style="z-index: 2;">
+                        <div class="row g-4 justify-content-center">
+                            <t t-foreach="team_members" t-as="emp">
+                                <t t-set="emp_idx" t-value="emp_index + 1"/>
+                                <t t-set="emp_wa_url" t-value="emp.get_public_whatsapp_url()"/>
+                                <div class="col-sm-12 col-md-6 col-lg-4">
+                                    <article t-attf-class="luwa-exec-card {{'luwa-exec-card--orange' if (emp_index % 2 == 1) else ''}}">
+                                        <div class="luwa-exec-card__stage">
+                                            <img t-att-src="image_data_uri(emp.image_1920 or emp.avatar_512) if (emp.image_1920 or emp.avatar_512) else '/luwatech_website/static/src/images/luwa-icon-light.png'"
+                                                 t-att-alt="emp.name"
+                                                 class="luwa-exec-card__photo"
+                                                 loading="lazy"/>
+                                            <div class="luwa-exec-card__stage-overlay"/>
+
+                                            <div class="luwa-exec-card__top-bar">
+                                                <span class="luwa-exec-card__pill" t-if="emp.website_department_tag">
+                                                    <span class="luwa-exec-card__dot"/>
+                                                    <t t-out="emp.website_department_tag"/>
+                                                </span>
+                                                <span class="luwa-exec-card__num">0<t t-out="emp_idx"/></span>
+                                            </div>
+
+                                            <div class="luwa-exec-card__rail">
+                                                <a t-if="emp.social_linkedin" t-att-href="emp.social_linkedin" target="_blank" rel="noopener" class="luwa-exec-rail-btn" title="LinkedIn" aria-label="LinkedIn">
+                                                    <i class="fab fa-linkedin-in"/>
+                                                </a>
+                                                <a t-if="emp.social_twitter" t-att-href="emp.social_twitter" target="_blank" rel="noopener" class="luwa-exec-rail-btn" title="X (Twitter)" aria-label="X">
+                                                    <i class="fab fa-twitter"/>
+                                                </a>
+                                                <a t-if="emp.social_github" t-att-href="emp.social_github" target="_blank" rel="noopener" class="luwa-exec-rail-btn" title="GitHub / Portfolio" aria-label="GitHub">
+                                                    <i class="fab fa-github"/>
+                                                </a>
+                                                <a t-if="emp.social_instagram" t-att-href="emp.social_instagram" target="_blank" rel="noopener" class="luwa-exec-rail-btn" title="Instagram" aria-label="Instagram">
+                                                    <i class="fab fa-instagram"/>
+                                                </a>
+                                                <a t-if="emp_wa_url" t-att-href="emp_wa_url" target="_blank" rel="noopener" class="luwa-exec-rail-btn luwa-exec-rail-btn--wa" title="WhatsApp" aria-label="WhatsApp">
+                                                    <i class="fab fa-whatsapp"/>
+                                                </a>
+                                                <a t-if="emp.work_email" t-attf-href="mailto:#{emp.work_email}" class="luwa-exec-rail-btn" title="Email" aria-label="Email">
+                                                    <i class="fas fa-envelope"/>
+                                                </a>
+                                            </div>
+
+                                            <div class="luwa-exec-card__stage-caption">
+                                                <span class="luwa-exec-card__role-badge">
+                                                    <i class="fas fa-check-circle me-1"/>
+                                                    <t t-out="emp.website_role or 'Luwa Tech Specialist'"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="luwa-exec-card__body">
+                                            <h3 class="luwa-exec-card__name"><t t-out="emp.name"/></h3>
+                                            <p class="luwa-exec-card__bio" t-if="emp.website_bio">
+                                                <t t-out="emp.website_bio"/>
+                                            </p>
+
+                                            <div class="luwa-exec-card__footer">
+                                                <div class="luwa-exec-card__socials-inline">
+                                                    <a t-if="emp.social_linkedin" t-att-href="emp.social_linkedin" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin-in"/></a>
+                                                    <a t-if="emp.social_twitter" t-att-href="emp.social_twitter" target="_blank" rel="noopener" title="X"><i class="fab fa-twitter"/></a>
+                                                    <a t-if="emp.social_github" t-att-href="emp.social_github" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"/></a>
+                                                    <a t-if="emp.social_instagram" t-att-href="emp.social_instagram" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"/></a>
+                                                    <a t-if="emp.work_email" t-attf-href="mailto:#{emp.work_email}" title="Email"><i class="fas fa-envelope"/></a>
+                                                </div>
+                                                <a t-if="emp_wa_url" t-att-href="emp_wa_url" target="_blank" rel="noopener" class="luwa-exec-card__cta">
+                                                    <i class="fab fa-whatsapp me-1"/> Connect
+                                                </a>
+                                                <a t-elif="emp.work_email" t-attf-href="mailto:#{emp.work_email}" class="luwa-exec-card__cta">
+                                                    <i class="fas fa-paper-plane me-1"/> Contact
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>
+
