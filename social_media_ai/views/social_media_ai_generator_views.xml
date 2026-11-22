@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- AI Content Studio: Form View (With Upload Own Image or Generate AI Image) -->
+    <record id="view_social_media_ai_generator_form" model="ir.ui.view">
+        <field name="name">social.media.ai.generator.form</field>
+        <field name="model">social.media.ai.generator</field>
+        <field name="arch" type="xml">
+            <form string="AI Content &amp; Image Studio">
+                <header>
+                    <button name="action_generate_content"
+                            string="Generate AI Content"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-magic"/>
+                    <button name="action_generate_image"
+                            string="Generate AI Image"
+                            type="object"
+                            class="btn-info"
+                            icon="fa-picture-o"/>
+                    <button name="action_generate_content_and_image"
+                            string="Generate Content &amp; Image"
+                            type="object"
+                            class="btn-secondary"
+                            icon="fa-bolt"/>
+                    <button name="action_save_as_post"
+                            string="Save as Social Media Post"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-check"/>
+                    <button name="action_save_all_platforms"
+                            string="Save Posts for All 4 Platforms (FB • IG • LinkedIn • X)"
+                            type="object"
+                            class="btn-warning"
+                            icon="fa-share-alt"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,generated,saved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_created_posts"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bullhorn"
+                                invisible="created_post_count == 0">
+                            <field name="created_post_count" widget="statinfo" string="Saved Posts"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name" string="Campaign / Studio Session"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Q4 E-Commerce &amp; Mobile Money Launch Campaign"/>
+                        </h1>
+                    </div>
+
+                    <group string="1. Content Brief &amp; Targeting">
+                        <group>
+                            <field name="platform" widget="radio" options="{'horizontal': true}"/>
+                            <field name="tone"/>
+                            <field name="campaign_objective"/>
+                        </group>
+                        <group>
+                            <field name="target_audience"/>
+                            <field name="scheduled_date"/>
+                            <field name="engine_used" readonly="1" invisible="not engine_used"/>
+                        </group>
+                    </group>
+
+                    <group string="Describe What You Want AI to Write">
+                        <field name="prompt" nolabel="1" rows="3"
+                               placeholder="Enter a simple instruction describing the content you want (e.g. 'Create an engaging campaign highlighting how our Cloud POS &amp; URA EFRIS integration saves Ugandan retailers 10+ hours every week')..."/>
+                    </group>
+
+                    <notebook>
+                        <page string="Editable Generated Content &amp; Visual" name="generated_content">
+                            <div class="row">
+                                <div class="col-12 col-lg-7">
+                                    <group string="Primary Post Content (Edit Before Saving)">
+                                        <field name="headline" placeholder="Post headline will appear here..."/>
+                                        <field name="caption" rows="8" placeholder="Marketing caption will appear here..."/>
+                                        <field name="call_to_action" placeholder="Call to action will appear here..."/>
+                                        <field name="hashtags" placeholder="#Hashtags will appear here..."/>
+                                    </group>
+                                </div>
+                                <div class="col-12 col-lg-5">
+                                    <div class="p-3 border rounded-3 bg-light mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <strong><i class="fa fa-image text-primary me-1"/> Post Image (Upload Own or AI)</strong>
+                                            <button name="action_clear_image"
+                                                    string="Clear Image"
+                                                    type="object"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    icon="fa-trash"
+                                                    invisible="not generated_image"/>
+                                        </div>
+                                        <field name="image_source" widget="radio"/>
+
+                                        <div class="mt-2 p-2 bg-white border rounded" invisible="image_source != 'upload'">
+                                            <div class="small text-muted mb-1">
+                                                <strong>Upload Your Own Image:</strong> Choose a JPG/PNG from your computer instead of AI:
+                                            </div>
+                                            <field name="custom_image_upload" filename="custom_image_filename"/>
+                                            <field name="custom_image_filename" invisible="1"/>
+                                        </div>
+
+                                        <div class="mt-2 p-2 bg-white border rounded" invisible="image_source != 'ai'">
+                                            <field name="image_prompt" rows="2" placeholder="Describe the image for AI..."/>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <field name="image_style" nolabel="1"/>
+                                                <field name="image_aspect_ratio" nolabel="1"/>
+                                            </div>
+                                            <button name="action_generate_image"
+                                                    string="Generate AI Image"
+                                                    type="object"
+                                                    class="btn btn-sm btn-primary mt-2"
+                                                    icon="fa-magic"/>
+                                        </div>
+                                    </div>
+
+                                    <group string="Image Preview">
+                                        <field name="generated_image" widget="image" nolabel="1"
+                                               options="{'size': [320, 320]}"/>
+                                        <field name="generated_image_filename" invisible="1"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+
+                        <page string="Platform Variations (Facebook • Instagram • LinkedIn • X)" name="variations">
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <group string="Facebook Variation">
+                                        <field name="variation_facebook" nolabel="1" rows="6"/>
+                                    </group>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <group string="Instagram Variation">
+                                        <field name="variation_instagram" nolabel="1" rows="6"/>
+                                    </group>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <group string="LinkedIn Variation">
+                                        <field name="variation_linkedin" nolabel="1" rows="6"/>
+                                    </group>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <group string="X (Twitter) Variation">
+                                        <field name="variation_x" nolabel="1" rows="6"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- AI Content Studio: List View -->
+    <record id="view_social_media_ai_generator_list" model="ir.ui.view">
+        <field name="name">social.media.ai.generator.list</field>
+        <field name="model">social.media.ai.generator</field>
+        <field name="arch" type="xml">
+            <list string="AI Content Studio Sessions">
+                <field name="name"/>
+                <field name="platform" widget="badge"/>
+                <field name="tone"/>
+                <field name="campaign_objective"/>
+                <field name="target_audience"/>
+                <field name="engine_used"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'draft'"
+                       decoration-info="state == 'generated'"
+                       decoration-success="state == 'saved'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_social_media_ai_generator" model="ir.actions.act_window">
+        <field name="name">AI Content Studio</field>
+        <field name="res_model">social.media.ai.generator</field>
+        <field name="view_mode">form,list</field>
+    </record>
+</odoo>

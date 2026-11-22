@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 1. Default Singleton Configuration Record -->
+        <record id="social_media_ai_config_default" model="social.media.ai.config">
+            <field name="name">Social Media AI Settings</field>
+            <field name="text_provider">auto</field>
+            <field name="image_provider">auto</field>
+            <field name="openai_base_url">https://api.openai.com/v1</field>
+            <field name="openai_model">gpt-4o-mini</field>
+            <field name="openai_image_model">dall-e-3</field>
+            <field name="allow_free_fallback" eval="True"/>
+        </record>
+
+        <!-- 1b. Pre-Created Social Media Accounts Ready to Connect -->
+        <record id="social_account_luwa_facebook" model="social.media.account">
+            <field name="name">Luwa Tech Official Facebook Page</field>
+            <field name="platform">facebook</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="social_account_luwa_instagram" model="social.media.account">
+            <field name="name">Luwa Tech Instagram Business</field>
+            <field name="platform">instagram</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="social_account_luwa_linkedin" model="social.media.account">
+            <field name="name">Luwa Tech LinkedIn</field>
+            <field name="platform">linkedin</field>
+            <field name="sequence">30</field>
+        </record>
+
+        <record id="social_account_luwa_x" model="social.media.account">
+            <field name="name">Luwa Tech X (Twitter)</field>
+            <field name="platform">x</field>
+            <field name="sequence">40</field>
+        </record>
+
+        <!-- 1c. Automated Cron Job for Publishing Scheduled Posts -->
+        <record id="ir_cron_social_media_ai_auto_publish" model="ir.cron">
+            <field name="name">Social Media AI: Auto-Publish Scheduled Posts</field>
+            <field name="model_id" ref="model_social_media_post"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_publish_scheduled_posts()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <!-- 2. Initial Sample Social Media Posts Across All Platforms & Statuses -->
+        <record id="social_post_sample_linkedin_scheduled" model="social.media.post">
+            <field name="name">Automating URA EFRIS &amp; Mobile Money Reconciliation for Ugandan Enterprises</field>
+            <field name="platform">linkedin</field>
+            <field name="state">scheduled</field>
+            <field name="tone">professional</field>
+            <field name="campaign_objective">lead_generation</field>
+            <field name="target_audience">CFOs, Operations Directors &amp; Business Owners in East Africa</field>
+            <field name="ai_prompt">Explain how automated URA EFRIS fiscalization and MTN MoMo / Airtel Money API integration eliminates manual accounting reconciliation.</field>
+            <field name="caption">Finance and operations teams across Uganda spend hours reconciling Mobile Money statements and manually issuing fiscal invoices.
+
+With Luwa Tech's Enterprise EFRIS &amp; Mobile Money Connector:
+• Every invoice is fiscalized in real time with a URA verification QR code
+• MTN MoMo &amp; Airtel Money collections reconcile automatically
+• Seamlessly connects with custom stores, SAP Business One, Zoho &amp; Microsoft Dynamics 365</field>
+            <field name="call_to_action">Book a 20-minute architecture demo at https://www.luwatech.it/services/efris-mobile-money</field>
+            <field name="hashtags">#LuwaTech #URAEFRIS #MobileMoney #DigitalTransformation #UgandaBusiness #FinTechAfrica #EnterpriseERP</field>
+            <field name="scheduled_date" eval="(DateTime.now() + relativedelta(days=1)).strftime('%Y-%m-%d 09:00:00')"/>
+        </record>
+
+        <record id="social_post_sample_instagram_approved" model="social.media.post">
+            <field name="name">Launch Your Online Store with Instant Mobile Money Checkout ($29/mo)</field>
+            <field name="platform">instagram</field>
+            <field name="state">approved</field>
+            <field name="tone">engaging</field>
+            <field name="campaign_objective">sales_conversion</field>
+            <field name="target_audience">Retailers, Fashion Brands &amp; Growing Merchants in Kampala</field>
+            <field name="ai_prompt">Promote our E-Commerce Complete Subscription with built-in payment gateway, invoicing and stock management.</field>
+            <field name="caption">✨ Ready to turn your Instagram followers into 24/7 paying customers? ✨
+
+Stop losing sales in the DMs! With the Luwa Tech E-Commerce Complete Subscription ($29/mo), you get:
+🛍️ Your own branded online store
+💳 Built-in MTN MoMo, Airtel Money &amp; Card checkout
+📦 Real-time stock &amp; inventory alerts
+🧾 Instant digital customer receipts</field>
+            <field name="call_to_action">Tap the link in our bio or visit https://www.luwatech.it/subscriptions to launch your store today!</field>
+            <field name="hashtags">#EcommerceUganda #KampalaBusiness #SellOnlineAfrica #MobileMoneyCheckout #LuwaTech #RetailGrowth</field>
+            <field name="scheduled_date" eval="(DateTime.now() + relativedelta(days=2)).strftime('%Y-%m-%d 12:30:00')"/>
+        </record>
+
+        <record id="social_post_sample_facebook_pending" model="social.media.post">
+            <field name="name">Digitize Your School Operations with Luwa eShule Cloud</field>
+            <field name="platform">facebook</field>
+            <field name="state">pending_approval</field>
+            <field name="tone">persuasive</field>
+            <field name="campaign_objective">product_launch</field>
+            <field name="target_audience">School Directors, Principals &amp; Bursars</field>
+            <field name="ai_prompt">Highlight how Luwa eShule simplifies school fees tracking, report cards, and parent communication.</field>
+            <field name="caption">🎓 Preparing for the new school term? Say goodbye to paper ledgers and delayed report cards!
+
+Luwa eShule brings your entire school onto one easy-to-use cloud platform:
+✅ Automated school fees tracking &amp; Mobile Money receipts
+✅ Instant UNEB-aligned grading &amp; report card generation
+✅ Dedicated Parent &amp; Student portal</field>
+            <field name="call_to_action">Message us or request a free school demo at https://www.luwatech.it/shop</field>
+            <field name="hashtags">#LuwaeShule #EdTechUganda #SchoolManagementSystem #KampalaSchools #DigitalEducation</field>
+            <field name="scheduled_date" eval="(DateTime.now() + relativedelta(days=3)).strftime('%Y-%m-%d 10:00:00')"/>
+        </record>
+
+        <record id="social_post_sample_x_published" model="social.media.post">
+            <field name="name">3x Faster Lead Response with Managed WhatsApp Business API</field>
+            <field name="platform">x</field>
+            <field name="state">published</field>
+            <field name="tone">promotional</field>
+            <field name="campaign_objective">website_traffic</field>
+            <field name="target_audience">Founders, Sales Teams &amp; Digital Marketers</field>
+            <field name="ai_prompt">Short X post on connecting website forms and CRM to automated WhatsApp Business API notifications.</field>
+            <field name="caption">🚀 Speed-to-lead wins deals! Connect your website, e-commerce checkout &amp; CRM directly to WhatsApp Business API with Luwa Tech. Instant order confirmations, automated PDF invoices &amp; 24/7 lead capture.</field>
+            <field name="call_to_action">Explore at https://www.luwatech.it/services/whatsapp-integration</field>
+            <field name="hashtags">#WhatsAppAPI #CRMAutomation #LuwaTech #KampalaTech</field>
+            <field name="scheduled_date" eval="(DateTime.now() - relativedelta(days=1)).strftime('%Y-%m-%d 15:00:00')"/>
+        </record>
+
+        <record id="social_post_sample_linkedin_draft" model="social.media.post">
+            <field name="name">Full-Funnel Digital Marketing as a Service (DMaaS) for Growing Brands</field>
+            <field name="platform">linkedin</field>
+            <field name="state">draft</field>
+            <field name="tone">educational</field>
+            <field name="campaign_objective">brand_awareness</field>
+            <field name="target_audience">CEOs &amp; Marketing Heads</field>
+            <field name="ai_prompt">Show why subscribing to a dedicated Digital Marketing as a Service (DMaaS) team beats hiring fragmented freelancers.</field>
+            <field name="caption">Why are East Africa's fastest-growing brands switching to Digital Marketing as a Service (DMaaS)?
+
+Instead of juggling separate freelancers for SEO, social media, paid ads, and analytics, Luwa Tech provides an integrated growth team starting at $115/month.</field>
+            <field name="call_to_action">Compare DMaaS Starter &amp; Premium plans at https://www.luwatech.it/subscriptions</field>
+            <field name="hashtags">#DigitalMarketingAgency #DMaaS #GrowthMarketing #SEO #LuwaTech #Kampala</field>
+            <field name="scheduled_date" eval="(DateTime.now() + relativedelta(days=4)).strftime('%Y-%m-%d 11:00:00')"/>
+        </record>
+    </data>
+</odoo>

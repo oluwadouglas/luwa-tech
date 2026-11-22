@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- AI Image Studio: Form View (Supports Custom Upload OR AI Generation) -->
+    <record id="view_social_media_ai_image_form" model="ir.ui.view">
+        <field name="name">social.media.ai.image.form</field>
+        <field name="model">social.media.ai.image</field>
+        <field name="arch" type="xml">
+            <form string="AI Image Generator &amp; Media Studio">
+                <header>
+                    <button name="action_generate_image"
+                            string="Generate AI Marketing Image"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-magic"/>
+                    <button name="action_clear_image"
+                            string="Remove / Replace Image"
+                            type="object"
+                            class="btn-secondary"
+                            icon="fa-trash"
+                            invisible="not image"/>
+                    <button name="action_attach_to_post"
+                            string="Attach to Selected Post"
+                            type="object"
+                            class="btn-info"
+                            icon="fa-paperclip"
+                            invisible="not image or not post_id"/>
+                    <button name="action_create_post_from_image"
+                            string="Create New Social Post with This Image"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-plus-circle"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,generated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Image Title"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Kampala Retail E-Commerce Hero Visual"/>
+                        </h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <group string="Choose Image Source (Upload Your Own OR Generate with AI)">
+                                <field name="image_source" widget="radio"/>
+                                <field name="custom_image_upload" filename="custom_image_filename"
+                                       invisible="image_source != 'upload'"/>
+                                <field name="custom_image_filename" invisible="1"/>
+                                <field name="prompt" rows="4"
+                                       invisible="image_source != 'ai'"
+                                       placeholder="e.g. Confident African business owner using a tablet in a modern retail shop with digital payment icons, bright commercial photography..."/>
+                                <field name="style" invisible="image_source != 'ai'"/>
+                                <field name="aspect_ratio" invisible="image_source != 'ai'"/>
+                                <field name="post_id"/>
+                                <field name="engine_used" readonly="1" invisible="not engine_used"/>
+                                <field name="attachment_id" readonly="1" invisible="not attachment_id"/>
+                                <field name="create_date" readonly="1" invisible="not create_date"/>
+                            </group>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <group string="Image Preview (Click Pencil on Image to Upload Any File)">
+                                <field name="image" widget="image" nolabel="1"
+                                       options="{'size': [420, 420]}"/>
+                                <field name="image_filename" invisible="1"/>
+                            </group>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- AI Image Studio: Kanban Gallery View -->
+    <record id="view_social_media_ai_image_kanban" model="ir.ui.view">
+        <field name="name">social.media.ai.image.kanban</field>
+        <field name="model">social.media.ai.image</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="style"/>
+                <field name="aspect_ratio"/>
+                <field name="image"/>
+                <field name="post_id"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="mb-2 rounded overflow-hidden border" invisible="not image" style="max-height: 180px;">
+                            <field name="image" widget="image" options="{'img_class': 'w-100 object-fit-cover'}"/>
+                        </div>
+                        <strong class="o_kanban_record_title d-block mb-1">
+                            <field name="name"/>
+                        </strong>
+                        <div class="d-flex justify-content-between align-items-center small text-muted mt-1">
+                            <field name="style" widget="badge"/>
+                            <field name="aspect_ratio"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- AI Image Studio: List View -->
+    <record id="view_social_media_ai_image_list" model="ir.ui.view">
+        <field name="name">social.media.ai.image.list</field>
+        <field name="model">social.media.ai.image</field>
+        <field name="arch" type="xml">
+            <list string="AI &amp; Uploaded Marketing Images">
+                <field name="name"/>
+                <field name="image_source" widget="badge"/>
+                <field name="style"/>
+                <field name="aspect_ratio"/>
+                <field name="post_id"/>
+                <field name="engine_used"/>
+                <field name="create_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'generated'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_social_media_ai_image" model="ir.actions.act_window">
+        <field name="name">AI Image &amp; Media Studio</field>
+        <field name="res_model">social.media.ai.image</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>

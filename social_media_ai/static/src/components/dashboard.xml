@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="social_media_ai.Dashboard">
+        <div class="o_social_ai_dashboard h-100 overflow-auto p-4">
+            <!-- Top Hero Header & Quick Actions -->
+            <div class="o_social_ai_hero rounded-4 p-4 mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3 shadow-sm">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="badge rounded-pill o_social_ai_badge_cyan">
+                            <i class="fa fa-magic me-1"/> Odoo 19 AI Content Suite
+                        </span>
+                        <span class="small text-white-50">
+                            <i class="fa fa-check-circle text-success me-1"/>
+                            <t t-esc="state.data.ai_status.text_engine"/>
+                        </span>
+                    </div>
+                    <h2 class="text-white fw-bold mb-1">Social Media AI Content Manager</h2>
+                    <p class="text-white-50 mb-0">
+                        Generate high-converting marketing copy, platform variations &amp; AI visuals for Facebook, Instagram, LinkedIn and X.
+                    </p>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn o_social_ai_btn_orange fw-semibold" t-on-click="() => this.openAiContentStudio()">
+                        <i class="fa fa-magic me-1"/> AI Content Studio
+                    </button>
+                    <button class="btn o_social_ai_btn_cyan fw-semibold" t-on-click="() => this.createNewPost()">
+                        <i class="fa fa-plus-circle me-1"/> New Post
+                    </button>
+                    <button class="btn btn-light fw-semibold" t-on-click="() => this.openAiImageStudio()">
+                        <i class="fa fa-picture-o me-1"/> AI Image Studio
+                    </button>
+                    <button class="btn btn-outline-light fw-semibold" t-on-click="() => this.openContentCalendar()">
+                        <i class="fa fa-calendar me-1"/> Content Calendar
+                    </button>
+                    <button class="btn btn-outline-light fw-semibold" t-on-click="() => this.openSocialAccounts()">
+                        <i class="fa fa-plug me-1"/> Social Accounts
+                    </button>
+                    <button class="btn btn-outline-light" t-on-click="() => this.openAiConfig()" title="AI Provider Settings">
+                        <i class="fa fa-cog"/>
+                    </button>
+                    <button class="btn btn-outline-light" t-on-click="() => this.loadDashboardData()" title="Refresh Dashboard">
+                        <i class="fa fa-refresh" t-att-class="{'fa-spin': state.isLoading}"/>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5 Required KPI Cards: Total, Draft, Pending Approvals, Scheduled, Published -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-4 col-xl">
+                    <div class="card o_social_ai_kpi_card h-100 border-0 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('All Social Media Posts', [])">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-muted small fw-semibold text-uppercase">Total Posts</div>
+                                <div class="fs-2 fw-bold text-dark"><t t-esc="state.data.kpis.total"/></div>
+                                <div class="small text-muted">All platforms</div>
+                            </div>
+                            <div class="o_social_ai_kpi_icon bg-primary-subtle text-primary">
+                                <i class="fa fa-bullhorn"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl">
+                    <div class="card o_social_ai_kpi_card h-100 border-0 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('Draft Posts', [['state', '=', 'draft']])">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-muted small fw-semibold text-uppercase">Draft Posts</div>
+                                <div class="fs-2 fw-bold text-secondary"><t t-esc="state.data.kpis.draft"/></div>
+                                <div class="small text-muted">In editing</div>
+                            </div>
+                            <div class="o_social_ai_kpi_icon bg-secondary-subtle text-secondary">
+                                <i class="fa fa-pencil"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl">
+                    <div class="card o_social_ai_kpi_card h-100 border-0 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('Pending Approval Posts', [['state', '=', 'pending_approval']])">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-muted small fw-semibold text-uppercase">Pending Approvals</div>
+                                <div class="fs-2 fw-bold text-warning"><t t-esc="state.data.kpis.pending_approval"/></div>
+                                <div class="small text-muted">Awaiting review</div>
+                            </div>
+                            <div class="o_social_ai_kpi_icon bg-warning-subtle text-warning">
+                                <i class="fa fa-clock-o"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-6 col-xl">
+                    <div class="card o_social_ai_kpi_card h-100 border-0 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('Scheduled Posts', [['state', '=', 'scheduled']])">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-muted small fw-semibold text-uppercase">Scheduled Posts</div>
+                                <div class="fs-2 fw-bold text-info"><t t-esc="state.data.kpis.scheduled"/></div>
+                                <div class="small text-muted">
+                                    +<t t-esc="state.data.kpis.approved"/> Approved
+                                </div>
+                            </div>
+                            <div class="o_social_ai_kpi_icon bg-info-subtle text-info">
+                                <i class="fa fa-calendar-check-o"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-xl">
+                    <div class="card o_social_ai_kpi_card h-100 border-0 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('Published Posts', [['state', '=', 'published']])">
+                        <div class="card-body d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="text-muted small fw-semibold text-uppercase">Published Posts</div>
+                                <div class="fs-2 fw-bold text-success"><t t-esc="state.data.kpis.published"/></div>
+                                <div class="small text-muted">
+                                    <t t-esc="state.data.kpis.ai_images"/> AI Images Saved
+                                </div>
+                            </div>
+                            <div class="o_social_ai_kpi_icon bg-success-subtle text-success">
+                                <i class="fa fa-check-circle"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Filter Strip (Facebook, Instagram, LinkedIn, X) -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div class="o_social_ai_platform_pill o_plat_fb d-flex align-items-center justify-content-between p-3 rounded-3 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('Facebook Posts', [['platform', '=', 'facebook']])">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa fa-facebook-square fs-4"/>
+                            <span class="fw-bold">Facebook</span>
+                        </div>
+                        <span class="badge bg-white text-dark fs-6"><t t-esc="state.data.platforms.facebook"/></span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="o_social_ai_platform_pill o_plat_ig d-flex align-items-center justify-content-between p-3 rounded-3 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('Instagram Posts', [['platform', '=', 'instagram']])">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa fa-instagram fs-4"/>
+                            <span class="fw-bold">Instagram</span>
+                        </div>
+                        <span class="badge bg-white text-dark fs-6"><t t-esc="state.data.platforms.instagram"/></span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="o_social_ai_platform_pill o_plat_li d-flex align-items-center justify-content-between p-3 rounded-3 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('LinkedIn Posts', [['platform', '=', 'linkedin']])">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa fa-linkedin-square fs-4"/>
+                            <span class="fw-bold">LinkedIn</span>
+                        </div>
+                        <span class="badge bg-white text-dark fs-6"><t t-esc="state.data.platforms.linkedin"/></span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="o_social_ai_platform_pill o_plat_x d-flex align-items-center justify-content-between p-3 rounded-3 shadow-sm"
+                         t-on-click="() => this.openPostsByDomain('X (Twitter) Posts', [['platform', '=', 'x']])">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa fa-twitter fs-4"/>
+                            <span class="fw-bold">X (Twitter)</span>
+                        </div>
+                        <span class="badge bg-white text-dark fs-6"><t t-esc="state.data.platforms.x"/></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Created Content & Upcoming Scheduled Posts -->
+            <div class="row g-4">
+                <!-- Left Column: Recently Created Content -->
+                <div class="col-12 col-xl-6">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold text-dark">
+                                <i class="fa fa-sparkles text-primary me-2"/> Recently Created Content
+                            </h5>
+                            <button class="btn btn-sm btn-outline-primary"
+                                    t-on-click="() => this.openPostsByDomain('All Social Media Posts', [])">
+                                View All
+                            </button>
+                        </div>
+                        <div class="card-body p-0">
+                            <t t-if="!state.data.recent_posts.length">
+                                <div class="p-4 text-center text-muted">
+                                    No social media posts yet. Click <strong>AI Content Studio</strong> above to generate your first post!
+                                </div>
+                            </t>
+                            <div class="list-group list-group-flush">
+                                <t t-foreach="state.data.recent_posts" t-as="post" t-key="post.id">
+                                    <div class="list-group-item list-group-item-action p-3 d-flex align-items-center gap-3 o_social_ai_post_row"
+                                         t-on-click="() => this.openPostRecord(post.id)">
+                                        <t t-if="post.has_image">
+                                            <img t-att-src="post.image_url"
+                                                 alt="Thumb"
+                                                 class="rounded-3 border flex-shrink-0"
+                                                 style="width: 56px; height: 56px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="rounded-3 bg-light border d-flex align-items-center justify-content-center flex-shrink-0 text-secondary"
+                                                 style="width: 56px; height: 56px;">
+                                                <i class="fa fa-file-text-o fs-4"/>
+                                            </div>
+                                        </t>
+
+                                        <div class="flex-grow-1 min-w-0">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="fw-bold text-dark text-truncate me-2">
+                                                    <t t-esc="post.name"/>
+                                                </span>
+                                                <span t-attf-class="badge rounded-pill o_state_badge_{{post.state}}">
+                                                    <t t-esc="post.state_label"/>
+                                                </span>
+                                            </div>
+                                            <div class="small text-muted text-truncate mb-1">
+                                                <t t-esc="post.caption_snippet"/>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-3 small text-muted">
+                                                <span t-attf-class="fw-semibold o_plat_text_{{post.platform}}">
+                                                    <i class="fa fa-share-alt me-1"/>
+                                                    <t t-esc="post.platform_label"/>
+                                                </span>
+                                                <span>
+                                                    <i class="fa fa-clock-o me-1"/>
+                                                    Created: <t t-esc="post.create_date"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Upcoming Scheduled Posts -->
+                <div class="col-12 col-xl-6">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold text-dark">
+                                <i class="fa fa-calendar text-info me-2"/> Upcoming Scheduled Posts
+                            </h5>
+                            <button class="btn btn-sm btn-outline-info"
+                                    t-on-click="() => this.openContentCalendar()">
+                                Open Calendar
+                            </button>
+                        </div>
+                        <div class="card-body p-0">
+                            <t t-if="!state.data.upcoming_posts.length">
+                                <div class="p-4 text-center text-muted">
+                                    No upcoming scheduled posts. Approve or schedule a post to see it on your Content Calendar.
+                                </div>
+                            </t>
+                            <div class="list-group list-group-flush">
+                                <t t-foreach="state.data.upcoming_posts" t-as="upost" t-key="upost.id">
+                                    <div class="list-group-item list-group-item-action p-3 d-flex align-items-center gap-3 o_social_ai_post_row"
+                                         t-on-click="() => this.openPostRecord(upost.id)">
+                                        <t t-if="upost.has_image">
+                                            <img t-att-src="upost.image_url"
+                                                 alt="Thumb"
+                                                 class="rounded-3 border flex-shrink-0"
+                                                 style="width: 56px; height: 56px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="rounded-3 bg-info-subtle text-info d-flex align-items-center justify-content-center flex-shrink-0"
+                                                 style="width: 56px; height: 56px;">
+                                                <i class="fa fa-calendar-check-o fs-4"/>
+                                            </div>
+                                        </t>
+
+                                        <div class="flex-grow-1 min-w-0">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="fw-bold text-dark text-truncate me-2">
+                                                    <t t-esc="upost.name"/>
+                                                </span>
+                                                <span t-attf-class="badge rounded-pill o_state_badge_{{upost.state}}">
+                                                    <t t-esc="upost.state_label"/>
+                                                </span>
+                                            </div>
+                                            <div class="small text-muted text-truncate mb-1">
+                                                <t t-esc="upost.caption_snippet"/>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-3 small">
+                                                <span t-attf-class="fw-semibold o_plat_text_{{upost.platform}}">
+                                                    <i class="fa fa-share-alt me-1"/>
+                                                    <t t-esc="upost.platform_label"/>
+                                                </span>
+                                                <span class="text-primary fw-semibold">
+                                                    <i class="fa fa-calendar me-1"/>
+                                                    Scheduled: <t t-esc="upost.scheduled_date"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

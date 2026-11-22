@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_social_media_ai_user" model="res.groups">
+        <field name="name">Social Media AI: Content Creator</field>
+    </record>
+
+    <record id="group_social_media_ai_manager" model="res.groups">
+        <field name="name">Social Media AI: Manager</field>
+    </record>
+
+    <data noupdate="1">
+        <record id="social_media_post_company_rule" model="ir.rule">
+            <field name="name">Social Media Post: Multi-Company Rule</field>
+            <field name="model_id" ref="model_social_media_post"/>
+            <field name="domain_force">[('company_id', 'in', company_ids + [False])]</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dedicated AI Provider & Credentials Configuration Form -->
+    <record id="view_social_media_ai_config_form" model="ir.ui.view">
+        <field name="name">social.media.ai.config.form</field>
+        <field name="model">social.media.ai.config</field>
+        <field name="arch" type="xml">
+            <form string="AI Providers &amp; API Credentials">
+                <header>
+                    <button name="action_test_ai_connection"
+                            string="Test AI Content Connection"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-plug"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <div class="alert alert-info" role="status">
+                        <i class="fa fa-info-circle me-1"/>
+                        <strong>Zero-Cost Out-of-the-Box AI + OpenAI API Support:</strong>
+                        In <strong>Auto</strong> mode, the module uses your <strong>OpenAI API Key</strong> when provided, and automatically uses the built-in <strong>Free OpenAI-Compatible Text &amp; Flux Image AI Engines</strong> (no paid API key required) whenever no key is entered.
+                    </div>
+
+                    <group>
+                        <group string="AI Engine Selection">
+                            <field name="text_provider"/>
+                            <field name="image_provider"/>
+                            <field name="allow_free_fallback"/>
+                        </group>
+                        <group string="OpenAI / Custom API Credentials (Stored Securely)">
+                            <field name="openai_api_key" password="True" placeholder="sk-... (Optional when using Auto / Free AI)"/>
+                            <field name="openai_base_url"/>
+                            <field name="openai_model"/>
+                            <field name="openai_image_model"/>
+                        </group>
+                    </group>
+
+                    <group string="Brand Voice &amp; Default Context">
+                        <field name="default_brand_context" rows="3"/>
+                        <field name="last_test_status" readonly="1" invisible="not last_test_status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_media_ai_config" model="ir.actions.act_window">
+        <field name="name">AI Providers &amp; API Settings</field>
+        <field name="res_model">social.media.ai.config</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" eval="1"/>
+    </record>
+</odoo>

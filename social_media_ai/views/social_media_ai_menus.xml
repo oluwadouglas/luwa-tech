@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. OWL Client Action for the Modern Social Media AI Dashboard -->
+    <record id="action_social_media_ai_dashboard" model="ir.actions.client">
+        <field name="name">Social Media AI Dashboard</field>
+        <field name="tag">social_media_ai.dashboard</field>
+    </record>
+
+    <!-- 2. Main Application Root Menu (Accessible from Odoo 19 Main Dashboard) -->
+    <menuitem id="menu_social_media_ai_root"
+              name="Social Media AI"
+              web_icon="social_media_ai,static/description/icon.png"
+              action="action_social_media_ai_dashboard"
+              sequence="35"/>
+
+    <!-- 3. Top-Level Navigation Menus -->
+    <menuitem id="menu_social_media_ai_dashboard"
+              name="Dashboard"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_ai_dashboard"
+              sequence="10"/>
+
+    <menuitem id="menu_social_media_ai_posts"
+              name="Posts"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_post_all"
+              sequence="20"/>
+
+    <menuitem id="menu_social_media_ai_calendar"
+              name="Content Calendar"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_content_calendar"
+              sequence="30"/>
+
+    <menuitem id="menu_social_media_ai_studio"
+              name="AI Content Studio"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_ai_generator"
+              sequence="40"/>
+
+    <menuitem id="menu_social_media_ai_images"
+              name="AI Image Studio"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_ai_image"
+              sequence="50"/>
+
+    <menuitem id="menu_social_media_ai_accounts"
+              name="Social Accounts"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_account"
+              sequence="60"/>
+
+    <menuitem id="menu_social_media_ai_config"
+              name="AI Configuration"
+              parent="menu_social_media_ai_root"
+              action="action_social_media_ai_config"
+              sequence="90"/>
+</odoo>

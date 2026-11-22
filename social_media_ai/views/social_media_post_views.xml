@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- =========================================================================
+         1. Social Media Post: Form View (Custom Image Upload + Direct Publishing)
+         ========================================================================= -->
+    <record id="view_social_media_post_form" model="ir.ui.view">
+        <field name="name">social.media.post.form</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <form string="Social Media Post">
+                <header>
+                    <button name="action_generate_ai_content"
+                            string="Generate AI Content"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-magic"/>
+                    <button name="action_generate_ai_image"
+                            string="Generate AI Image"
+                            type="object"
+                            class="btn-info"
+                            icon="fa-picture-o"/>
+                    <button name="action_publish_now"
+                            string="Publish Now to Social Account"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-paper-plane"
+                            invisible="state == 'published'"/>
+                    <button name="action_submit_approval"
+                            string="Submit for Approval"
+                            type="object"
+                            class="btn-warning"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve"
+                            string="Approve"
+                            type="object"
+                            class="btn-success"
+                            invisible="state != 'pending_approval'"/>
+                    <button name="action_schedule"
+                            string="Schedule Post"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state not in ('draft', 'approved')"/>
+                    <button name="action_publish"
+                            string="Mark as Published (Manual)"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state == 'published'"/>
+                    <button name="action_reset_draft"
+                            string="Reset to Draft"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,pending_approval,approved,scheduled,published"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"
+                           options="{'preview_image': 'image', 'size': [110, 110]}"/>
+                    <div class="oe_title">
+                        <label for="name" string="Post Title / Headline"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Scale Your Retail Business with Real-Time Mobile Money &amp; E-Commerce..."/>
+                        </h1>
+                    </div>
+
+                    <div class="alert alert-success mb-3" role="status" invisible="not external_post_url">
+                        <i class="fa fa-check-circle me-1"/>
+                        <strong>Live on Social Media!</strong>
+                        Platform Post ID: <field name="external_post_id" readonly="1" class="oe_inline"/> •
+                        <field name="external_post_url" widget="url" readonly="1" class="oe_inline"/>
+                    </div>
+
+                    <div class="alert alert-danger mb-3" role="status" invisible="not publish_error">
+                        <i class="fa fa-exclamation-triangle me-1"/>
+                        <strong>Last Publishing Error:</strong>
+                        <field name="publish_error" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <group>
+                        <group string="Platform, Social Account &amp; Schedule">
+                            <field name="platform" widget="radio" options="{'horizontal': true}"/>
+                            <field name="account_id" options="{'no_create': False}"/>
+                            <field name="account_ids" widget="many2many_tags" placeholder="Optional: Cross-post to additional connected accounts..."/>
+                            <field name="scheduled_date"/>
+                            <field name="auto_publish"/>
+                            <field name="published_date" readonly="1" invisible="not published_date"/>
+                            <field name="create_date" readonly="1" invisible="not create_date"/>
+                        </group>
+                        <group string="Campaign Strategy &amp; Ownership">
+                            <field name="campaign_objective"/>
+                            <field name="tone"/>
+                            <field name="target_audience"/>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                            <field name="ai_engine_used" readonly="1" invisible="not ai_engine_used"/>
+                        </group>
+                    </group>
+
+                    <!-- Quick AI Prompt Bar Always Accessible Above Tabs -->
+                    <div class="p-3 mb-3 rounded-3 border" style="background: #f8fafc; border-color: #cbd5e1 !important;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong style="color: #0f172a;">
+                                <i class="fa fa-magic text-primary me-1"/> AI Content Instruction
+                            </strong>
+                            <span class="badge text-bg-info">Editable Before &amp; After Generation</span>
+                        </div>
+                        <field name="ai_prompt"
+                               placeholder="Describe the marketing post you want AI to create (e.g. 'Announce our new E-Commerce Starter package for Ugandan retailers with instant Mobile Money checkout')..."
+                               rows="2"/>
+                    </div>
+
+                    <notebook>
+                        <page string="Post Content &amp; Image (Upload or AI)" name="content_media">
+                            <div class="row">
+                                <div class="col-12 col-lg-7">
+                                    <group string="Editable Copy">
+                                        <field name="caption" rows="8"
+                                               placeholder="Write or generate your marketing caption here..."/>
+                                        <field name="call_to_action"
+                                               placeholder="e.g. Book your free demo today at https://www.luwatech.it"/>
+                                        <field name="hashtags"
+                                               placeholder="e.g. #DigitalMarketing #Kampala #BusinessGrowth #SaaS"/>
+                                    </group>
+                                </div>
+                                <div class="col-12 col-lg-5">
+                                    <div class="p-3 border rounded-3 bg-light mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <strong><i class="fa fa-image text-primary me-1"/> Choose Image Source</strong>
+                                            <button name="action_clear_image"
+                                                    string="Remove / Replace Image"
+                                                    type="object"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    icon="fa-trash"
+                                                    invisible="not image"/>
+                                        </div>
+                                        <field name="image_source" widget="radio"/>
+
+                                        <!-- Option A: Upload Custom Image from Computer/Phone -->
+                                        <div class="mt-2 p-2 bg-white border rounded" invisible="image_source != 'upload'">
+                                            <div class="small text-muted mb-1">
+                                                <strong>Upload Your Own Image:</strong> Select any JPG/PNG from your computer or phone to replace the AI image:
+                                            </div>
+                                            <field name="custom_image_upload" filename="custom_image_filename"/>
+                                            <field name="custom_image_filename" invisible="1"/>
+                                        </div>
+
+                                        <!-- Option B: Generate Image with AI -->
+                                        <div class="mt-2 p-2 bg-white border rounded" invisible="image_source != 'ai'">
+                                            <div class="small text-muted mb-1">
+                                                <strong>Describe AI Image:</strong>
+                                            </div>
+                                            <field name="image_prompt" rows="2" placeholder="Describe the image you want AI to generate..."/>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <field name="image_style" nolabel="1"/>
+                                                <field name="image_aspect_ratio" nolabel="1"/>
+                                            </div>
+                                            <button name="action_generate_ai_image"
+                                                    string="Generate AI Image Now"
+                                                    type="object"
+                                                    class="btn btn-sm btn-primary mt-2"
+                                                    icon="fa-magic"/>
+                                        </div>
+
+                                        <!-- Option C: Pick from Saved Media Library -->
+                                        <div class="mt-2 p-2 bg-white border rounded" invisible="image_source != 'library'">
+                                            <div class="small text-muted mb-1">
+                                                <strong>Select Saved Image from Library:</strong>
+                                            </div>
+                                            <field name="ai_image_id"/>
+                                        </div>
+                                    </div>
+
+                                    <group string="Active Post Image Preview (Click Pencil to Upload Directly)">
+                                        <field name="image" widget="image" nolabel="1"
+                                               options="{'size': [350, 350]}"/>
+                                        <field name="image_filename" invisible="1"/>
+                                        <field name="attachment_ids" widget="many2many_binary"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+
+                        <page string="Platform Variations (FB • IG • LinkedIn • X)" name="platform_variations">
+                            <div class="alert alert-info mb-3" role="status">
+                                <i class="fa fa-share-alt me-1"/>
+                                AI automatically generates tailored variations for each social network. You can edit any variation below or click <strong>Apply to Main Caption</strong> to load it as the active post body.
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded-3 h-100 bg-white">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <strong style="color: #1877F2;"><i class="fa fa-facebook-square me-1"/> Facebook Variation</strong>
+                                            <button name="action_use_facebook_variation" type="object"
+                                                    string="Apply to Main Caption" class="btn btn-sm btn-outline-primary"/>
+                                        </div>
+                                        <field name="variation_facebook" nolabel="1" rows="6"
+                                               placeholder="Facebook variation will appear here..."/>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded-3 h-100 bg-white">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <strong style="color: #E1306C;"><i class="fa fa-instagram me-1"/> Instagram Variation</strong>
+                                            <button name="action_use_instagram_variation" type="object"
+                                                    string="Apply to Main Caption" class="btn btn-sm btn-outline-danger"/>
+                                        </div>
+                                        <field name="variation_instagram" nolabel="1" rows="6"
+                                               placeholder="Instagram variation will appear here..."/>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded-3 h-100 bg-white">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <strong style="color: #0A66C2;"><i class="fa fa-linkedin-square me-1"/> LinkedIn Variation</strong>
+                                            <button name="action_use_linkedin_variation" type="object"
+                                                    string="Apply to Main Caption" class="btn btn-sm btn-outline-info"/>
+                                        </div>
+                                        <field name="variation_linkedin" nolabel="1" rows="6"
+                                               placeholder="LinkedIn variation will appear here..."/>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded-3 h-100 bg-white">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <strong style="color: #0f172a;"><i class="fa fa-twitter me-1"/> X (Twitter) Variation</strong>
+                                            <button name="action_use_x_variation" type="object"
+                                                    string="Apply to Main Caption" class="btn btn-sm btn-outline-dark"/>
+                                        </div>
+                                        <field name="variation_x" nolabel="1" rows="6"
+                                               placeholder="Concise X (Twitter) variation under 280 characters..."/>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+
+                        <page string="Complete Post Preview" name="full_preview">
+                            <group>
+                                <field name="full_post_preview" readonly="1" nolabel="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- =========================================================================
+         2. Social Media Post: List View
+         ========================================================================= -->
+    <record id="view_social_media_post_list" model="ir.ui.view">
+        <field name="name">social.media.post.list</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <list string="Social Media Posts"
+                  decoration-muted="state == 'draft'"
+                  decoration-warning="state == 'pending_approval'"
+                  decoration-info="state in ('approved', 'scheduled')"
+                  decoration-success="state == 'published'">
+                <field name="name"/>
+                <field name="platform" widget="badge"
+                       decoration-info="platform == 'facebook'"
+                       decoration-danger="platform == 'instagram'"
+                       decoration-primary="platform == 'linkedin'"
+                       decoration-bf="platform == 'x'"/>
+                <field name="account_id" optional="show"/>
+                <field name="image_source" optional="show"/>
+                <field name="campaign_objective" optional="show"/>
+                <field name="scheduled_date"/>
+                <field name="create_date" optional="show"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'draft'"
+                       decoration-warning="state == 'pending_approval'"
+                       decoration-info="state == 'approved'"
+                       decoration-primary="state == 'scheduled'"
+                       decoration-success="state == 'published'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- =========================================================================
+         3. Social Media Post: Kanban View (Odoo 19 Native Image Widget)
+         ========================================================================= -->
+    <record id="view_social_media_post_kanban" model="ir.ui.view">
+        <field name="name">social.media.post.kanban</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="platform"/>
+                <field name="state"/>
+                <field name="scheduled_date"/>
+                <field name="hashtags"/>
+                <field name="image"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <field name="platform" widget="badge"
+                                   decoration-info="platform == 'facebook'"
+                                   decoration-danger="platform == 'instagram'"
+                                   decoration-primary="platform == 'linkedin'"/>
+                            <field name="state" widget="badge"
+                                   decoration-muted="state == 'draft'"
+                                   decoration-warning="state == 'pending_approval'"
+                                   decoration-info="state == 'approved'"
+                                   decoration-primary="state == 'scheduled'"
+                                   decoration-success="state == 'published'"/>
+                        </div>
+
+                        <div class="mb-2 rounded overflow-hidden border" invisible="not image" style="max-height: 160px;">
+                            <field name="image" widget="image" options="{'img_class': 'w-100 object-fit-cover'}"/>
+                        </div>
+
+                        <strong class="o_kanban_record_title d-block mb-1">
+                            <field name="name"/>
+                        </strong>
+
+                        <div class="text-muted small text-truncate mb-2" invisible="not hashtags">
+                            <field name="hashtags"/>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top small text-muted">
+                            <span>
+                                <i class="fa fa-calendar me-1"/>
+                                <field name="scheduled_date"/>
+                            </span>
+                            <field name="user_id" widget="many2one_avatar_user"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- =========================================================================
+         4. Social Media Post: Content Calendar View
+         ========================================================================= -->
+    <record id="view_social_media_post_calendar" model="ir.ui.view">
+        <field name="name">social.media.post.calendar</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <calendar string="Social Media Content Calendar"
+                      date_start="scheduled_date"
+                      color="platform"
+                      mode="month"
+                      quick_create="0"
+                      event_open_popup="true"
+                      event_limit="5">
+                <field name="name"/>
+                <field name="platform" filters="1"/>
+                <field name="account_id"/>
+                <field name="state" filters="1"/>
+                <field name="campaign_objective"/>
+                <field name="user_id" avatar_field="avatar_128"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- =========================================================================
+         5. Social Media Post: Search & Searchpanel View (Platform & Status Filters)
+         ========================================================================= -->
+    <record id="view_social_media_post_search" model="ir.ui.view">
+        <field name="name">social.media.post.search</field>
+        <field name="model">social.media.post</field>
+        <field name="arch" type="xml">
+            <search string="Search Social Media Posts">
+                <field name="name" string="Post Title or Content"
+                       filter_domain="['|', '|', ('name', 'ilike', self), ('caption', 'ilike', self), ('hashtags', 'ilike', self)]"/>
+                <field name="platform"/>
+                <field name="account_id"/>
+                <field name="state"/>
+                <field name="campaign_objective"/>
+                <field name="user_id"/>
+
+                <!-- Status Filters -->
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Pending Approval" name="filter_pending" domain="[('state', '=', 'pending_approval')]"/>
+                <filter string="Approved" name="filter_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Scheduled" name="filter_scheduled" domain="[('state', '=', 'scheduled')]"/>
+                <filter string="Published" name="filter_published" domain="[('state', '=', 'published')]"/>
+                <separator/>
+
+                <!-- Platform Filters -->
+                <filter string="Facebook" name="filter_facebook" domain="[('platform', '=', 'facebook')]"/>
+                <filter string="Instagram" name="filter_instagram" domain="[('platform', '=', 'instagram')]"/>
+                <filter string="LinkedIn" name="filter_linkedin" domain="[('platform', '=', 'linkedin')]"/>
+                <filter string="X (Twitter)" name="filter_x" domain="[('platform', '=', 'x')]"/>
+                <separator/>
+                <filter string="With Image Attached" name="filter_with_image" domain="[('image', '!=', False)]"/>
+                <filter string="My Posts" name="filter_my_posts" domain="[('user_id', '=', uid)]"/>
+
+                <group>
+                    <filter string="Target Platform" name="group_by_platform" context="{'group_by': 'platform'}"/>
+                    <filter string="Social Account" name="group_by_account" context="{'group_by': 'account_id'}"/>
+                    <filter string="Post Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Campaign Objective" name="group_by_objective" context="{'group_by': 'campaign_objective'}"/>
+                    <filter string="Scheduled Date" name="group_by_scheduled" context="{'group_by': 'scheduled_date:day'}"/>
+                </group>
+
+                <searchpanel>
+                    <field name="platform" icon="fa-share-alt" string="Platforms" enable_counters="1"/>
+                    <field name="state" icon="fa-tasks" string="Post Status" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- =========================================================================
+         6. Window Actions for Posts & Content Calendar
+         ========================================================================= -->
+    <record id="action_social_media_post_all" model="ir.actions.act_window">
+        <field name="name">Social Media Posts</field>
+        <field name="res_model">social.media.post</field>
+        <field name="view_mode">kanban,list,calendar,form</field>
+        <field name="search_view_id" ref="view_social_media_post_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first AI-powered Social Media Post
+            </p>
+            <p>
+                Generate high-converting headlines, marketing captions, hashtags, platform variations (Facebook, Instagram, LinkedIn, X), upload your own image or generate AI visuals, and publish directly to your connected accounts.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_social_media_content_calendar" model="ir.actions.act_window">
+        <field name="name">Content Calendar</field>
+        <field name="res_model">social.media.post</field>
+        <field name="view_mode">calendar,kanban,list,form</field>
+        <field name="search_view_id" ref="view_social_media_post_search"/>
+        <field name="view_id" ref="view_social_media_post_calendar"/>
+    </record>
+</odoo>

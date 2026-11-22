@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- =========================================================================
+         1. Connected Social Media Account: Form View (With Built-in Setup Guide)
+         ========================================================================= -->
+    <record id="view_social_media_account_form" model="ir.ui.view">
+        <field name="name">social.media.account.form</field>
+        <field name="model">social.media.account</field>
+        <field name="arch" type="xml">
+            <form string="Social Media Account">
+                <header>
+                    <button name="action_verify_connection"
+                            string="Test &amp; Connect Account"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-plug"/>
+                    <field name="state" widget="statusbar" statusbar_visible="unconfigured,connected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_account_posts"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-bullhorn">
+                            <field name="published_count" widget="statinfo" string="Published"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name" string="Social Account Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Luwa Tech Official Facebook Page"/>
+                        </h1>
+                    </div>
+
+                    <div class="alert alert-success" role="status" invisible="state != 'connected'">
+                        <i class="fa fa-check-circle me-1"/>
+                        <strong>Account Verified &amp; Ready for Direct Posting!</strong>
+                        Connected as <strong><field name="account_handle" readonly="1" class="oe_inline"/></strong>
+                        (Platform ID: <field name="external_account_id" readonly="1" class="oe_inline"/>).
+                    </div>
+
+                    <div class="alert alert-danger" role="status" invisible="state != 'error'">
+                        <i class="fa fa-exclamation-triangle me-1"/>
+                        <strong>Connection Error:</strong>
+                        <field name="last_error" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <group>
+                        <group string="Platform Selection">
+                            <field name="platform" widget="radio" options="{'horizontal': true}"/>
+                            <field name="sequence"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Verification Details">
+                            <field name="account_handle" readonly="1"/>
+                            <field name="external_account_id" readonly="1"/>
+                            <field name="last_verified_at" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <!-- Platform-Specific Credentials Section -->
+                    <group string="Facebook Page Credentials (Meta Graph API)" invisible="platform != 'facebook'">
+                        <group>
+                            <field name="facebook_page_id" placeholder="e.g. 102938475610293 (or leave 'me' if using a Page Token)"/>
+                            <field name="access_token" password="True" placeholder="EAAG... (Facebook Page Access Token)"/>
+                        </group>
+                        <group>
+                            <field name="meta_app_id" placeholder="Optional Meta App ID"/>
+                            <field name="meta_app_secret" password="True" placeholder="Optional Meta App Secret"/>
+                        </group>
+                    </group>
+
+                    <group string="Instagram Business Credentials (Meta Graph API)" invisible="platform != 'instagram'">
+                        <group>
+                            <field name="instagram_account_id" placeholder="e.g. 17841405822304914 (Instagram Business ID)"/>
+                            <field name="access_token" password="True" placeholder="EAAG... (Meta Page Access Token)"/>
+                        </group>
+                        <group>
+                            <field name="facebook_page_id" placeholder="Linked Facebook Page ID (Optional)"/>
+                        </group>
+                    </group>
+
+                    <group string="LinkedIn API Credentials" invisible="platform != 'linkedin'">
+                        <group>
+                            <field name="linkedin_account_type" widget="radio"/>
+                            <field name="access_token" password="True" placeholder="AQV... (LinkedIn OAuth 2.0 Access Token)"/>
+                        </group>
+                        <group>
+                            <field name="linkedin_author_id" placeholder="Auto-filled on Test &amp; Connect (or Company Page ID)"/>
+                        </group>
+                    </group>
+
+                    <group string="X (Twitter) API v2 Credentials" invisible="platform != 'x'">
+                        <group>
+                            <field name="x_auth_mode" widget="radio"/>
+                            <field name="x_api_key" invisible="x_auth_mode != 'oauth1'" placeholder="Consumer API Key"/>
+                            <field name="x_api_secret" password="True" invisible="x_auth_mode != 'oauth1'" placeholder="Consumer API Key Secret"/>
+                        </group>
+                        <group>
+                            <field name="x_access_token" invisible="x_auth_mode != 'oauth1'" placeholder="Access Token (Read &amp; Write)"/>
+                            <field name="x_access_token_secret" password="True" invisible="x_auth_mode != 'oauth1'" placeholder="Access Token Secret"/>
+                            <field name="access_token" password="True" invisible="x_auth_mode != 'oauth2'" placeholder="OAuth 2.0 User Access Token"/>
+                        </group>
+                    </group>
+
+                    <!-- Step-by-Step Setup Guides per Platform -->
+                    <div class="p-3 rounded-3 border bg-light mt-3" invisible="platform != 'facebook'">
+                        <h5 class="fw-bold text-primary mb-2"><i class="fa fa-facebook-square me-1"/> How to Get Your Free Facebook Page Access Token</h5>
+                        <ol class="mb-0 small">
+                            <li>Open <a href="https://developers.facebook.com/apps/" target="_blank" rel="noopener">Meta for Developers (developers.facebook.com/apps)</a> and create a Business App.</li>
+                            <li>Open the <a href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener">Graph API Explorer</a>, select your App, and under <strong>User or Page</strong> select <strong>Get Page Access Token</strong>.</li>
+                            <li>Grant permissions: <code>pages_manage_posts</code>, <code>pages_read_engagement</code>, and <code>pages_show_list</code>, then select your Facebook Page in the dropdown.</li>
+                            <li>Copy your <strong>Page ID</strong> and <strong>Page Access Token</strong> into the fields above and click <strong>Test &amp; Connect Account</strong>.</li>
+                        </ol>
+                    </div>
+
+                    <div class="p-3 rounded-3 border bg-light mt-3" invisible="platform != 'instagram'">
+                        <h5 class="fw-bold text-danger mb-2"><i class="fa fa-instagram me-1"/> How to Connect Your Instagram Business Account</h5>
+                        <ol class="mb-0 small">
+                            <li>Ensure your Instagram account is switched to a <strong>Professional / Business Account</strong> and linked to your Facebook Page.</li>
+                            <li>In <a href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener">Meta Graph API Explorer</a>, request permissions: <code>instagram_basic</code>, <code>instagram_content_publish</code>, and <code>pages_read_engagement</code>.</li>
+                            <li>Query <code>GET /me/accounts?fields=name,instagram_business_account</code> to copy your <code>instagram_business_account.id</code>.</li>
+                            <li>Paste your <strong>Instagram Business Account ID</strong> and <strong>Access Token</strong> above and click <strong>Test &amp; Connect Account</strong>.</li>
+                        </ol>
+                    </div>
+
+                    <div class="p-3 rounded-3 border bg-light mt-3" invisible="platform != 'linkedin'">
+                        <h5 class="fw-bold text-info mb-2"><i class="fa fa-linkedin-square me-1"/> How to Get Your Free LinkedIn Access Token</h5>
+                        <ol class="mb-0 small">
+                            <li>Go to <a href="https://www.linkedin.com/developers/apps" target="_blank" rel="noopener">LinkedIn Developers (linkedin.com/developers/apps)</a> and create an App linked to your Company Page.</li>
+                            <li>Under the <strong>Products</strong> tab, enable <strong>Share on LinkedIn</strong> and <strong>Sign In with LinkedIn using OpenID Connect</strong> (both are 100% free).</li>
+                            <li>Open the <a href="https://www.linkedin.com/developers/tools/oauth/token-generator" target="_blank" rel="noopener">LinkedIn OAuth Token Generator</a>, check <code>openid</code>, <code>profile</code>, and <code>w_member_social</code> (plus <code>w_organization_social</code> for Company Pages), and generate your token.</li>
+                            <li>Paste the <strong>Access Token</strong> above and click <strong>Test &amp; Connect Account</strong> (your LinkedIn Member ID will be detected automatically).</li>
+                        </ol>
+                    </div>
+
+                    <div class="p-3 rounded-3 border bg-light mt-3" invisible="platform != 'x'">
+                        <h5 class="fw-bold text-dark mb-2"><i class="fa fa-twitter me-1"/> How to Connect X (Twitter) on the Free Developer Tier</h5>
+                        <ol class="mb-0 small">
+                            <li>Go to the <a href="https://developer.x.com/en/portal/dashboard" target="_blank" rel="noopener">X Developer Portal (developer.x.com)</a> and sign up for the <strong>Free Tier</strong> (supports up to 500 posts/month for free).</li>
+                            <li>In your App Settings → <strong>User authentication settings</strong>, set App permissions to <strong>Read and Write</strong>.</li>
+                            <li>Go to the <strong>Keys and tokens</strong> tab and generate: <strong>API Key &amp; Secret (Consumer Keys)</strong> and <strong>Access Token &amp; Secret</strong>.</li>
+                            <li>Paste all 4 keys above and click <strong>Test &amp; Connect Account</strong>.</li>
+                        </ol>
+                    </div>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- =========================================================================
+         2. Connected Social Media Account: Kanban & List Views
+         ========================================================================= -->
+    <record id="view_social_media_account_kanban" model="ir.ui.view">
+        <field name="name">social.media.account.kanban</field>
+        <field name="model">social.media.account</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="platform"/>
+                <field name="state"/>
+                <field name="account_handle"/>
+                <field name="published_count"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <field name="platform" widget="badge"
+                                   decoration-info="platform == 'facebook'"
+                                   decoration-danger="platform == 'instagram'"
+                                   decoration-primary="platform == 'linkedin'"/>
+                            <field name="state" widget="badge"
+                                   decoration-muted="state == 'unconfigured'"
+                                   decoration-success="state == 'connected'"
+                                   decoration-danger="state == 'error'"/>
+                        </div>
+                        <strong class="o_kanban_record_title d-block mb-1">
+                            <field name="name"/>
+                        </strong>
+                        <div class="text-muted small mb-2" invisible="not account_handle">
+                            Handle: <strong><field name="account_handle"/></strong>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top small text-muted">
+                            <span><field name="published_count"/> Published Posts</span>
+                            <button name="action_verify_connection" type="object" class="btn btn-sm btn-outline-primary">
+                                Test &amp; Connect
+                            </button>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_social_media_account_list" model="ir.ui.view">
+        <field name="name">social.media.account.list</field>
+        <field name="model">social.media.account</field>
+        <field name="arch" type="xml">
+            <list string="Social Media Accounts">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="platform" widget="badge"/>
+                <field name="account_handle"/>
+                <field name="external_account_id"/>
+                <field name="published_count"/>
+                <field name="last_verified_at"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'unconfigured'"
+                       decoration-success="state == 'connected'"
+                       decoration-danger="state == 'error'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_social_media_account" model="ir.actions.act_window">
+        <field name="name">Social Media Accounts (Facebook, Instagram, LinkedIn, X)</field>
+        <field name="res_model">social.media.account</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>
