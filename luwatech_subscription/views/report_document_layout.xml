@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ==================================================================== -->
+    <!-- EXECUTIVE LUWA TECH DOCUMENT LAYOUT                                  -->
+    <!-- Symmetrical equal-width triple-brand bars & refined letterhead       -->
+    <!-- ==================================================================== -->
+    <template id="external_layout_luwatech">
+        <!-- ======================== HEADER ======================== -->
+        <div t-attf-class="header o_company_#{company.id}_layout" style="font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; border: none !important;">
+            <style>
+                .luwa-doc-bare, .luwa-doc-bare tr, .luwa-doc-bare td {
+                    border: none !important;
+                    border-width: 0 !important;
+                    border-color: transparent !important;
+                    outline: none !important;
+                }
+            </style>
+            <!-- Full-bleed Top Equal-Width Triple-Brand Accent Bar (33.33% each) -->
+            <table class="luwa-doc-bare" style="width: 100%; border-collapse: collapse; margin: 0; padding: 0; border: 0; table-layout: fixed;">
+                <tr style="border: 0;">
+                    <td style="width: 33.33%; height: 4px; background-color: #0f172a; padding: 0; border: 0;"/>
+                    <td style="width: 33.34%; height: 4px; background-color: #00b4d8; padding: 0; border: 0;"/>
+                    <td style="width: 33.33%; height: 4px; background-color: #f26522; padding: 0; border: 0;"/>
+                </tr>
+            </table>
+
+            <!-- Executive Letterhead Band -->
+            <div style="background-color: #f8fafc; border-bottom: 1px solid #cbd5e1; padding: 13px 36px 11px 36px;">
+                <table class="luwa-doc-bare" style="width: 100%; border-collapse: collapse; border: 0;">
+                    <tr style="border: 0;">
+                        <!-- Left: Logo + LuwaTech Wordmark + Single-Line Brand Tagline -->
+                        <td style="width: 60%; vertical-align: middle; padding: 0 16px 0 0; border: 0;">
+                            <table class="luwa-doc-bare" style="border-collapse: collapse; border: 0;">
+                                <tr style="border: 0;">
+                                    <td style="vertical-align: middle; padding: 0 12px 0 0; border: 0;">
+                                        <img t-if="company.logo"
+                                             t-att-src="image_data_uri(company.logo)"
+                                             style="max-height: 44px; max-width: 54px; display: block;"
+                                             alt="Luwa Tech Logo"/>
+                                    </td>
+                                    <td style="vertical-align: middle; padding: 0; border: 0;">
+                                        <div style="font-size: 24px; font-weight: 900; line-height: 1.05; letter-spacing: -0.5px;">
+                                            <span style="color: #0f172a;">Luwa</span><span style="color: #00a8cc;">Tech</span><span style="color: #f26522;">.</span>
+                                        </div>
+                                        <div style="font-size: 7.4px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.7px; margin-top: 3px; white-space: nowrap;">
+                                            <t t-if="company.report_header">
+                                                <span t-out="company.report_header"/>
+                                            </t>
+                                            <t t-else="">
+                                                DIGITAL AGENCY &#8226; CUSTOM SAAS &amp; ODOO ERP &#8226; IT TRAINING
+                                            </t>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <!-- Right: Structured Company Contact & Address Card -->
+                        <td style="width: 40%; vertical-align: middle; text-align: right; padding: 0 0 0 16px; border: 0; border-left: 2px solid #cbd5e1 !important;">
+                            <div style="font-size: 11px; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+                                <span t-esc="company.name or 'Luwa Tech'"/>
+                            </div>
+                            <div style="font-size: 8.8px; color: #475569; line-height: 1.4;">
+                                <t t-set="addr_line" t-value="', '.join([x.strip() for x in [company.street, company.street2] if x and x.strip()])"/>
+                                <t t-if="addr_line">
+                                    <span t-esc="addr_line"/><t t-if="company.country_id"> &#183; <span t-esc="company.country_id.name"/></t>
+                                </t>
+                                <t t-else="">
+                                    Plot 851 Serumaga Rd, Bukoto, Kampala &#183; Uganda
+                                </t>
+                            </div>
+                            <div style="font-size: 8.8px; color: #0f172a; font-weight: 600; margin-top: 2px;">
+                                <span t-if="company.phone" t-esc="company.phone"/>
+                                <span t-if="company.phone and company.email" style="color: #94a3b8;"> &#160;|&#160; </span>
+                                <span t-if="company.email" t-esc="company.email"/>
+                            </div>
+                            <div style="font-size: 8.8px; margin-top: 1px;">
+                                <span t-if="company.website" style="color: #0096c7; font-weight: 700;" t-esc="company.website"/>
+                                <t t-if="not forced_vat and company.vat">
+                                    <span style="color: #94a3b8;"> &#160;|&#160; </span>
+                                    <span style="color: #64748b; font-weight: 600;">
+                                        <t t-esc="company.country_id.vat_label or 'TIN'"/>: <span t-esc="company.vat"/>
+                                    </span>
+                                </t>
+                                <t t-elif="forced_vat">
+                                    <span style="color: #94a3b8;"> &#160;|&#160; </span>
+                                    <span style="color: #64748b; font-weight: 600;">
+                                        <t t-esc="company.country_id.vat_label or 'TIN'"/>: <span t-esc="forced_vat"/>
+                                    </span>
+                                </t>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ======================== BODY ======================== -->
+        <t t-set="layout_background_url"
+           t-value="'data:image/png;base64,%s' % company.layout_background_image.decode('utf-8') if company.layout_background_image and company.layout_background == 'Custom' else
+                '/base/static/img/demo_logo_report.png' if company.layout_background == 'Demo logo' else ''"/>
+        <div t-attf-class="article o_report_layout_standard o_table_standard o_company_#{company.id}_layout o_snail_mail {{'o_report_layout_background' if company.layout_background != 'Blank' else ''}}"
+             t-attf-style="padding: 4px 36px 0 36px; {{ 'background-image: url(%s);' % layout_background_url if layout_background_url else '' }}"
+             t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <h2 t-out="layout_document_title"/>
+            <t t-out="0"/>
+        </div>
+
+        <!-- ======================== FOOTER ======================== -->
+        <div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}" style="font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; border: none !important;">
+            <style>
+                .luwa-doc-bare, .luwa-doc-bare tr, .luwa-doc-bare td {
+                    border: none !important;
+                    border-width: 0 !important;
+                    border-color: transparent !important;
+                    outline: none !important;
+                }
+            </style>
+            <!-- Crisp Equal-Width Split Accent Divider (33.33% each) -->
+            <table class="luwa-doc-bare" style="width: 100%; border-collapse: collapse; margin: 0; border: 0; table-layout: fixed;">
+                <tr style="border: 0;">
+                    <td style="width: 33.33%; height: 2px; background-color: #0f172a; padding: 0; border: 0;"/>
+                    <td style="width: 33.34%; height: 2px; background-color: #00b4d8; padding: 0; border: 0;"/>
+                    <td style="width: 33.33%; height: 2px; background-color: #f26522; padding: 0; border: 0;"/>
+                </tr>
+            </table>
+
+            <!-- Structured Executive Footer Bar -->
+            <div style="background-color: #f8fafc; padding: 9px 36px 8px 36px;">
+                <table class="luwa-doc-bare" style="width: 100%; border-collapse: collapse; border: 0;">
+                    <tr style="border: 0;">
+                        <td style="width: 78%; vertical-align: middle; padding: 0; text-align: left; border: 0;">
+                            <div style="font-size: 8.8px; font-weight: 700; color: #0f172a;">
+                                <span t-esc="company.name or 'Luwa Tech'"/>
+                                <span style="color: #94a3b8;"> &#160;|&#160; </span>
+                                <span style="color: #475569; font-weight: 500;" t-esc="company.phone or '+256 787 819 453'"/>
+                                <span style="color: #94a3b8;"> &#160;|&#160; </span>
+                                <span style="color: #475569; font-weight: 500;" t-esc="company.email or 'info@luwatech.it'"/>
+                                <span style="color: #94a3b8;"> &#160;|&#160; </span>
+                                <span style="color: #0096c7; font-weight: 700;" t-esc="company.website or 'https://www.luwatech.it'"/>
+                            </div>
+                            <div style="font-size: 7.8px; color: #64748b; margin-top: 2px;">
+                                Enterprise Odoo ERP &#8226; Custom SaaS &amp; Mobile Apps &#8226; E-Commerce &amp; Mobile Money &#8226; URA EFRIS &#8226; WhatsApp Business Automation
+                            </div>
+                        </td>
+                        <td style="width: 22%; vertical-align: middle; text-align: right; padding: 0; border: 0;">
+                            <div t-if="report_type == 'pdf' and display_name_in_footer"
+                                 style="font-size: 8px; color: #64748b; margin-bottom: 2px;"
+                                 t-out="o.name"/>
+                            <div t-if="report_type == 'pdf'" style="display: inline-block; background-color: #0f172a; color: #ffffff; padding: 2px 10px; border-radius: 999px; font-size: 8.5px; font-weight: 700; letter-spacing: 0.3px;">
+                                Page <span class="page"/> of <span class="topage"/>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Full-bleed Bottom Equal-Width Triple-Brand Edge Strip (33.33% each) -->
+            <table class="luwa-doc-bare" style="width: 100%; border-collapse: collapse; margin: 0; padding: 0; border: 0; table-layout: fixed;">
+                <tr style="border: 0;">
+                    <td style="width: 33.33%; height: 4px; background-color: #0f172a; padding: 0; border: 0;"/>
+                    <td style="width: 33.34%; height: 4px; background-color: #00b4d8; padding: 0; border: 0;"/>
+                    <td style="width: 33.33%; height: 4px; background-color: #f26522; padding: 0; border: 0;"/>
+                </tr>
+            </table>
+        </div>
+    </template>
+
+    <!-- Register in Odoo's Document Layout Picker (Settings -> Configure Document Layout) -->
+    <record id="report_layout_luwatech_executive" model="report.layout">
+        <field name="name">Luwa Tech Executive</field>
+        <field name="sequence">1</field>
+        <field name="view_id" ref="luwatech_subscription.external_layout_luwatech"/>
+        <field name="image">/web/static/img/preview_standard.png</field>
+        <field name="pdf">/web/static/pdf/preview_standard.pdf</field>
+    </record>
+</odoo>

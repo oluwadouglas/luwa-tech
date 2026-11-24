@@ -1,0 +1,13 @@
+// Override Odoo default purple palette with Luwa Tech Brand Colors
+$o-user-color-palette: map-merge($o-user-color-palette, (
+    'o-color-1': #f26522,
+    'o-color-2': #00b4d8,
+    'o-color-3': #f6f9fc,
+    'o-color-4': #ffffff,
+    'o-color-5': #0d1d2d,
+));
+
+$o-user-theme-color-palette: map-merge($o-user-theme-color-palette, (
+    'primary': #f26522,
+    'secondary': #0d1d2d,
+));

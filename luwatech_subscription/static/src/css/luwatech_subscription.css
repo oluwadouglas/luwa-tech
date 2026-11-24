@@ -1,0 +1,4002 @@
+/* ==========================================================================
+   Luwa Tech Brand Theme Override (Replace Odoo Default Purple Everywhere)
+   Brand Palette: Navy #0d1d2d | Orange #f26522 | Cyan #00b4d8
+   ========================================================================== */
+:root,
+body,
+#wrapwrap,
+.o_cc1,
+.o_cc2 {
+    --primary: #f26522 !important;
+    --secondary: #0d1d2d !important;
+    --o-color-1: #f26522 !important;
+    --o-color-2: #00b4d8 !important;
+    --o-color-5: #0d1d2d !important;
+    --bs-primary: #f26522 !important;
+    --bs-primary-rgb: 242, 101, 34 !important;
+    --bs-link-color: #0d1d2d;
+    --bs-link-hover-color: #f26522;
+    --btn-primary-bg: #f26522 !important;
+    --btn-primary-border-color: #f26522 !important;
+    --o-cc1-btn-primary: #f26522 !important;
+    --o-cc1-btn-primary-border: #f26522 !important;
+}
+
+/* Fix Services Dropdown Width so long titles never overflow out of the box */
+.mainmenu-six .main-menu .navigation > li > ul {
+    width: max-content !important;
+    min-width: 340px !important;
+    max-width: 440px !important;
+    padding: 14px 0 !important;
+    border-radius: 10px !important;
+    border-top: 3px solid #f26522 !important;
+    box-shadow: 0 18px 42px rgba(13, 29, 45, 0.18) !important;
+    z-index: 9999 !important;
+}
+
+.mainmenu-six .main-menu .navigation > li > ul > li {
+    padding: 0 22px !important;
+    margin-bottom: 2px !important;
+    width: 100% !important;
+}
+
+.mainmenu-six .main-menu .navigation > li > ul > li > a {
+    font-size: 14.5px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    line-height: 1.45 !important;
+    padding: 8px 0 !important;
+    white-space: nowrap !important;
+    color: #12263a !important;
+}
+
+.mainmenu-six .main-menu .navigation > li > ul > li:hover > a {
+    color: #f26522 !important;
+    padding-left: 4px !important;
+}
+
+#wrapwrap main .btn-primary,
+#wrapwrap main .o_wsale_product_btn_primary,
+#wrapwrap main a.btn-primary,
+#wrapwrap main button.btn-primary,
+.modal .btn-primary {
+    background-color: #f26522 !important;
+    border-color: #f26522 !important;
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+#wrapwrap main .btn-primary:hover,
+#wrapwrap main .btn-primary:focus,
+#wrapwrap main .btn-primary:active,
+#wrapwrap main .o_wsale_product_btn_primary:hover,
+.modal .btn-primary:hover {
+    background-color: #d95316 !important;
+    border-color: #d95316 !important;
+    color: #ffffff !important;
+}
+
+#wrapwrap main .btn-outline-primary {
+    color: #f26522 !important;
+    border-color: #f26522 !important;
+}
+
+#wrapwrap main .btn-outline-primary:hover {
+    background-color: #f26522 !important;
+    border-color: #f26522 !important;
+    color: #ffffff !important;
+}
+
+#wrapwrap main .text-primary {
+    color: #f26522 !important;
+}
+
+#wrapwrap main .bg-primary,
+#wrapwrap main .badge.text-bg-primary,
+#wrapwrap main .page-item.active .page-link {
+    background-color: #f26522 !important;
+    border-color: #f26522 !important;
+    color: #ffffff !important;
+}
+
+#wrapwrap main .border-primary {
+    border-color: #f26522 !important;
+}
+
+#wrapwrap main .form-control:focus,
+#wrapwrap main .form-select:focus {
+    border-color: #f26522 !important;
+    box-shadow: 0 0 0 0.2rem rgba(242, 101, 34, 0.2) !important;
+}
+
+#wrapwrap main .o_wsale_checkout_page a,
+#wrapwrap main .oe_website_sale a:not(.btn):not(.nav-link) {
+    color: #0d1d2d;
+}
+
+#wrapwrap main .o_wsale_checkout_page a:hover,
+#wrapwrap main .oe_website_sale a:not(.btn):not(.nav-link):hover {
+    color: #f26522;
+}
+
+/* Custom Plan / Custom Pricing styling */
+.luwa-custom-price-text {
+    color: #0d1d2d !important;
+    font-size: 18px !important;
+    font-weight: 800 !important;
+}
+
+.luwa-custom-price-pill {
+    display: inline-block;
+    background: #fff4ed;
+    color: #d9480f;
+    border: 1px solid #ffd8b8;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.luwa-product-custom-box {
+    background: #f8fbfe;
+    border: 1px solid #dce8f2;
+    border-left: 4px solid #0d1d2d;
+    border-radius: 10px;
+    padding: 16px 18px;
+}
+
+.luwa-custom-cta-btn {
+    padding: 12px 24px !important;
+    border-radius: 10px !important;
+}
+
+.luwa-sub-note {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    color: #92400e;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.luwa-sub-pill--warn {
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+/* Ensure FA5 Solid & Brand icons never fall back to FontAwesome 4.7 */
+.luwa-sub-section .fas,
+.luwa-sub-hero .fas,
+.luwa-shop-sub-pill .fas,
+.luwa-product-sub-box .fas,
+.luwa-product-custom-box .fas,
+.luwa-custom-cta-btn .fas,
+.luwa-shop-section .fas,
+.luwa-footer-menu .fas,
+.luwa-related-service-pill .fas,
+.luwa-service-detail-tag .fas,
+.luwa-sub-note .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+    font-style: normal !important;
+}
+
+.luwa-sub-section .fab,
+.luwa-related-service-pill .fab,
+.luwa-service-detail-tag .fab {
+    font-family: "Font Awesome 5 Brands" !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+
+.luwa-shop-card__img--logo {
+    background: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.luwa-shop-card__img--logo img {
+    object-fit: contain !important;
+}
+
+/* Flowing Horizontal Partner Logos Marquee */
+.luwa-partners-heading {
+    font-size: 26px;
+    font-weight: 800;
+    color: #12263a;
+    margin: 0;
+}
+
+.luwa-partner-marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 14px 0;
+    mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+.luwa-partner-track {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    width: max-content;
+    animation: luwaPartnerFlow 40s linear infinite;
+}
+
+.luwa-partner-marquee:hover .luwa-partner-track {
+    animation-play-state: paused;
+}
+
+@keyframes luwaPartnerFlow {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.luwa-partner-logo-box {
+    flex: 0 0 auto;
+    width: 225px;
+    height: 98px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #e2ebf2;
+    border-radius: 14px;
+    padding: 14px 20px;
+    box-shadow: 0 6px 20px rgba(13, 29, 45, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.luwa-partner-logo-box:hover {
+    transform: translateY(-4px);
+    border-color: #f26522;
+    box-shadow: 0 14px 28px rgba(13, 29, 45, 0.12);
+}
+
+.luwa-partner-logo-box img {
+    max-height: 66px !important;
+    max-width: 100%;
+    width: auto;
+    object-fit: contain;
+    border-radius: 0 !important;
+}
+
+/* Dedicated Service Detail Pages */
+.luwa-service-breadcrumb {
+    font-size: 13.5px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.luwa-service-breadcrumb a {
+    color: #5eead4;
+    text-decoration: none;
+}
+
+.luwa-service-media-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e2ebf2;
+    box-shadow: 0 16px 38px rgba(13, 29, 45, 0.1);
+}
+
+.luwa-service-detail-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 34px;
+    border: 1px solid #e2ebf2;
+    box-shadow: 0 12px 32px rgba(13, 29, 45, 0.06);
+}
+
+.luwa-service-detail-tag {
+    display: inline-block;
+    background: #fff4ed;
+    color: #f26522;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+}
+
+.luwa-service-detail-heading {
+    font-size: 28px;
+    font-weight: 800;
+    color: #12263a;
+    margin: 0;
+}
+
+.luwa-related-service-pill {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: #ffffff;
+    border: 1px solid #e2ebf2;
+    border-radius: 12px;
+    text-decoration: none !important;
+    color: #12263a !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.luwa-related-service-pill:hover {
+    transform: translateY(-2px);
+    border-color: #f26522;
+    box-shadow: 0 10px 22px rgba(13, 29, 45, 0.08);
+}
+
+.luwa-related-service-pill > i:first-child {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #f0f9ff;
+    color: #0096c7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.luwa-related-service-pill strong {
+    display: block;
+    font-size: 14.5px;
+    line-height: 1.3;
+}
+
+.luwa-related-service-pill small {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.luwa-nav-badge--cyan {
+    background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%) !important;
+}
+
+.luwa-sub-hero {
+    background: linear-gradient(135deg, #0d1d2d 0%, #16324f 100%);
+    color: #ffffff;
+    padding: 72px 0 56px;
+}
+
+.luwa-sub-hero__kicker {
+    display: inline-block;
+    background: rgba(0, 180, 216, 0.18);
+    border: 1px solid rgba(0, 180, 216, 0.45);
+    color: #5eead4;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+}
+
+.luwa-sub-hero__title {
+    font-size: 40px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 14px;
+}
+
+.luwa-sub-hero__subtitle {
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 17px;
+    color: #cbd5e1;
+    line-height: 1.65;
+}
+
+.luwa-sub-section {
+    padding: 80px 0;
+    background: #f6f9fc;
+}
+
+.luwa-sub-section--home {
+    border-bottom: 1px solid #e6edf2;
+}
+
+.luwa-sub-home-lead {
+    max-width: 700px;
+    margin: 12px auto 0;
+    color: #526478;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.luwa-sub-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e2ebf2;
+    border-top: 5px solid #00b4d8;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 32px rgba(13, 29, 45, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.luwa-sub-card--featured {
+    border-top-color: #f26522;
+    box-shadow: 0 16px 38px rgba(242, 101, 34, 0.14);
+}
+
+.luwa-sub-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 44px rgba(13, 29, 45, 0.14);
+}
+
+.luwa-sub-card__media {
+    position: relative;
+    height: 220px;
+    background: #0d1d2d;
+    overflow: hidden;
+}
+
+.luwa-sub-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.luwa-sub-card__badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.luwa-sub-card__badge--orange {
+    background: linear-gradient(135deg, #f26522 0%, #e63946 100%);
+}
+
+.luwa-sub-card__body {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.luwa-sub-card__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: #0096c7;
+    margin-bottom: 8px;
+}
+
+.luwa-sub-card--featured .luwa-sub-card__eyebrow {
+    color: #f26522;
+}
+
+.luwa-sub-card__title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+}
+
+.luwa-sub-card__title a {
+    color: #12263a;
+    text-decoration: none;
+}
+
+.luwa-sub-card__title a:hover {
+    color: #f26522;
+}
+
+.luwa-sub-card__desc {
+    color: #526478;
+    font-size: 14.5px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+}
+
+.luwa-sub-card__price-box {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 14px 18px;
+    background: #f8fbfe;
+    border: 1px solid #e6edf2;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.luwa-sub-card__price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #12263a;
+}
+
+.luwa-sub-card__period {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.luwa-sub-card__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.luwa-sub-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.luwa-sub-pill--on {
+    background: #e0f7fa;
+    color: #006d77;
+}
+
+.luwa-sub-pill--gateway {
+    background: #fff1e6;
+    color: #d9480f;
+    border: 1px solid #ffd8b8;
+}
+
+.luwa-sub-pill--off {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.luwa-sub-card__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+    flex: 1;
+}
+
+.luwa-sub-card__features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 14px;
+    color: #334155;
+    margin-bottom: 9px;
+    line-height: 1.45;
+}
+
+.luwa-sub-card__features li i {
+    color: #06d6a0;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.luwa-sub-card--featured .luwa-sub-card__features li i {
+    color: #f26522;
+}
+
+.luwa-sub-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.luwa-sub-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.luwa-sub-btn--orange {
+    background: linear-gradient(135deg, #f26522 0%, #e63946 100%);
+}
+
+.luwa-sub-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+}
+
+.luwa-sub-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cbd5e1;
+    color: #1e293b !important;
+    background: #ffffff;
+    font-weight: 700;
+    font-size: 13.5px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    text-decoration: none !important;
+}
+
+.luwa-sub-btn-outline:hover {
+    border-color: #12263a;
+    background: #f8fafc;
+}
+
+.luwa-sub-compare {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid #e2ebf2;
+}
+
+.luwa-sub-compare__title {
+    font-weight: 800;
+    color: #12263a;
+    margin-bottom: 20px;
+}
+
+.luwa-sub-compare__highlight {
+    background: #fff4ed !important;
+    color: #c2410c;
+}
+
+.luwa-product-sub-box {
+    background: #f8fbfe;
+    border: 1px solid #dce8f2;
+    border-left: 4px solid #f26522;
+    border-radius: 10px;
+    padding: 16px 18px;
+}
+
+
+/* ==========================================================================
+   Enhanced About Us Section: Cards, Cool Icons & Animated Watermark
+   ========================================================================== */
+.luwa-about-enhanced {
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 110px 0 165px !important;
+    background: #ffffff !important;
+}
+
+.luwa-about-card {
+    background: #ffffff;
+    border: 1px solid #e6edf2;
+    border-top: 4px solid #00b4d8;
+    border-radius: 16px;
+    padding: 26px 22px 24px;
+    height: 100%;
+    box-shadow: 0 10px 28px rgba(13, 29, 45, 0.06);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.3s ease;
+    will-change: transform, opacity;
+}
+
+.luwa-about-card--orange { border-top-color: #f26522; }
+.luwa-about-card--emerald { border-top-color: #06d6a0; }
+.luwa-about-card--navy { border-top-color: #0d1d2d; }
+
+.luwa-about-card.is-below {
+    opacity: 0;
+    transform: translateY(38px) scale(0.96);
+}
+
+.luwa-about-card.is-above {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.96);
+}
+
+.luwa-about-card.is-in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.luwa-about-card.is-in-view:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(13, 29, 45, 0.12);
+}
+
+.luwa-about-card__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+    box-shadow: 0 8px 20px rgba(0, 180, 216, 0.28);
+}
+
+.luwa-about-card--orange .luwa-about-card__icon {
+    background: linear-gradient(135deg, #f26522 0%, #e63946 100%);
+    box-shadow: 0 8px 20px rgba(242, 101, 34, 0.28);
+}
+
+.luwa-about-card--emerald .luwa-about-card__icon {
+    background: linear-gradient(135deg, #06d6a0 0%, #059669 100%);
+    box-shadow: 0 8px 20px rgba(6, 214, 160, 0.28);
+}
+
+.luwa-about-card--navy .luwa-about-card__icon {
+    background: linear-gradient(135deg, #0d1d2d 0%, #16324f 100%);
+    box-shadow: 0 8px 20px rgba(13, 29, 45, 0.25);
+}
+
+.luwa-about-card__icon .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+    font-style: normal !important;
+}
+
+.luwa-about-card__icon .fab {
+    font-family: "Font Awesome 5 Brands" !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+
+.luwa-about-card__title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #12263a;
+    margin: 0 0 8px 0;
+}
+
+.luwa-about-card__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #526478;
+    margin: 0;
+}
+
+/* Giant Scroll-Animated Bottom Watermark ("LUWA TECH") */
+.luwa-about-watermark {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -14px;
+    text-align: center;
+    font-size: clamp(54px, 12.5vw, 185px);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(13, 29, 45, 0.055);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.luwa-about-watermark.is-below {
+    opacity: 0;
+    transform: translateY(58px) scale(0.94);
+}
+
+.luwa-about-watermark.is-above {
+    opacity: 0;
+    transform: translateY(-48px) scale(0.96);
+}
+
+.luwa-about-watermark.is-in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+
+/* ==========================================================================
+   Modern Animated "Why Partner With Luwa Tech" Section (#benefits)
+   ========================================================================== */
+.luwa-why-section {
+    position: relative;
+    overflow: hidden;
+    padding: 105px 0;
+    background: linear-gradient(135deg, #091523 0%, #0f243b 55%, #122d48 100%);
+    color: #ffffff;
+}
+
+.luwa-why-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 46px 46px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.luwa-why-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(85px);
+    opacity: 0.38;
+    pointer-events: none;
+    z-index: 0;
+    animation: luwaOrbFloat 11s ease-in-out infinite alternate;
+}
+
+.luwa-why-orb--1 {
+    width: 380px;
+    height: 380px;
+    background: #00b4d8;
+    top: -110px;
+    left: -90px;
+}
+
+.luwa-why-orb--2 {
+    width: 420px;
+    height: 420px;
+    background: #f26522;
+    bottom: -140px;
+    right: -100px;
+    animation-delay: -5s;
+}
+
+@keyframes luwaOrbFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(35px, -28px) scale(1.08); }
+}
+
+.luwa-why-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(0, 180, 216, 0.14);
+    border: 1px solid rgba(0, 180, 216, 0.4);
+    color: #5eead4;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+
+.luwa-why-pulse {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #06d6a0;
+    box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.7);
+    animation: luwaPulseDot 2s infinite;
+    flex-shrink: 0;
+}
+
+@keyframes luwaPulseDot {
+    0% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(6, 214, 160, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(6, 214, 160, 0); }
+}
+
+.luwa-why-title {
+    font-size: clamp(30px, 3.4vw, 42px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.luwa-why-gradient-text {
+    background: linear-gradient(135deg, #06d6a0 0%, #00b4d8 50%, #ff8c42 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.luwa-why-lead {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin-bottom: 24px;
+}
+
+.luwa-why-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.luwa-why-stat {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 12px 18px;
+    min-width: 135px;
+}
+
+.luwa-why-stat strong {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.15;
+}
+
+.luwa-why-stat span {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.luwa-why-photo-wrap {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.35);
+    max-height: 280px;
+}
+
+.luwa-why-photo-wrap img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.luwa-why-photo-wrap:hover img {
+    transform: scale(1.04);
+}
+
+.luwa-why-photo-badge {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(9, 21, 35, 0.84);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    padding: 10px 16px;
+}
+
+.luwa-why-photo-badge strong {
+    display: block;
+    font-size: 13.5px;
+    color: #ffffff;
+}
+
+.luwa-why-photo-badge small {
+    display: block;
+    font-size: 11.5px;
+    color: #94a3b8;
+}
+
+/* Right Column Interactive Bento Cards */
+.luwa-why-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.luwa-why-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 26px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    text-decoration: none !important;
+    color: #ffffff !important;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+    will-change: transform, opacity;
+}
+
+.luwa-why-card:hover {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.28);
+    transform: translateX(6px) translateY(-2px) !important;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.3);
+}
+
+.luwa-why-card__icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ffffff;
+    flex-shrink: 0;
+    transition: transform 0.35s ease;
+}
+
+.luwa-why-card:hover .luwa-why-card__icon {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+.luwa-why-card--cyan .luwa-why-card__icon {
+    background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+    box-shadow: 0 10px 24px rgba(0, 180, 216, 0.35);
+}
+
+.luwa-why-card--orange .luwa-why-card__icon {
+    background: linear-gradient(135deg, #f26522 0%, #e63946 100%);
+    box-shadow: 0 10px 24px rgba(242, 101, 34, 0.35);
+}
+
+.luwa-why-card--emerald .luwa-why-card__icon {
+    background: linear-gradient(135deg, #06d6a0 0%, #059669 100%);
+    box-shadow: 0 10px 24px rgba(6, 214, 160, 0.35);
+}
+
+.luwa-why-card__icon .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+    font-style: normal !important;
+}
+
+.luwa-why-card__content {
+    flex: 1;
+}
+
+.luwa-why-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.luwa-why-card__top h4 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+}
+
+.luwa-why-card__arrow {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #ffffff;
+    transition: transform 0.25s ease, background 0.25s ease;
+    flex-shrink: 0;
+}
+
+.luwa-why-card__arrow .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+}
+
+.luwa-why-card:hover .luwa-why-card__arrow {
+    background: #f26522;
+    transform: translateX(4px);
+}
+
+.luwa-why-card__content p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #cbd5e1;
+    margin: 0 0 12px 0;
+}
+
+.luwa-why-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.luwa-why-card__tags span {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+/* Bidirectional Scroll Reveal for Why Section */
+.luwa-why-reveal.is-below {
+    opacity: 0;
+    transform: translateY(38px) scale(0.97);
+}
+
+.luwa-why-reveal.is-above {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.97);
+}
+
+.luwa-why-reveal.is-in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* === Website Builder Safety & Luwa Tech Blog Engine Styling === */
+body.editor_enable .luwa-scroll-reveal,
+body.editor_enable .luwa-about-card,
+body.editor_enable .luwa-about-watermark,
+body.editor_enable .luwa-why-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* Blog Hero & Floating Header Clearance */
+#wrap.website_blog #o_wblog_blog_top .o_record_cover_container,
+#wrap.website_blog #o_wblog_post_top .o_record_cover_container {
+    padding-top: 118px !important;
+    padding-bottom: 58px !important;
+    min-height: 360px !important;
+}
+
+#wrap.website_blog #o_wblog_blog_top .o_wblog_post_name,
+#wrap.website_blog #o_wblog_post_top .o_wblog_post_name {
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+    color: #ffffff !important;
+}
+
+#wrap.website_blog #o_wblog_blog_top .o_wblog_post_subtitle,
+#wrap.website_blog #o_wblog_post_top .o_wblog_post_subtitle {
+    color: rgba(255, 255, 255, 0.88) !important;
+    font-size: 1.15rem;
+    max-width: 720px;
+}
+
+#wrap.website_blog #o_wblog_post_top .o_wblog_post_subtitle {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Blog Index Cards & Sidebar */
+#wrap.website_blog #o_wblog_index_content {
+    background: #f8fafc !important;
+    padding-top: 18px;
+    padding-bottom: 48px;
+}
+
+#wrap.website_blog .o_wblog_post.card {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(13, 29, 45, 0.05) !important;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    background: #ffffff;
+}
+
+#wrap.website_blog .o_wblog_post.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(13, 29, 45, 0.12) !important;
+    border-color: rgba(242, 101, 34, 0.35) !important;
+}
+
+#wrap.website_blog .o_wblog_post_title {
+    color: #0d1d2d !important;
+    font-weight: 800 !important;
+}
+
+#wrap.website_blog a.o_wblog_post_title:hover,
+#wrap.website_blog .o_wblog_post.card a:hover {
+    color: #f26522 !important;
+}
+
+.luwa-blog-sidebar-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px !important;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(13, 29, 45, 0.04);
+}
+
+.luwa-blog-sidebar-kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #f26522;
+    margin-bottom: 4px;
+}
+
+/* Restore proper bullets & prose typography inside blog articles (overriding theme ul reset) */
+#wrap.website_blog .o_wblog_post_content_field {
+    color: #1e293b;
+    font-size: 1.06rem;
+    line-height: 1.78;
+}
+
+#wrap.website_blog .o_wblog_post_content_field h2,
+#wrap.website_blog .o_wblog_post_content_field h3 {
+    color: #0d1d2d;
+    font-weight: 800;
+    margin-top: 2rem;
+    margin-bottom: 0.85rem;
+}
+
+#wrap.website_blog .o_wblog_post_content_field p {
+    margin-bottom: 1.15rem;
+}
+
+#wrap.website_blog .o_wblog_post_content_field ul {
+    list-style: disc !important;
+    padding-left: 1.65rem !important;
+    margin-bottom: 1.25rem !important;
+}
+
+#wrap.website_blog .o_wblog_post_content_field ol {
+    list-style: decimal !important;
+    padding-left: 1.65rem !important;
+    margin-bottom: 1.25rem !important;
+}
+
+#wrap.website_blog .o_wblog_post_content_field li {
+    display: list-item !important;
+    margin-bottom: 0.45rem !important;
+    padding: 0 !important;
+}
+
+#wrap.website_blog .o_wblog_post_content_field blockquote {
+    border-left: 4px solid #f26522;
+    background: #fff7ed;
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    color: #0d1d2d;
+    font-weight: 600;
+    margin: 1.5rem 0;
+}
+
+/* Social Share Distribution Bar */
+.luwa-blog-share-bar {
+    margin-top: 2.25rem;
+    padding: 22px 24px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+}
+
+.luwa-blog-share-bar__kicker {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #f26522;
+}
+
+.luwa-blog-share-bar__title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0d1d2d;
+    margin: 2px 0 14px 0;
+}
+
+.luwa-blog-share-bar__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.luwa-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none !important;
+    border: none;
+    cursor: pointer;
+    color: #ffffff !important;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.luwa-share-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+
+.luwa-share-btn--linkedin { background: #0a66c2; }
+.luwa-share-btn--x { background: #0f172a; }
+.luwa-share-btn--facebook { background: #1877f2; }
+.luwa-share-btn--whatsapp { background: #16a34a; }
+.luwa-share-btn--copy {
+    background: #e2e8f0;
+    color: #0d1d2d !important;
+}
+.luwa-share-btn--copy.is-copied {
+    background: #0d1d2d;
+    color: #ffffff !important;
+}
+
+/* Post Footer CTA Box */
+.luwa-blog-cta-box {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 26px 28px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #0d1d2d 0%, #152e47 100%);
+    color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.luwa-blog-cta-box__badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #00b4d8;
+    margin-bottom: 6px;
+}
+
+.luwa-blog-cta-box__text {
+    flex: 1 1 320px;
+}
+
+.luwa-blog-cta-box__text h4 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+}
+
+.luwa-blog-cta-box__text p {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin: 0 !important;
+}
+
+.luwa-blog-cta-box__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.luwa-blog-cta-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+.luwa-blog-cta-btn--primary {
+    background: #f26522;
+    color: #ffffff !important;
+}
+
+.luwa-blog-cta-btn--outline {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff !important;
+}
+
+.luwa-share-btn .fab,
+.luwa-share-btn .fas,
+.luwa-blog-sidebar-card .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+}
+
+.luwa-share-btn .fab {
+    font-family: "Font Awesome 5 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* === Header Cart/Portal, Checkout & Custom Client Portal Styling === */
+/* Remove -69px navbar overlap on non-hero pages (/shop, /shop/cart, /shop/checkout, /my, /contactus) */
+body:not(:has(.slider-six)):not(:has(#o_wblog_blog_top)):not(:has(#o_wblog_post_top)):not(:has(.luwa-sub-hero)) .mainmenu-six__inner {
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+body:not(:has(.slider-six)) #wrapwrap > main {
+    min-height: 60vh;
+}
+
+.luwa-header-badge {
+    position: absolute;
+    top: -6px;
+    right: -7px;
+    background: #f26522 !important;
+    color: #ffffff !important;
+    font-size: 10.5px !important;
+    font-weight: 800;
+    padding: 3px 6px;
+    border: 2px solid #0d1d2d;
+    line-height: 1;
+}
+
+.luwa-header-badge--cyan {
+    background: #00b4d8 !important;
+}
+
+.luwa-header-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 180, 216, 0.16);
+    border: 1px solid rgba(0, 180, 216, 0.4);
+    color: #38bdf8 !important;
+    font-size: 15px;
+    margin-right: 12px;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+}
+
+.luwa-header-icon-btn:hover {
+    background: #00b4d8;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.luwa-header-portal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff !important;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-right: 12px;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.luwa-header-portal-btn:hover {
+    background: #f26522;
+    border-color: #f26522;
+    color: #ffffff !important;
+}
+
+.luwa-header-portal-btn .fas,
+.luwa-cart-sub-pill .fas,
+.luwa-cart-intro-banner .fas,
+.luwa-cart-support-strip .fas,
+.luwa-portal-hero .fas,
+.luwa-portal-kpi .fas,
+.luwa-portal-quickbar .fas,
+.luwa-portal-empty-card .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+}
+
+.luwa-cart-support-strip .fab,
+.luwa-portal-quickbar .fab,
+.luwa-portal-table-wrap .fab {
+    font-family: "Font Awesome 5 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* Checkout & Cart Enhancements */
+.o_website_sale_checkout .o_total_card {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 12px 32px rgba(13, 29, 45, 0.07) !important;
+}
+
+.o_website_sale_checkout .btn-primary,
+.oe_website_sale .btn-primary,
+#o_payment_form_options ~ div .btn-primary,
+button[name="o_payment_submit_button"] {
+    background-color: #f26522 !important;
+    border-color: #f26522 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.o_website_sale_checkout .btn-primary:hover,
+button[name="o_payment_submit_button"]:hover {
+    background-color: #d95316 !important;
+    border-color: #d95316 !important;
+}
+
+.luwa-cart-intro-banner {
+    background: linear-gradient(135deg, #0d1d2d 0%, #152e47 100%);
+    color: #ffffff;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.luwa-cart-intro-banner__kicker {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #00b4d8;
+}
+
+.luwa-cart-intro-banner__title {
+    font-size: 21px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 2px 0 0 0;
+}
+
+.luwa-cart-intro-banner__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.luwa-cart-intro-banner__links .btn-outline-dark {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.luwa-cart-intro-banner__links .btn-outline-dark:hover {
+    background: #f26522 !important;
+    border-color: #f26522 !important;
+}
+
+.luwa-cart-sub-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #ecfeff;
+    color: #0e7490;
+    border: 1px solid #a5f3fc;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.luwa-cart-sub-pill--orange {
+    background: #fff7ed;
+    color: #c2410c;
+    border-color: #fed7aa;
+}
+
+.luwa-cart-support-strip {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+    color: #334155;
+}
+
+.luwa-cart-support-strip a {
+    color: #f26522 !important;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Custom Client Portal (/my & /my/subscriptions) */
+.luwa-portal-hero {
+    background: linear-gradient(135deg, #0d1d2d 0%, #152e47 100%);
+    border-radius: 20px;
+    padding: 28px 30px;
+    color: #ffffff;
+    box-shadow: 0 18px 42px rgba(13, 29, 45, 0.14);
+}
+
+.luwa-portal-hero__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.luwa-portal-hero__kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #00b4d8;
+    margin-bottom: 4px;
+}
+
+.luwa-portal-hero__title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+}
+
+.luwa-portal-hero__sub {
+    font-size: 14.5px;
+    color: #cbd5e1;
+    max-width: 640px;
+    margin: 0;
+}
+
+.luwa-portal-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.luwa-portal-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+.luwa-portal-btn--orange {
+    background: #f26522;
+    color: #ffffff !important;
+}
+
+.luwa-portal-btn--ghost {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff !important;
+}
+
+.luwa-portal-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+}
+
+.luwa-portal-kpi {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.luwa-portal-kpi:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.luwa-portal-kpi__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.luwa-portal-kpi__icon--cyan { background: rgba(0, 180, 216, 0.22); color: #38bdf8; }
+.luwa-portal-kpi__icon--amber { background: rgba(245, 158, 11, 0.22); color: #fbbf24; }
+.luwa-portal-kpi__icon--orange { background: rgba(242, 101, 34, 0.24); color: #fb923c; }
+.luwa-portal-kpi__icon--emerald { background: rgba(16, 185, 129, 0.22); color: #34d399; }
+
+.luwa-portal-kpi__num {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.luwa-portal-kpi__label {
+    font-size: 12.5px;
+    color: #cbd5e1;
+}
+
+.luwa-portal-quickbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.luwa-portal-quickbar a {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #e2e8f0 !important;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-decoration: none !important;
+}
+
+.luwa-portal-quickbar a:hover {
+    background: #f26522;
+    color: #ffffff !important;
+}
+
+.luwa-portal-empty-card,
+.luwa-portal-table-wrap {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(13, 29, 45, 0.05);
+    overflow: hidden;
+}
+
+/* === Luwa Tech /contactus & Thank You Styling === */
+.luwa-contact-section {
+    padding: 58px 0 76px;
+    background: #f8fafc;
+}
+
+.luwa-contact-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 32px 34px;
+    box-shadow: 0 14px 36px rgba(13, 29, 45, 0.06);
+}
+
+.luwa-contact-card__badge {
+    display: inline-block;
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+.luwa-contact-card__head h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0d1d2d;
+    margin: 0 0 6px 0;
+}
+
+.luwa-contact-card__head p {
+    color: #475569;
+    font-size: 15px;
+    margin: 0 0 22px 0;
+}
+
+.luwa-contact-label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0d1d2d;
+    margin-bottom: 6px;
+}
+
+.luwa-contact-card .form-control,
+.luwa-contact-card .form-select {
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1;
+    padding: 10px 14px;
+    font-size: 14.5px;
+}
+
+.luwa-contact-card .form-control.is-invalid,
+.luwa-contact-card .form-select.is-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.2) !important;
+}
+
+.luwa-contact-submit-btn {
+    padding: 12px 26px !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+}
+
+.luwa-contact-info-card {
+    background: linear-gradient(145deg, #0d1d2d 0%, #16324f 100%);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 18px 42px rgba(13, 29, 45, 0.16);
+}
+
+.luwa-contact-info-card__kicker {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #00b4d8;
+    margin-bottom: 6px;
+}
+
+.luwa-contact-info-card h3 {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+}
+
+.luwa-contact-info-card__sub {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin: 0 0 22px 0;
+}
+
+.luwa-contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.luwa-contact-info-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.luwa-contact-info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: rgba(242, 101, 34, 0.18);
+    border: 1px solid rgba(242, 101, 34, 0.4);
+    color: #fb923c;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.luwa-contact-info-list strong {
+    display: block;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #94a3b8;
+}
+
+.luwa-contact-info-list span,
+.luwa-contact-info-list a {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #ffffff !important;
+    text-decoration: none;
+}
+
+.luwa-contact-whatsapp-box {
+    background: rgba(22, 163, 74, 0.16);
+    border: 1px solid rgba(34, 197, 94, 0.38);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.luwa-contact-whatsapp-box strong {
+    display: block;
+    font-size: 14.5px;
+    color: #ffffff;
+}
+
+.luwa-contact-whatsapp-box span {
+    font-size: 12.5px;
+    color: #bbf7d0;
+}
+
+.luwa-contact-wa-btn {
+    background: #16a34a;
+    color: #ffffff !important;
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 9px 16px;
+    border-radius: 10px;
+    text-decoration: none !important;
+}
+
+.luwa-contact-quicklinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.luwa-contact-quicklinks a {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #e2e8f0 !important;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 6px 12px;
+    border-radius: 999px;
+    text-decoration: none !important;
+}
+
+.luwa-contact-quicklinks a:hover {
+    background: #f26522;
+}
+
+.luwa-contact-thanks-card {
+    max-width: 720px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 22px;
+    padding: 46px 36px;
+    box-shadow: 0 18px 44px rgba(13, 29, 45, 0.08);
+}
+
+.luwa-contact-thanks-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    font-size: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.luwa-contact-thanks-card h1 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #0d1d2d;
+    margin-bottom: 10px;
+}
+
+.luwa-contact-thanks-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 18px;
+}
+
+.luwa-contact-card .fas,
+.luwa-contact-info-card .fas,
+.luwa-contact-thanks-card .fas {
+    font-family: "Font Awesome 5 Free" !important;
+    font-weight: 900 !important;
+}
+
+.luwa-contact-wa-btn .fab {
+    font-family: "Font Awesome 5 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* === Uncrowded Desktop Header Sizing === */
+.mainmenu-six .main-menu .navigation > li + li {
+    margin-left: 20px !important;
+}
+
+@media (min-width: 1400px) {
+    .mainmenu-six .main-menu .navigation > li + li {
+        margin-left: 26px !important;
+    }
+}
+
+.mainmenu-six .main-menu .navigation > li > a {
+    font-size: 14.5px !important;
+    padding: 21px 0 !important;
+}
+
+.mainmenu-six .main-menu .navigation > li > ul {
+    min-width: 240px !important;
+}
+
+.mainmenu-six__right {
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+}
+
+.mainmenu-six__search {
+    padding-left: 12px !important;
+    margin-right: 0 !important;
+}
+
+.mainmenu-six__search button {
+    font-size: 17px !important;
+}
+
+.luwa-header-icon-btn,
+.luwa-header-cart-btn {
+    width: 38px !important;
+    height: 38px !important;
+    margin-right: 0 !important;
+    font-size: 14.5px !important;
+    flex-shrink: 0 !important;
+}
+
+.luwa-header-portal-btn {
+    padding: 7px 12px !important;
+    font-size: 13px !important;
+    margin-right: 0 !important;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mainmenu-six__btn {
+    padding: 10px 18px !important;
+    font-size: 13.5px !important;
+    border-radius: 8px !important;
+}
+
+.mainmenu-six .luwa-nav-badge {
+    font-size: 9.5px !important;
+    padding: 2px 6px !important;
+    margin-left: 4px !important;
+}
+
+/* === Split Progressive-Blur Editorial Hero (Desktop Left -> Right Fade, Mobile Responsive) === */
+.slider-six .swiper-slide {
+    overflow: hidden !important;
+    position: relative !important;
+    background-color: #091422 !important;
+}
+
+/* Keep the actual hero photography vibrant + Slide 1 Expand-Out / Slide 2 Contract-In Animations */
+@keyframes luwaHeroExpandOut {
+    0% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+    100% {
+        -webkit-transform: scale(1.18);
+        transform: scale(1.18);
+    }
+}
+
+@keyframes luwaHeroContractIn {
+    0% {
+        -webkit-transform: scale(1.22);
+        transform: scale(1.22);
+    }
+    100% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+}
+
+.slider-six .image-layer {
+    opacity: 0.94 !important;
+    background-position: 68% center !important;
+    -webkit-transition: visibility 0ms ease !important;
+    transition: visibility 0ms ease !important;
+    will-change: transform;
+}
+
+.slider-six .swiper-slide:nth-child(1).swiper-slide-active .image-layer {
+    -webkit-animation: luwaHeroExpandOut 6.8s ease-out forwards !important;
+    animation: luwaHeroExpandOut 6.8s ease-out forwards !important;
+}
+
+.slider-six .swiper-slide:nth-child(2).swiper-slide-active .image-layer {
+    -webkit-animation: luwaHeroContractIn 6.8s ease-out forwards !important;
+    animation: luwaHeroContractIn 6.8s ease-out forwards !important;
+}
+
+/* Progressive frosted blur + deep navy gradient that fades out smoothly to the right */
+.slider-six .swiper-slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        rgba(9, 20, 34, 0.92) 0%,
+        rgba(9, 20, 34, 0.80) 36%,
+        rgba(9, 20, 34, 0.42) 58%,
+        rgba(9, 20, 34, 0.08) 82%,
+        rgba(9, 20, 34, 0.00) 100%
+    );
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        #000000 0%,
+        #000000 36%,
+        rgba(0, 0, 0, 0.55) 56%,
+        rgba(0, 0, 0, 0.12) 74%,
+        transparent 88%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        #000000 0%,
+        #000000 36%,
+        rgba(0, 0, 0, 0.55) 56%,
+        rgba(0, 0, 0, 0.12) 74%,
+        transparent 88%
+    );
+}
+
+.slider-six .auto-container {
+    position: relative;
+    z-index: 5;
+}
+
+.slider-six .main-slider__nav [class*="swiper-button-"] {
+    z-index: 15 !important;
+    width: 46px !important;
+    height: 46px !important;
+    border-radius: 50% !important;
+    background: rgba(15, 23, 42, 0.56) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    color: #ffffff !important;
+    opacity: 0.92 !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.slider-six .main-slider__nav [class*="swiper-button-"]:hover {
+    opacity: 1 !important;
+    background: linear-gradient(135deg, #00b4d8, #0284c7) !important;
+    border-color: rgba(125, 211, 252, 0.85) !important;
+    color: #ffffff !important;
+    transform: translateY(-50%) scale(1.08) !important;
+    box-shadow: 0 12px 28px rgba(0, 180, 216, 0.38);
+}
+
+.slider-six .main-slider__nav .swiper-button-prev {
+    left: 20px !important;
+}
+
+.slider-six .main-slider__nav .swiper-button-next {
+    right: 20px !important;
+}
+
+@media (min-width: 992px) and (max-width: 1380px) {
+    .slider-six .auto-container {
+        padding-left: 84px !important;
+        padding-right: 84px !important;
+    }
+}
+
+.slider-six__content {
+    text-align: left !important;
+    max-width: 610px !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    padding-top: 118px !important;
+    padding-bottom: 150px !important;
+}
+
+.slider-six__text {
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase;
+    color: #38bdf8 !important;
+    margin-bottom: 16px !important;
+}
+
+.slider-six__text span {
+    border-bottom: none !important;
+    display: inline-block;
+    background: rgba(0, 180, 216, 0.16);
+    border: 1px solid rgba(56, 189, 248, 0.38);
+    padding: 6px 14px !important;
+    border-radius: 999px;
+}
+
+.slider-six__title {
+    font-size: clamp(38px, 4.3vw, 62px) !important;
+    line-height: 1.07 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 18px !important;
+    color: #ffffff !important;
+    text-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+}
+
+.luwa-hero-sub {
+    font-size: 16.5px;
+    line-height: 1.62;
+    color: rgba(241, 245, 249, 0.9);
+    max-width: 530px;
+    margin: 0 0 28px 0;
+}
+
+.slider-six__content .luwa-hero-btns {
+    justify-content: flex-start !important;
+    gap: 14px !important;
+}
+
+/* Tablet & Mobile Responsive Progressive Vertical Blur (top photo crisp, bottom text frosted) */
+@media (max-width: 991.98px) {
+    .slider-six .image-layer {
+        background-position: center 22% !important;
+    }
+
+    .slider-six .swiper-slide::after {
+        background: linear-gradient(
+            0deg,
+            rgba(9, 20, 34, 0.94) 0%,
+            rgba(9, 20, 34, 0.84) 48%,
+            rgba(9, 20, 34, 0.42) 74%,
+            rgba(9, 20, 34, 0.10) 100%
+        );
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        -webkit-mask-image: linear-gradient(
+            0deg,
+            #000000 0%,
+            #000000 46%,
+            rgba(0, 0, 0, 0.5) 70%,
+            transparent 92%
+        );
+        mask-image: linear-gradient(
+            0deg,
+            #000000 0%,
+            #000000 46%,
+            rgba(0, 0, 0, 0.5) 70%,
+            transparent 92%
+        );
+    }
+
+    .slider-six__content {
+        max-width: 100% !important;
+        padding-top: 170px !important;
+        padding-bottom: 92px !important;
+    }
+
+    .slider-six__title {
+        font-size: clamp(32px, 7.6vw, 46px) !important;
+        line-height: 1.1 !important;
+        margin-bottom: 14px !important;
+    }
+
+    .luwa-hero-sub {
+        font-size: 15px;
+        margin-bottom: 22px;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .slider-six__content {
+        padding-top: 150px !important;
+        padding-bottom: 78px !important;
+    }
+
+    .slider-six__text {
+        font-size: 11px !important;
+        letter-spacing: 0.05em !important;
+    }
+
+    .slider-six__content .luwa-hero-btns {
+        flex-direction: column;
+        align-items: stretch !important;
+        width: 100%;
+    }
+
+    .slider-six__content .luwa-hero-btns .slider-six__btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        padding: 13px 20px !important;
+    }
+}
+
+/* ============================================================
+   UNCROPPED /SHOP & /SUBSCRIPTIONS PRODUCT CARDS FIX
+   ============================================================ */
+.oe_website_sale .oe_product_cart {
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06) !important;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease !important;
+}
+
+.oe_website_sale .oe_product_cart:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.13) !important;
+    border-color: rgba(0, 180, 216, 0.45) !important;
+}
+
+.oe_website_sale .oe_product_image,
+.oe_website_sale .oe_product_image_link {
+    background: linear-gradient(145deg, #071120 0%, #0d1f38 100%) !important;
+    aspect-ratio: 5 / 4 !important;
+    height: auto !important;
+    padding: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.oe_website_sale .oe_product_image img,
+.oe_website_sale .oe_product_image_link img,
+.luwa-sub-card__media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    background: linear-gradient(145deg, #071120 0%, #0d1f38 100%) !important;
+}
+
+.luwa-sub-card__media {
+    height: 250px !important;
+    background: linear-gradient(145deg, #071120 0%, #0d1f38 100%) !important;
+    padding: 8px !important;
+}
+
+/* ============================================================
+   INTERACTIVE SCROLLABLE MINI-BROWSER CLIENT PORTFOLIO
+   ============================================================ */
+.luwa-portfolio-showcase {
+    padding: 96px 0;
+    background: linear-gradient(180deg, #071120 0%, #0b192e 100%);
+    color: #ffffff;
+    position: relative;
+}
+
+.luwa-portfolio-heading {
+    font-size: clamp(30px, 3.6vw, 44px);
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+}
+
+.luwa-portfolio-sub {
+    max-width: 680px;
+    color: #94a3b8;
+    font-size: 16.5px;
+    line-height: 1.65;
+}
+
+.luwa-browser-card {
+    background: #0f1e36;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 24px 54px rgba(0, 0, 0, 0.42);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.luwa-browser-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(56, 189, 248, 0.65);
+    box-shadow: 0 30px 64px rgba(0, 180, 216, 0.22);
+}
+
+.luwa-browser-card--orange {
+    border-color: rgba(255, 107, 53, 0.26);
+}
+
+.luwa-browser-card--orange:hover {
+    border-color: rgba(255, 107, 53, 0.72);
+    box-shadow: 0 30px 64px rgba(255, 107, 53, 0.22);
+}
+
+.luwa-browser-bar {
+    background: #081221;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.luwa-browser-dots {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.luwa-browser-dots .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.luwa-browser-dots .dot--red { background: #ef4444; }
+.luwa-browser-dots .dot--yellow { background: #f59e0b; }
+.luwa-browser-dots .dot--green { background: #10b981; }
+
+.luwa-browser-url {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #e2e8f0 !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.luwa-browser-url:hover {
+    background: rgba(56, 189, 248, 0.14);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #ffffff !important;
+}
+
+.luwa-browser-scroll-hint {
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(0, 180, 216, 0.18);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: #38bdf8;
+    flex-shrink: 0;
+}
+
+.luwa-browser-card--orange .luwa-browser-scroll-hint {
+    background: rgba(255, 107, 53, 0.18);
+    border-color: rgba(255, 107, 53, 0.45);
+    color: #fb923c;
+}
+
+.luwa-browser-viewport {
+    height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #0a1424;
+    position: relative;
+    scroll-behavior: smooth;
+    cursor: ns-resize;
+}
+
+.luwa-browser-viewport::-webkit-scrollbar {
+    width: 9px;
+}
+
+.luwa-browser-viewport::-webkit-scrollbar-track {
+    background: #081221;
+}
+
+.luwa-browser-viewport::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00b4d8, #0284c7);
+    border-radius: 999px;
+}
+
+.luwa-browser-card--orange .luwa-browser-viewport::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff6b35, #ea580c);
+}
+
+.luwa-browser-page-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.luwa-browser-footer {
+    padding: 22px 24px;
+    background: rgba(11, 22, 38, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.luwa-browser-cat {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #38bdf8;
+    margin-bottom: 4px;
+}
+
+.luwa-browser-cat--orange {
+    color: #fb923c;
+}
+
+.luwa-browser-title {
+    font-size: 21px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px;
+}
+
+.luwa-browser-desc {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 0;
+    max-width: 410px;
+    line-height: 1.5;
+}
+
+.luwa-browser-visit-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00b4d8, #0284c7);
+    color: #ffffff !important;
+    font-size: 13.5px;
+    font-weight: 800;
+    text-decoration: none !important;
+    white-space: nowrap;
+    box-shadow: 0 10px 22px rgba(0, 180, 216, 0.28);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.luwa-browser-visit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0, 180, 216, 0.42);
+}
+
+.luwa-browser-visit-btn--orange {
+    background: linear-gradient(135deg, #ff6b35, #ea580c);
+    box-shadow: 0 10px 22px rgba(255, 107, 53, 0.28);
+}
+
+/* ============================================================
+   DYNAMIC TEAM SHOWCASE (CONNECTED TO HR.EMPLOYEE)
+   ============================================================ */
+.luwa-team-section {
+    padding: 92px 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    position: relative;
+}
+
+.luwa-team-heading {
+    font-size: clamp(30px, 3.5vw, 44px);
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.luwa-team-lead {
+    font-size: 16.5px;
+    color: #475569;
+    max-width: 580px;
+}
+
+.luwa-team-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 30px 28px 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.06);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.luwa-team-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #00b4d8, #ff6b35);
+}
+
+.luwa-team-card:hover {
+    transform: translateY(-7px);
+    border-color: rgba(0, 180, 216, 0.45);
+    box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
+}
+
+.luwa-team-card__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.luwa-team-card__avatar-wrap {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, #00b4d8, #ff6b35);
+    box-shadow: 0 12px 26px rgba(0, 180, 216, 0.24);
+}
+
+.luwa-team-card__avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #0f172a;
+    border: 3px solid #ffffff;
+}
+
+.luwa-team-card__status {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #10b981;
+    border: 2.5px solid #ffffff;
+}
+
+.luwa-team-card__tag {
+    display: inline-block;
+    padding: 6px 13px;
+    border-radius: 999px;
+    background: rgba(0, 180, 216, 0.1);
+    border: 1px solid rgba(0, 180, 216, 0.28);
+    color: #0284c7;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.luwa-team-card__name {
+    font-size: 22px;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0 0 5px;
+}
+
+.luwa-team-card__role {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #ff6b35;
+    margin-bottom: 14px;
+}
+
+.luwa-team-card__bio {
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: #475569;
+    margin: 0 0 20px;
+}
+
+.luwa-team-card__socials {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.luwa-team-social {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #0f172a !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    text-decoration: none !important;
+    transition: all 0.22s ease;
+}
+
+.luwa-team-social:hover {
+    background: #00b4d8;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.luwa-team-social--wa:hover {
+    background: #10b981;
+}
+
+/* High-contrast Navbar Dropdown Styling */
+.mainmenu-six .navigation > li > ul {
+    background: rgba(11, 22, 38, 0.98) !important;
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(56, 189, 248, 0.28) !important;
+    border-radius: 16px !important;
+    padding: 10px 0 !important;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45) !important;
+}
+
+.mainmenu-six .navigation > li > ul > li > a {
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+    padding: 10px 22px !important;
+}
+
+.mainmenu-six .navigation > li > ul > li:hover > a {
+    color: #38bdf8 !important;
+    background: rgba(56, 189, 248, 0.12) !important;
+}
+
+/* ============================================================
+   1. CRISP WHITE SUBMENU TRAY (HIGH CONTRAST, READABLE TEXT)
+   ============================================================ */
+header .mainmenu-six .main-menu .navigation > li > ul,
+.mainmenu-six .main-menu .navigation > li > ul,
+.stricked-menu .main-menu .navigation > li > ul {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-top: 3px solid #00b4d8 !important;
+    border-radius: 14px !important;
+    padding: 10px 8px !important;
+    min-width: 250px !important;
+    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.18) !important;
+}
+
+header .mainmenu-six .main-menu .navigation > li > ul > li,
+.mainmenu-six .main-menu .navigation > li > ul > li,
+.stricked-menu .main-menu .navigation > li > ul > li {
+    background: transparent !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+header .mainmenu-six .main-menu .navigation > li > ul > li:last-child,
+.mainmenu-six .main-menu .navigation > li > ul > li:last-child {
+    border-bottom: none !important;
+}
+
+header .mainmenu-six .main-menu .navigation > li > ul > li > a,
+.mainmenu-six .main-menu .navigation > li > ul > li > a,
+.stricked-menu .main-menu .navigation > li > ul > li > a {
+    color: #0f172a !important;
+    background: transparent !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: 0.01em !important;
+    padding: 11px 16px !important;
+    border-radius: 10px !important;
+    display: block !important;
+    transition: all 0.2s ease !important;
+}
+
+header .mainmenu-six .main-menu .navigation > li > ul > li:hover > a,
+.mainmenu-six .main-menu .navigation > li > ul > li:hover > a,
+.stricked-menu .main-menu .navigation > li > ul > li:hover > a {
+    color: #0284c7 !important;
+    background: #f0f9ff !important;
+    transform: translateX(3px);
+}
+
+/* ============================================================
+   2. /SHOP PRODUCT CARDS OUTER MARGIN & INNER PADDING
+   ============================================================ */
+#o_wsale_products_grid {
+    --o-wsale-products-grid-gap: 28px !important;
+    gap: 28px !important;
+    row-gap: 32px !important;
+    padding: 12px 4px 28px !important;
+}
+
+#o_wsale_products_grid .oe_product {
+    padding: 6px !important;
+    margin-bottom: 8px !important;
+}
+
+.oe_website_sale .oe_product_cart {
+    border-radius: 22px !important;
+    padding: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07) !important;
+}
+
+.oe_website_sale .oe_product_image {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    margin-bottom: 6px !important;
+}
+
+.oe_website_sale .o_wsale_product_information {
+    padding: 16px 14px 14px !important;
+}
+
+.oe_website_sale .o_wsale_products_item_title {
+    margin-bottom: 8px !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+}
+
+.oe_website_sale .o_wsale_product_sub {
+    padding-top: 12px !important;
+    margin-top: 10px !important;
+    border-top: 1px solid #f1f5f9 !important;
+}
+
+/* ============================================================
+   3. PORTFOLIO SECTION - CLEAN WHITE THEME
+   ============================================================ */
+.luwa-portfolio-showcase {
+    padding: 96px 0 !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.luwa-portfolio-showcase .luwa-why-kicker {
+    background: rgba(0, 180, 216, 0.1) !important;
+    border-color: rgba(0, 180, 216, 0.3) !important;
+    color: #0284c7 !important;
+}
+
+.luwa-portfolio-heading {
+    color: #0f172a !important;
+}
+
+.luwa-portfolio-sub {
+    color: #475569 !important;
+}
+
+.luwa-browser-card {
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08) !important;
+}
+
+.luwa-browser-card:hover {
+    border-color: #00b4d8 !important;
+    box-shadow: 0 26px 56px rgba(15, 23, 42, 0.14) !important;
+}
+
+.luwa-browser-card--orange:hover {
+    border-color: #ff6b35 !important;
+}
+
+.luwa-browser-bar {
+    background: #f1f5f9 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.luwa-browser-url {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+.luwa-browser-url:hover {
+    background: #f0f9ff !important;
+    border-color: #00b4d8 !important;
+    color: #0284c7 !important;
+}
+
+.luwa-browser-scroll-hint {
+    background: #e0f2fe !important;
+    border-color: #7dd3fc !important;
+    color: #0369a1 !important;
+}
+
+.luwa-browser-card--orange .luwa-browser-scroll-hint {
+    background: #ffedd5 !important;
+    border-color: #fdba74 !important;
+    color: #c2410c !important;
+}
+
+.luwa-browser-viewport {
+    background: #f8fafc !important;
+}
+
+.luwa-browser-viewport::-webkit-scrollbar-track {
+    background: #f1f5f9 !important;
+}
+
+.luwa-browser-footer {
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+.luwa-browser-cat {
+    color: #0284c7 !important;
+}
+
+.luwa-browser-cat--orange {
+    color: #ea580c !important;
+}
+
+.luwa-browser-title {
+    color: #0f172a !important;
+}
+
+.luwa-browser-desc {
+    color: #475569 !important;
+}
+
+/* ============================================================
+   EDITORIAL AGENCY STAFF SHOWCASE CARDS (.luwa-exec-card)
+   ============================================================ */
+.luwa-team-section {
+    padding: 104px 0 112px !important;
+    background: linear-gradient(180deg, #071120 0%, #0c1b33 55%, #081325 100%) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.luwa-team-section .luwa-team-heading {
+    color: #ffffff !important;
+}
+
+.luwa-team-section .luwa-team-lead {
+    color: #94a3b8 !important;
+}
+
+.luwa-team-bg-glow {
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.luwa-team-bg-glow--1 {
+    top: -120px;
+    left: -100px;
+    background: #00b4d8;
+}
+
+.luwa-team-bg-glow--2 {
+    bottom: -140px;
+    right: -100px;
+    background: #ff6b35;
+}
+
+.luwa-team-watermark {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(72px, 13vw, 170px);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+}
+
+.luwa-exec-card {
+    background: linear-gradient(165deg, rgba(17, 34, 64, 0.92) 0%, rgba(10, 21, 38, 0.96) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.26);
+    border-radius: 28px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.36s ease, box-shadow 0.36s ease;
+    position: relative;
+}
+
+.luwa-exec-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(56, 189, 248, 0.78);
+    box-shadow: 0 32px 68px rgba(0, 180, 216, 0.25);
+}
+
+.luwa-exec-card--orange {
+    border-color: rgba(255, 107, 53, 0.28);
+}
+
+.luwa-exec-card--orange:hover {
+    border-color: rgba(255, 107, 53, 0.82);
+    box-shadow: 0 32px 68px rgba(255, 107, 53, 0.24);
+}
+
+/* Portrait Stage */
+.luwa-exec-card__stage {
+    position: relative;
+    height: 330px;
+    width: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 30%, rgba(0, 180, 216, 0.28) 0%, #091526 78%);
+}
+
+.luwa-exec-card--orange .luwa-exec-card__stage {
+    background: radial-gradient(circle at 50% 30%, rgba(255, 107, 53, 0.28) 0%, #091526 78%);
+}
+
+.luwa-exec-card__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luwa-exec-card:hover .luwa-exec-card__photo {
+    transform: scale(1.06);
+}
+
+.luwa-exec-card__stage-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(7, 17, 32, 0.38) 0%,
+        rgba(7, 17, 32, 0.05) 42%,
+        rgba(7, 17, 32, 0.82) 86%,
+        rgba(10, 21, 38, 0.98) 100%
+    );
+    pointer-events: none;
+}
+
+.luwa-exec-card__top-bar {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    right: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+.luwa-exec-card__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(11, 22, 38, 0.76);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #f8fafc;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.luwa-exec-card--orange .luwa-exec-card__pill {
+    border-color: rgba(255, 107, 53, 0.52);
+}
+
+.luwa-exec-card__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 10px #10b981;
+}
+
+.luwa-exec-card__num {
+    font-size: 24px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.32);
+    letter-spacing: -0.03em;
+    font-family: monospace;
+}
+
+/* Floating Right Social Rail on Portrait */
+.luwa-exec-card__rail {
+    position: absolute;
+    top: 64px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 4;
+}
+
+.luwa-exec-rail-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(11, 22, 38, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    text-decoration: none !important;
+    transition: all 0.24s ease;
+}
+
+.luwa-exec-rail-btn:hover {
+    background: #00b4d8;
+    border-color: #38bdf8;
+    color: #ffffff !important;
+    transform: translateX(-3px) scale(1.08);
+}
+
+.luwa-exec-rail-btn--wa:hover {
+    background: #10b981;
+    border-color: #34d399;
+}
+
+.luwa-exec-card__stage-caption {
+    position: absolute;
+    bottom: 14px;
+    left: 22px;
+    right: 22px;
+    z-index: 3;
+}
+
+.luwa-exec-card__role-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(0, 180, 216, 0.24), rgba(2, 132, 199, 0.34));
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.luwa-exec-card--orange .luwa-exec-card__role-badge {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.24), rgba(234, 88, 12, 0.34));
+    border-color: rgba(255, 107, 53, 0.48);
+    color: #fb923c;
+}
+
+/* Body & Footer */
+.luwa-exec-card__body {
+    padding: 22px 26px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.luwa-exec-card__name {
+    font-size: 23px;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+}
+
+.luwa-exec-card__bio {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #cbd5e1;
+    margin: 0 0 22px;
+}
+
+.luwa-exec-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.luwa-exec-card__socials-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.luwa-exec-card__socials-inline a {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    text-decoration: none !important;
+    transition: all 0.22s ease;
+}
+
+.luwa-exec-card__socials-inline a:hover {
+    background: #00b4d8;
+    border-color: #38bdf8;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.luwa-exec-card__cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none !important;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.28);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.luwa-exec-card__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(16, 185, 129, 0.42);
+}
+
+/* Fix OUR TEAM watermark cropping on /team page */
+.luwa-team-section {
+    padding: 96px 0 185px !important;
+}
+
+.luwa-team-watermark {
+    bottom: 24px !important;
+    line-height: 1.08 !important;
+    font-size: clamp(56px, 11vw, 148px) !important;
+    color: rgba(255, 255, 255, 0.055) !important;
+}
+
+/* ============================================================
+   FIX /SHOP FLOATING CART ICON OBSTRUCTING PRODUCT TITLES
+   AND PERFECTLY COMPACT, SNUG, MODERN SAAS PRICING CARDS
+   ============================================================ */
+#o_wsale_products_grid .o_wsale_product_grid_wrapper {
+    height: auto !important;
+}
+
+#o_wsale_products_grid .oe_product_cart,
+.oe_website_sale .oe_product_cart {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05) !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    padding: 8px !important;
+    height: 100% !important;
+}
+
+#o_wsale_products_grid .oe_product_cart:hover,
+.oe_website_sale .oe_product_cart:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09) !important;
+    border-color: rgba(242, 101, 34, 0.45) !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .oe_product_image,
+#o_wsale_products_grid .oe_product_cart .oe_product_image_link,
+.oe_website_sale .oe_product_image,
+.oe_website_sale .oe_product_image_link {
+    aspect-ratio: 16 / 9 !important;
+    max-height: 160px !important;
+    height: auto !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_information,
+.oe_website_sale .oe_product_cart .o_wsale_product_information {
+    padding: 10px 6px 4px 6px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    flex: 1 1 auto !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_info_attributes_wrapper,
+.oe_website_sale .oe_product_cart .o_wsale_product_info_attributes_wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_products_item_title,
+.oe_website_sale .oe_product_cart .o_wsale_products_item_title {
+    font-size: 14.5px !important;
+    font-weight: 800 !important;
+    line-height: 1.3 !important;
+    margin: 0 0 3px 0 !important;
+    padding: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    color: #0f172a !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .oe_subdescription_wrapper,
+.oe_website_sale .oe_product_cart .oe_subdescription_wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .oe_subdescription,
+#o_wsale_products_grid .oe_product_cart .text-muted,
+#o_wsale_products_grid .oe_product_cart p,
+.oe_website_sale .oe_product_cart .oe_subdescription,
+.oe_website_sale .oe_product_cart .text-muted,
+.oe_website_sale .oe_product_cart p {
+    font-size: 12px !important;
+    line-height: 1.38 !important;
+    color: #64748b !important;
+    margin: 0 0 4px 0 !important;
+    padding: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .luwa-shop-sub-pill,
+.oe_website_sale .oe_product_cart .luwa-shop-sub-pill {
+    margin: 2px 0 0 0 !important;
+    padding: 0 !important;
+}
+
+/* GLUE PRICE AND ADD TO CART TOGETHER AT THE BOTTOM WITHOUT GAPS */
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_sub,
+.oe_website_sale .oe_product_cart .o_wsale_product_sub {
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 0 !important;
+    border-top: 1px solid #f1f5f9 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    width: 100% !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    overflow: visible !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .product_price,
+.oe_website_sale .oe_product_cart .product_price {
+    width: 100% !important;
+    display: flex !important;
+    align-items: baseline !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_btn,
+.oe_website_sale .oe_product_cart .o_wsale_product_btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_action_row,
+.oe_website_sale .oe_product_cart .o_wsale_product_action_row {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: flex !important;
+    overflow: visible !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_btn_primary,
+.oe_website_sale .oe_product_cart .o_wsale_product_btn_primary {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 38px !important;
+    border-radius: 999px !important;
+    padding: 0 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    background: linear-gradient(135deg, #f26522, #ea580c) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 12.5px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    box-shadow: 0 6px 14px rgba(242, 101, 34, 0.25) !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_add_wishlist,
+.oe_website_sale .oe_product_cart .o_add_wishlist {
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    color: #475569 !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_add_compare_placeholder {
+    display: none !important;
+}
+
+/* Force Add to Cart & Wishlist always visible with snug 8px spacing */
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_btn,
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_action_row,
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_btn_primary,
+#o_wsale_products_grid .oe_product_cart .o_add_wishlist,
+.oe_website_sale .oe_product_cart .o_wsale_product_btn,
+.oe_website_sale .oe_product_cart .o_wsale_product_action_row,
+.oe_website_sale .oe_product_cart .o_wsale_product_btn_primary,
+.oe_website_sale .oe_product_cart .o_add_wishlist {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-flex !important;
+    transform: none !important;
+    pointer-events: auto !important;
+}
+
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_btn,
+.oe_website_sale .oe_product_cart .o_wsale_product_btn {
+    position: static !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 38px !important;
+}
+
+/* Show crisp "Add to Cart" text inside the full-width orange pill button */
+#o_wsale_products_grid .oe_product_cart .o_wsale_product_btn_primary .o_label,
+.oe_website_sale .oe_product_cart .o_wsale_product_btn_primary .o_label {
+    display: inline !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    margin-left: 4px !important;
+}
+
+/* ============================================================
+   CLICK-TO-PREVIEW PORTFOLIO LIGHTBOX MODAL (HIDDEN BY DEFAULT)
+   ============================================================ */
+.luwa-browser-page-img {
+    cursor: zoom-in;
+}
+
+.luwa-pmodal {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(15, 23, 42, 0.82) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 99999 !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+}
+
+.luwa-pmodal.is-open {
+    display: flex !important;
+}
+
+.luwa-pmodal__dialog {
+    width: 100% !important;
+    max-width: 1180px !important;
+    max-height: 92vh !important;
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45) !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.luwa-pmodal__bar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    padding: 12px 18px !important;
+    background: #0f172a !important;
+    color: #ffffff !important;
+    flex-wrap: wrap !important;
+}
+
+.luwa-pmodal__close {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+}
+
+.luwa-pmodal__close:hover {
+    background: #ef4444 !important;
+    border-color: #ef4444 !important;
+}
+
+.luwa-pmodal__viewport {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    max-height: 80vh !important;
+    background: #f8fafc !important;
+}
+
+/* ============================================================
+   COMPREHENSIVE MOBILE & TABLET RESPONSIVENESS (<= 991px & <= 767px)
+   ============================================================ */
+html, body, #wrapwrap {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+}
+
+@media (max-width: 991px) {
+    .auto-container,
+    .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    /* Header & Topbar Mobile Cleanup */
+    .topbar-six .auto-container,
+    .topbar-six__inner {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .topbar-six__info,
+    .topbar-six__social {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+    }
+
+    /* Hero Slider Mobile Spacing */
+    .slider-six .swiper-slide,
+    .slider-six__item {
+        min-height: 520px !important;
+        padding: 60px 0 80px !important;
+    }
+
+    .slider-six__title,
+    .slider-six h2 {
+        font-size: clamp(26px, 7vw, 38px) !important;
+        line-height: 1.2 !important;
+    }
+
+    .slider-six .main-slider__nav {
+        bottom: 18px !important;
+        top: auto !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        display: flex !important;
+        gap: 14px !important;
+    }
+
+    /* Portfolio Browser Cards on Tablet/Mobile */
+    .luwa-portfolio-showcase {
+        padding: 56px 0 !important;
+    }
+
+    .luwa-portfolio-heading {
+        font-size: clamp(24px, 6vw, 32px) !important;
+        line-height: 1.25 !important;
+    }
+
+    .luwa-browser-bar {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 10px 12px !important;
+    }
+
+    .luwa-browser-url {
+        font-size: 11.5px !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        flex: 1 1 160px !important;
+    }
+
+    .luwa-browser-scroll-hint {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+    }
+
+    .luwa-browser-viewport {
+        height: 290px !important;
+    }
+
+    .luwa-browser-footer {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+        padding: 16px !important;
+    }
+
+    .luwa-browser-visit-btn {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Mobile Topbar: hide secondary clutter if crowded, keep logo & phone clean */
+    .topbar-six__info li {
+        font-size: 12px !important;
+    }
+
+    /* Hero Buttons stack cleanly */
+    .slider-six__btns,
+    .luwa-hero-actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .slider-six__btns a,
+    .luwa-hero-actions a {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+
+    /* /shop Grid: crisp single-column full-width cards on phones (<= 575px) */
+    #o_wsale_products_grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+        padding: 8px 0 24px !important;
+    }
+
+    #o_wsale_products_grid .oe_product {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    #o_wsale_products_grid .oe_product_cart .oe_product_image,
+    #o_wsale_products_grid .oe_product_cart .oe_product_image_link {
+        max-height: 200px !important;
+    }
+
+    /* Shop category pills scroll horizontally without overflowing page */
+    .o_wsale_filmstrip_container,
+    .o_wsale_products_main_row {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Why Partner & Bento Sections */
+    .luwa-why-section {
+        padding: 56px 0 !important;
+    }
+
+    /* Newsletter & Footer Mobile */
+    .subscribe-one__form,
+    .luwa-footer-form {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .subscribe-one__form input,
+    .subscribe-one__form button,
+    .luwa-footer-form input,
+    .luwa-footer-form button {
+        width: 100% !important;
+    }
+
+    /* Team Page Mobile */
+    .luwa-team-watermark {
+        font-size: 48px !important;
+        bottom: 10px !important;
+    }
+
+    /* Modal Mobile */
+    .luwa-pmodal {
+        padding: 10px !important;
+    }
+
+    .luwa-pmodal__bar {
+        padding: 10px 12px !important;
+    }
+
+    .luwa-pmodal__bar .luwa-browser-dots {
+        display: none !important;
+    }
+}
+
+/* ============================================================
+   EXTREME SITE-WIDE MOBILE RESPONSIVENESS (PHONES & TABLETS)
+   Fixes Footer CTA button alignment, badge wrapping, Why Partner,
+   Subscriptions, Shop, Portfolio, Team & Footer grids on mobile
+   ============================================================ */
+@media (max-width: 991px) {
+    /* Footer CTA Banner ("Ready to market your business...") */
+    .luwa-footer-cta {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        text-align: left !important;
+        gap: 20px !important;
+        padding: 28px 20px !important;
+    }
+
+    .luwa-footer-cta__left {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .luwa-footer-cta__badge {
+        display: inline-block !important;
+        font-size: 11px !important;
+        line-height: 1.45 !important;
+        letter-spacing: 0.08em !important;
+        margin-bottom: 10px !important;
+    }
+
+    .luwa-footer-cta__title {
+        font-size: clamp(22px, 6vw, 28px) !important;
+        line-height: 1.28 !important;
+        margin: 0 !important;
+    }
+
+    .luwa-footer-cta__right {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+
+    .luwa-footer-cta__right a,
+    .luwa-footer-cta__right .thm-btn__six {
+        margin: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 14px 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Footer 4-column grid clean spacing */
+    .luwa-footer-grid > [class*="col-"] {
+        margin-bottom: 24px !important;
+    }
+
+    .footer-six__copyright .auto-container {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Mobile Header & Navbar */
+    header.o_header_standard .navbar-brand img,
+    .o_header_standard .navbar-brand img {
+        max-height: 36px !important;
+        width: auto !important;
+    }
+
+    /* Prevent any button group across the whole site from touching or overflowing */
+    .thm-btn__six {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Why Partner / Bento Showcase Mobile */
+    .luwa-why-title {
+        font-size: clamp(24px, 6.8vw, 32px) !important;
+        line-height: 1.22 !important;
+    }
+
+    .luwa-why-section .row {
+        --bs-gutter-y: 1.5rem !important;
+    }
+
+    /* Newsletter Section Mobile */
+    .subscribe-one {
+        padding: 44px 0 !important;
+    }
+
+    .subscribe-one__title {
+        font-size: clamp(22px, 6.2vw, 28px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 18px !important;
+    }
+
+    /* Subscriptions & Pricing Cards Mobile */
+    .luwa-sub-grid,
+    .luwa-pricing-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+
+    /* Team Cards Mobile */
+    .luwa-exec-card {
+        margin-bottom: 16px !important;
+    }
+
+    /* Contact Form Mobile */
+    .s_website_form .row > [class*="col-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
+/* ============================================================
+   BULLETPROOF MOBILE SIDE MENU DRAWER & HAMBURGER TOGGLER
+   ============================================================ */
+.header-six .mobile-nav-toggler {
+    cursor: pointer !important;
+    z-index: 20 !important;
+    position: relative !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.side-menu__block {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 100000 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.32s ease, opacity 0.25s ease, visibility 0.32s ease !important;
+}
+
+.side-menu__block.active {
+    pointer-events: auto !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+.side-menu__block.active .side-menu__block-inner {
+    width: 86vw !important;
+    max-width: 340px !important;
+    background: #0b1628 !important;
+    color: #e2e8f0 !important;
+    padding: 20px 22px 36px !important;
+    box-shadow: 12px 0 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.side-menu__block.active .luwa-mobile-nav-list li a {
+    color: #f8fafc !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 10px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+
+.side-menu__block.active .luwa-mobile-close-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 16px !important;
+}
