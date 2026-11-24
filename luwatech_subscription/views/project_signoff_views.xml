@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- 1. LIST & FORM VIEWS FOR LUWA.PROJECT.SIGNOFF                -->
+    <!-- ============================================================ -->
+    <record id="view_luwa_project_signoff_list" model="ir.ui.view">
+        <field name="name">luwa.project.signoff.list</field>
+        <field name="model">luwa.project.signoff</field>
+        <field name="arch" type="xml">
+            <list string="Project Module-by-Module Sign-Off Checklists"
+                  decoration-success="state == 'signed_off'"
+                  decoration-info="state == 'in_review'"
+                  decoration-warning="state == 'partially_signed'">
+                <field name="reference"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="partner_id"/>
+                <field name="erp_version"/>
+                <field name="module_group_count" string="Modules"/>
+                <field name="total_items" string="Submenus/Items"/>
+                <field name="client_signed_items" string="Signed Off"/>
+                <field name="completion_rate" widget="progressbar"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'signed_off'"
+                       decoration-info="state == 'in_review'"
+                       decoration-warning="state == 'partially_signed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_luwa_project_signoff_form" model="ir.ui.view">
+        <field name="name">luwa.project.signoff.form</field>
+        <field name="model">luwa.project.signoff</field>
+        <field name="arch" type="xml">
+            <form string="Project Module-by-Module Master Sign-Off Checklist">
+                <header>
+                    <button name="action_print_signoff_pdf"
+                            type="object"
+                            string="Print Official Sign-Off PDF"
+                            class="btn-primary"
+                            icon="fa-print"/>
+                    <button name="action_open_public_signoff"
+                            type="object"
+                            string="Open Client Online Sign-Off Portal"
+                            class="btn-primary"
+                            icon="fa-external-link"/>
+                    <button name="action_mark_all_dev_done"
+                            type="object"
+                            string="Mark All Dev Completed"
+                            class="btn-secondary"/>
+                    <button name="action_mark_all_client_signed"
+                            type="object"
+                            string="Mark All Client Signed Off"
+                            class="btn-success"
+                            invisible="state == 'signed_off'"/>
+                    <button name="action_set_in_review"
+                            type="object"
+                            string="Set In UAT Review"
+                            class="btn-secondary"
+                            invisible="state == 'in_review'"/>
+                    <button name="action_set_signed_off"
+                            type="object"
+                            string="Approve &amp; Finalize Sign-Off"
+                            class="btn-success"
+                            invisible="state == 'signed_off'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,in_review,partially_signed,signed_off"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Client ERP Master UAT &amp; Module-by-Module Sign-Off Dossier</span>
+                        <h1>
+                            <field name="name" placeholder="e.g. Munig Engineering - Odoo 18 Module-by-Module Master Checklist"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Project &amp; Client Details">
+                            <field name="reference"/>
+                            <field name="project_id"/>
+                            <field name="partner_id"/>
+                            <field name="erp_version"/>
+                            <field name="prepared_by"/>
+                            <field name="signoff_date"/>
+                        </group>
+                        <group string="UAT Sign-Off Progress &amp; Shareable Link">
+                            <field name="module_group_count"/>
+                            <field name="total_items"/>
+                            <field name="dev_completed_items"/>
+                            <field name="client_signed_items"/>
+                            <field name="completion_rate" widget="progressbar"/>
+                            <field name="public_signoff_url" widget="CopyClipboardChar" string="Shareable Client Link"/>
+                            <field name="master_pdf_filename" invisible="1"/>
+                            <field name="master_pdf_file" filename="master_pdf_filename" widget="binary" string="Latest Signed PDF"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Module-by-Module Master Checklist" name="checklist_lines">
+                            <field name="line_ids">
+                                <list string="Module-by-Module Checklist Items"
+                                      editable="bottom"
+                                      default_group_by="module_group"
+                                      limit="200"
+                                      decoration-success="client_signed == True"
+                                      decoration-bf="client_signed == True">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="module_group"/>
+                                    <field name="technical_module" optional="show"/>
+                                    <field name="submenu_name"/>
+                                    <field name="description"/>
+                                    <field name="dev_done" widget="boolean_toggle"/>
+                                    <field name="client_signed" widget="boolean_toggle"/>
+                                    <field name="signed_by"/>
+                                    <field name="signoff_date"/>
+                                    <field name="remarks"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Executive Signatories &amp; Digital Signatures" name="signatories">
+                            <group>
+                                <group string="1. Luwatech System Implementation Lead">
+                                    <field name="luwa_lead_name"/>
+                                    <field name="luwa_lead_signed" widget="boolean_toggle"/>
+                                    <field name="luwa_lead_date"/>
+                                    <field name="luwa_lead_signature" widget="image" class="oe_avatar"/>
+                                </group>
+                                <group string="2. Client Technical &amp; Operations Lead">
+                                    <field name="client_tech_name"/>
+                                    <field name="client_tech_signed" widget="boolean_toggle"/>
+                                    <field name="client_tech_date"/>
+                                    <field name="client_tech_signature" widget="image" class="oe_avatar"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="3. Client HR &amp; Administration Lead">
+                                    <field name="client_hr_name"/>
+                                    <field name="client_hr_signed" widget="boolean_toggle"/>
+                                    <field name="client_hr_date"/>
+                                    <field name="client_hr_signature" widget="image" class="oe_avatar"/>
+                                </group>
+                                <group string="4. Client Finance &amp; Procurement Lead">
+                                    <field name="client_fin_name"/>
+                                    <field name="client_fin_signed" widget="boolean_toggle"/>
+                                    <field name="client_fin_date"/>
+                                    <field name="client_fin_signature" widget="image" class="oe_avatar"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="5. Client Managing Director / CEO">
+                                    <field name="client_ceo_name"/>
+                                    <field name="client_ceo_signed" widget="boolean_toggle"/>
+                                    <field name="client_ceo_date"/>
+                                    <field name="client_ceo_signature" widget="image" class="oe_avatar"/>
+                                </group>
+                            </group>
+                            <group string="Executive UAT Remarks &amp; Handover Notes">
+                                <field name="general_remarks" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="Live Signed PDF Preview" name="pdf_preview">
+                            <field name="master_pdf_file" widget="pdf_viewer"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_luwa_project_signoffs" model="ir.actions.act_window">
+        <field name="name">Client Sign-Off Checklists</field>
+        <field name="res_model">luwa.project.signoff</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Module-by-Module Client Project Sign-Off Checklist
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_luwa_project_signoffs"
+              name="Client Sign-Off Checklists"
+              parent="project.menu_main_pm"
+              action="action_luwa_project_signoffs"
+              sequence="15"/>
+
+    <record id="view_project_project_form_luwa_signoff" model="ir.ui.view">
+        <field name="name">project.project.form.luwa.signoff</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button"
+                        type="object"
+                        name="action_view_project_signoffs"
+                        icon="fa-check-square-o">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="signoff_count"/> Sheets
+                        </span>
+                        <span class="o_stat_text">
+                            <field name="signoff_status_badge"/>
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- 2. OFFICIAL ODOO STANDARD DOCUMENT LAYOUT PDF REPORT          -->
+    <!--    Inherits web.html_container + web.external_layout         -->
+    <!--    FIXED: Smooth flow across pages without awkward breaks    -->
+    <!-- ============================================================ -->
+    <record id="action_report_project_signoff" model="ir.actions.report">
+        <field name="name">Module-by-Module Project Sign-Off Checklist</field>
+        <field name="model">luwa.project.signoff</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">luwatech_subscription.report_project_signoff_document</field>
+        <field name="report_file">luwatech_subscription.report_project_signoff_document</field>
+        <field name="print_report_name">'SignOff_Checklist_%s' % (object.reference or object.name).replace('/', '_')</field>
+        <field name="binding_model_id" ref="model_luwa_project_signoff"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_project_signoff_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size: 10px; color: #1e293b; line-height: 1.35;">
+                        <div class="oe_structure"/>
+
+                        <!-- Standard Odoo Document Title & Client Address Block -->
+                        <div class="row mb-2" style="page-break-inside: avoid;">
+                            <div class="col-7">
+                                <h2 style="color: #0f172a; font-weight: 800; font-size: 16px; margin-bottom: 3px;">
+                                    <span t-field="doc.name"/>
+                                </h2>
+                                <p class="text-muted mb-1" style="font-size: 10px;">
+                                    <strong>Target ERP Environment:</strong> <span t-field="doc.erp_version"/>
+                                </p>
+                                <p class="text-muted mb-0" style="font-size: 10px;">
+                                    <strong>Project:</strong> <span t-field="doc.project_id.name"/>
+                                </p>
+                            </div>
+                            <div class="col-5 text-end">
+                                <div style="border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 10px; background-color: #f8fafc; text-align: left;">
+                                    <div style="font-size: 9px; text-transform: uppercase; color: #64748b; font-weight: 700;">Client Organization</div>
+                                    <div style="font-size: 12px; font-weight: 700; color: #0f172a;" t-field="doc.partner_id.name"/>
+                                    <div t-if="doc.partner_id.street" t-field="doc.partner_id.street" style="font-size: 9.5px; color: #475569;"/>
+                                    <div t-if="doc.partner_id.city or doc.partner_id.country_id" style="font-size: 9.5px; color: #475569;">
+                                        <span t-field="doc.partner_id.city"/> <span t-field="doc.partner_id.country_id.name"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Standard Odoo Metadata Information Bar -->
+                        <div class="row mt-1 mb-2 p-2" style="background-color: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; page-break-inside: avoid; font-size: 9.5px;">
+                            <div class="col-2">
+                                <strong>Document Ref:</strong><br/>
+                                <span t-field="doc.reference"/>
+                            </div>
+                            <div class="col-2">
+                                <strong>Checklist Date:</strong><br/>
+                                <span t-field="doc.signoff_date"/>
+                            </div>
+                            <div class="col-3">
+                                <strong>Prepared By:</strong><br/>
+                                <span t-field="doc.prepared_by"/>
+                            </div>
+                            <div class="col-2">
+                                <strong>Modules Covered:</strong><br/>
+                                <span t-field="doc.module_group_count"/> Modules (<span t-field="doc.total_items"/> Submenus)
+                            </div>
+                            <div class="col-3">
+                                <strong>UAT Acceptance Progress:</strong><br/>
+                                <span t-field="doc.client_signed_items"/> / <span t-field="doc.total_items"/> Signed (<span t-field="doc.completion_rate"/>%)
+                            </div>
+                        </div>
+
+                        <!-- Module-by-Module Tables (NO page-break-inside avoid on parent div to eliminate empty page gaps) -->
+                        <t t-set="grouped_lines" t-value="doc.get_grouped_lines()"/>
+                        <t t-foreach="grouped_lines.items()" t-as="grp_pair">
+                            <t t-set="grp_title" t-value="grp_pair[0]"/>
+                            <t t-set="grp_items" t-value="grp_pair[1]"/>
+                            <div style="margin-top: 9px; margin-bottom: 6px;">
+                                <table class="table table-sm table-bordered mb-1" style="width: 100%; border-collapse: collapse; font-size: 9.5px;">
+                                    <thead style="display: table-header-group;">
+                                        <tr style="page-break-inside: avoid; background-color: #0f172a;">
+                                            <th colspan="6" style="background-color: #0f172a !important; color: #ffffff !important; padding: 5px 8px; font-weight: 700; font-size: 10.5px; border-color: #0f172a !important;">
+                                                <span t-esc="grp_title" style="color: #ffffff !important;"/>
+                                                <span style="float: right; font-size: 9px; font-weight: 500; color: #cbd5e1 !important;">
+                                                    <t t-esc="len([x for x in grp_items if x.client_signed or x.client_checked])"/> / <t t-esc="len(grp_items)"/> Submenus Signed Off
+                                                </span>
+                                            </th>
+                                        </tr>
+                                        <tr style="page-break-inside: avoid; background-color: #e2e8f0;">
+                                            <th style="width: 5%; text-align: center; padding: 3px 4px; background-color: #e2e8f0 !important; color: #0f172a !important;">No.</th>
+                                            <th style="width: 25%; padding: 3px 6px; background-color: #e2e8f0 !important; color: #0f172a !important;">Submenu / Feature Path</th>
+                                            <th style="width: 42%; padding: 3px 6px; background-color: #e2e8f0 !important; color: #0f172a !important;">Complete Submenus, Workflows &amp; Acceptance Scope</th>
+                                            <th style="width: 7%; text-align: center; padding: 3px 4px; background-color: #e2e8f0 !important; color: #0f172a !important;">Dev Done</th>
+                                            <th style="width: 9%; text-align: center; padding: 3px 4px; background-color: #e2e8f0 !important; color: #0f172a !important;">Sign-Off</th>
+                                            <th style="width: 12%; padding: 3px 6px; background-color: #e2e8f0 !important; color: #0f172a !important;">Remarks / Verified</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="grp_items" t-as="line">
+                                            <tr style="page-break-inside: avoid;">
+                                                <td style="text-align: center; font-weight: 600; padding: 3px 4px; vertical-align: top;">
+                                                    <span t-field="line.sequence"/>
+                                                </td>
+                                                <td style="font-weight: 700; color: #0f172a; padding: 3px 6px; vertical-align: top;">
+                                                    <span t-field="line.submenu_name"/>
+                                                    <div t-if="line.technical_module" style="font-size: 8.5px; color: #64748b; font-weight: 400;">
+                                                        Module: <span t-field="line.technical_module"/>
+                                                    </div>
+                                                </td>
+                                                <td style="color: #334155; padding: 3px 6px; vertical-align: top; line-height: 1.3;">
+                                                    <span t-field="line.description"/>
+                                                </td>
+                                                <td style="text-align: center; font-weight: 700; padding: 3px 4px; vertical-align: top;">
+                                                    <span t-if="line.dev_done or line.luwatech_qa == 'ready'" style="color: #16a34a;">[YES]</span>
+                                                    <span t-else="" style="color: #94a3b8;">[NO]</span>
+                                                </td>
+                                                <td style="text-align: center; font-weight: 700; padding: 3px 4px; vertical-align: top;">
+                                                    <span t-if="line.client_signed or line.client_checked" style="color: #15803d; background-color: #dcfce7; padding: 1px 4px; border-radius: 2px;">[SIGNED]</span>
+                                                    <span t-else="" style="color: #64748b;">[PENDING]</span>
+                                                </td>
+                                                <td style="font-size: 9px; padding: 3px 6px; vertical-align: top;">
+                                                    <div t-if="line.remarks or line.client_remarks"><strong style="color:#0f172a;">Note:</strong> <span t-esc="line.remarks or line.client_remarks"/></div>
+                                                    <div t-if="line.signed_by or line.verified_by" style="color: #475569;">By: <span t-esc="line.signed_by or line.verified_by"/></div>
+                                                    <div t-if="line.signoff_date" style="color: #64748b;"><span t-field="line.signoff_date"/></div>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+
+                        <!-- Executive Remarks & Final Project Acceptance Signatories (5 Governance Signatories) -->
+                        <div style="margin-top: 14px; page-break-inside: avoid;">
+                            <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px; padding: 8px 10px; margin-bottom: 10px;">
+                                <strong style="color: #0f172a; font-size: 10px;">Executive UAT Remarks &amp; Handover Declaration:</strong>
+                                <p style="margin: 3px 0 0 0; color: #334155; font-size: 9.5px; line-height: 1.35;" t-field="doc.general_remarks"/>
+                            </div>
+
+                            <h4 style="color: #0f172a; font-weight: 800; font-size: 12px; border-bottom: 2px solid #0f172a; padding-bottom: 3px; margin-bottom: 8px;">
+                                Final Project Acceptance &amp; Authorized Signatories
+                            </h4>
+                            <table class="table table-sm table-bordered" style="width: 100%; font-size: 9.5px;">
+                                <thead style="background-color: #0f172a;">
+                                    <tr style="page-break-inside: avoid; background-color: #0f172a;">
+                                        <th style="width: 27%; background-color: #0f172a !important; color: #ffffff !important; padding: 5px 6px;">Role / Designation</th>
+                                        <th style="width: 23%; background-color: #0f172a !important; color: #ffffff !important; padding: 5px 6px;">Full Name</th>
+                                        <th style="width: 14%; text-align: center; background-color: #0f172a !important; color: #ffffff !important; padding: 5px 6px;">Status</th>
+                                        <th style="width: 22%; text-align: center; background-color: #0f172a !important; color: #ffffff !important; padding: 5px 6px;">Authorized Signature</th>
+                                        <th style="width: 14%; text-align: center; background-color: #0f172a !important; color: #ffffff !important; padding: 5px 6px;">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- 1. Luwatech Lead -->
+                                    <tr style="page-break-inside: avoid;">
+                                        <td><strong>Luwatech Implementation Lead</strong></td>
+                                        <td><span t-field="doc.luwa_lead_name"/></td>
+                                        <td style="text-align: center;">
+                                            <span t-if="doc.luwa_lead_signed" style="color: #15803d; font-weight: 700;">SIGNED</span>
+                                            <span t-else="" style="color: #64748b;">PENDING</span>
+                                        </td>
+                                        <td style="text-align: center; height: 42px; vertical-align: middle;">
+                                            <img t-if="doc.luwa_lead_signature" t-att-src="image_data_uri(doc.luwa_lead_signature)" style="max-height: 38px; max-width: 130px;"/>
+                                            <span t-else="" style="color: #94a3b8; font-size: 9px;">____________________</span>
+                                        </td>
+                                        <td style="text-align: center;"><span t-field="doc.luwa_lead_date"/></td>
+                                    </tr>
+                                    <!-- 2. Technical Lead -->
+                                    <tr style="page-break-inside: avoid;">
+                                        <td><strong>Munig Technical &amp; Operations Lead</strong></td>
+                                        <td><span t-field="doc.client_tech_name"/></td>
+                                        <td style="text-align: center;">
+                                            <span t-if="doc.client_tech_signed" style="color: #15803d; font-weight: 700;">SIGNED</span>
+                                            <span t-else="" style="color: #64748b;">PENDING</span>
+                                        </td>
+                                        <td style="text-align: center; height: 42px; vertical-align: middle;">
+                                            <img t-if="doc.client_tech_signature" t-att-src="image_data_uri(doc.client_tech_signature)" style="max-height: 38px; max-width: 130px;"/>
+                                            <span t-else="" style="color: #94a3b8; font-size: 9px;">____________________</span>
+                                        </td>
+                                        <td style="text-align: center;"><span t-field="doc.client_tech_date"/></td>
+                                    </tr>
+                                    <!-- 3. HR Lead (NEW) -->
+                                    <tr style="page-break-inside: avoid;">
+                                        <td><strong>Munig HR &amp; Administration Lead</strong></td>
+                                        <td><span t-field="doc.client_hr_name"/></td>
+                                        <td style="text-align: center;">
+                                            <span t-if="doc.client_hr_signed" style="color: #15803d; font-weight: 700;">SIGNED</span>
+                                            <span t-else="" style="color: #64748b;">PENDING</span>
+                                        </td>
+                                        <td style="text-align: center; height: 42px; vertical-align: middle;">
+                                            <img t-if="doc.client_hr_signature" t-att-src="image_data_uri(doc.client_hr_signature)" style="max-height: 38px; max-width: 130px;"/>
+                                            <span t-else="" style="color: #94a3b8; font-size: 9px;">____________________</span>
+                                        </td>
+                                        <td style="text-align: center;"><span t-field="doc.client_hr_date"/></td>
+                                    </tr>
+                                    <!-- 4. Finance Lead -->
+                                    <tr style="page-break-inside: avoid;">
+                                        <td><strong>Munig Finance &amp; Procurement Lead</strong></td>
+                                        <td><span t-field="doc.client_fin_name"/></td>
+                                        <td style="text-align: center;">
+                                            <span t-if="doc.client_fin_signed" style="color: #15803d; font-weight: 700;">SIGNED</span>
+                                            <span t-else="" style="color: #64748b;">PENDING</span>
+                                        </td>
+                                        <td style="text-align: center; height: 42px; vertical-align: middle;">
+                                            <img t-if="doc.client_fin_signature" t-att-src="image_data_uri(doc.client_fin_signature)" style="max-height: 38px; max-width: 130px;"/>
+                                            <span t-else="" style="color: #94a3b8; font-size: 9px;">____________________</span>
+                                        </td>
+                                        <td style="text-align: center;"><span t-field="doc.client_fin_date"/></td>
+                                    </tr>
+                                    <!-- 5. Managing Director / CEO -->
+                                    <tr style="page-break-inside: avoid;">
+                                        <td><strong>Munig Managing Director / CEO</strong></td>
+                                        <td><span t-field="doc.client_ceo_name"/></td>
+                                        <td style="text-align: center;">
+                                            <span t-if="doc.client_ceo_signed" style="color: #15803d; font-weight: 700;">SIGNED</span>
+                                            <span t-else="" style="color: #64748b;">PENDING</span>
+                                        </td>
+                                        <td style="text-align: center; height: 42px; vertical-align: middle;">
+                                            <img t-if="doc.client_ceo_signature" t-att-src="image_data_uri(doc.client_ceo_signature)" style="max-height: 38px; max-width: 130px;"/>
+                                            <span t-else="" style="color: #94a3b8; font-size: 9px;">____________________</span>
+                                        </td>
+                                        <td style="text-align: center;"><span t-field="doc.client_ceo_date"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- 3. INTERACTIVE CLIENT ONLINE SIGN-OFF PORTAL                  -->
+    <!--    Inherits website.layout, Grouped by Module + Signature Pad -->
+    <!-- ============================================================ -->
+    <template id="project_signoff_public_page" name="Client Project Sign-Off Master Checklist">
+        <t t-call="website.layout">
+            <style type="text/css">
+                .luwa-signoff-portal { background: #f1f5f9; min-height: 100vh; padding: 32px 0 72px 0; }
+                .luwa-signoff-header-band { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 28px 32px; }
+                .luwa-signoff-table td.luwa-col-check input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; }
+                .luwa-mob-label { display: none; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.04em; margin-right: 6px; }
+                @media (max-width: 767px) {
+                    .luwa-signoff-portal { padding: 16px 0 56px 0 !important; }
+                    .luwa-signoff-portal .container { padding-left: 12px !important; padding-right: 12px !important; }
+                    .luwa-signoff-header-band { padding: 20px 18px !important; }
+                    .luwa-signoff-header-band h2 { font-size: 19px !important; line-height: 1.3 !important; }
+                    .luwa-signoff-header-band p { font-size: 12.5px !important; line-height: 1.5 !important; }
+                    .luwa-signoff-header-band .btn { width: 100% !important; text-align: center !important; justify-content: center !important; }
+                    .luwa-signoff-kpi-bar { padding: 16px 18px !important; }
+                    .luwa-signoff-reviewer-bar { flex-direction: column !important; align-items: stretch !important; padding: 14px 16px !important; }
+                    .luwa-signoff-reviewer-bar .luwa-reviewer-input-wrap { flex-direction: column !important; align-items: stretch !important; gap: 6px !important; width: 100% !important; }
+                    .luwa-signoff-reviewer-bar input[name="signer_name"] { max-width: 100% !important; width: 100% !important; }
+                    .luwa-signoff-reviewer-bar .luwa-reviewer-btns { flex-direction: column !important; width: 100% !important; gap: 8px !important; }
+                    .luwa-signoff-reviewer-bar .luwa-reviewer-btns .btn { width: 100% !important; padding: 10px 16px !important; }
+                    .luwa-mod-card-header { padding: 12px 14px !important; gap: 8px !important; }
+                    .luwa-mod-card-header .btn { width: 100% !important; text-align: center !important; padding: 6px 12px !important; }
+                    /* Transform 6-column table into sleek touch-friendly mobile approval cards */
+                    .luwa-signoff-table,
+                    .luwa-signoff-table tbody,
+                    .luwa-signoff-table tr,
+                    .luwa-signoff-table td { display: block !important; width: 100% !important; }
+                    .luwa-signoff-table thead { display: none !important; }
+                    .luwa-signoff-table tbody tr {
+                        padding: 14px 14px 12px 14px !important;
+                        border-bottom: 2px solid #e2e8f0 !important;
+                        position: relative !important;
+                    }
+                    .luwa-signoff-table tbody td {
+                        border: none !important;
+                        padding: 3px 0 !important;
+                        text-align: left !important;
+                    }
+                    .luwa-signoff-table tbody td.luwa-col-seq {
+                        display: inline-block !important;
+                        width: auto !important;
+                        background: #0f172a;
+                        color: #ffffff !important;
+                        border-radius: 6px;
+                        padding: 2px 8px !important;
+                        font-size: 11px !important;
+                        margin-bottom: 6px !important;
+                    }
+                    .luwa-signoff-table tbody td.luwa-col-dev {
+                        display: inline-block !important;
+                        width: auto !important;
+                        margin-left: 8px !important;
+                        margin-bottom: 6px !important;
+                    }
+                    .luwa-signoff-table tbody td.luwa-col-check {
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 10px !important;
+                        margin-top: 8px !important;
+                        padding: 8px 10px !important;
+                        background: #f8fafc !important;
+                        border: 1px solid #cbd5e1 !important;
+                        border-radius: 8px !important;
+                    }
+                    .luwa-signoff-table tbody td.luwa-col-check input[type="checkbox"] {
+                        width: 26px !important;
+                        height: 26px !important;
+                        margin: 0 !important;
+                    }
+                    .luwa-signoff-table tbody td.luwa-col-remarks {
+                        margin-top: 6px !important;
+                    }
+                    .luwa-signoff-table tbody td.luwa-col-remarks input {
+                        padding: 9px 10px !important;
+                        font-size: 13px !important;
+                    }
+                    .luwa-mob-label { display: inline-block !important; }
+                    .luwa-sig-submit-bar { flex-direction: column !important; gap: 10px !important; }
+                    .luwa-sig-submit-bar .btn { width: 100% !important; text-align: center !important; padding: 13px 18px !important; font-size: 14px !important; }
+                    canvas[id^="sig_canvas_"] { height: 130px !important; }
+                }
+            </style>
+            <div id="wrap" class="luwa-signoff-portal">
+                <div class="container" style="max-width: 1280px;">
+
+                    <t t-if="submitted">
+                        <div class="alert alert-success shadow-sm" style="border-radius: 12px; border-left: 6px solid #16a34a; padding: 18px 24px; margin-bottom: 24px; background: #f0fdf4; color: #14532d;">
+                            <h5 style="margin: 0 0 6px 0; font-weight: 800;">Sign-Off &amp; Digital Signatures Synchronized to Luwa Tech Database!</h5>
+                            <p style="margin: 0; font-size: 14px;">
+                                Your module-by-module acceptance checkmarks, remarks, signatory details, and drawn digital signatures have been saved in real time and the official Project Sign-Off PDF has been updated.
+                            </p>
+                        </div>
+                    </t>
+
+                    <!-- Odoo Standard Document Header Card -->
+                    <div class="card border-0 shadow-sm mb-4" style="border-radius: 14px; overflow: hidden;">
+                        <div class="luwa-signoff-header-band">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                <div>
+                                    <div style="display: inline-block; background: rgba(249,115,22,0.2); color: #fdba74; border: 1px solid rgba(249,115,22,0.4); padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;">
+                                        Client ERP UAT &amp; Implementation Sign-Off Portal
+                                    </div>
+                                    <h2 style="color: #fff; font-weight: 800; margin: 0 0 6px 0; font-size: 24px;" t-esc="dossier.name"/>
+                                    <p style="color: #cbd5e1; margin: 0; font-size: 14px;">
+                                        <strong>Client:</strong> <t t-esc="dossier.partner_id.name"/> |
+                                        <strong>Project:</strong> <t t-esc="dossier.project_id.name"/> |
+                                        <strong>Ref:</strong> <t t-esc="dossier.reference"/> |
+                                        <strong>System:</strong> <t t-esc="dossier.erp_version"/>
+                                    </p>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a t-attf-href="/project/signoff/#{dossier.id}/pdf?token=#{token}"
+                                       target="_blank"
+                                       class="btn"
+                                       style="background: #f97316; color: #fff; font-weight: 700; border-radius: 999px; padding: 10px 22px; font-size: 13px;">
+                                        <i class="fa fa-file-pdf-o me-2"/>Download Official Sign-Off PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Summary KPI Strip -->
+                        <div class="card-body bg-white luwa-signoff-kpi-bar" style="padding: 20px 32px; border-bottom: 1px solid #e2e8f0;">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-2 col-6">
+                                    <div class="text-muted" style="font-size: 11px; text-transform: uppercase; font-weight: 700;">Root ERP Modules</div>
+                                    <div style="font-size: 22px; font-weight: 800; color: #0f172a;" t-esc="dossier.module_group_count"/>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <div class="text-muted" style="font-size: 11px; text-transform: uppercase; font-weight: 700;">Total Submenus</div>
+                                    <div style="font-size: 22px; font-weight: 800; color: #0f172a;" t-esc="dossier.total_items"/>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <div class="text-muted" style="font-size: 11px; text-transform: uppercase; font-weight: 700;">Dev Completed</div>
+                                    <div style="font-size: 22px; font-weight: 800; color: #2563eb;" t-esc="dossier.dev_completed_items"/>
+                                </div>
+                                <div class="col-md-2 col-6">
+                                    <div class="text-muted" style="font-size: 11px; text-transform: uppercase; font-weight: 700;">Client Signed Off</div>
+                                    <div style="font-size: 22px; font-weight: 800; color: #16a34a;" t-esc="dossier.client_signed_items"/>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span style="font-size: 12px; font-weight: 700; color: #0f172a;">Overall UAT Acceptance Progress</span>
+                                        <span style="font-size: 13px; font-weight: 800; color: #16a34a;"><t t-esc="dossier.completion_rate"/>%</span>
+                                    </div>
+                                    <div class="progress" style="height: 10px; border-radius: 999px; background: #e2e8f0;">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             t-attf-style="width: #{dossier.completion_rate}%;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Form Posting Back to Luwa Tech DB -->
+                    <form t-attf-action="/project/signoff/#{dossier.id}/submit" method="post" id="luwaSignoffForm">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="token" t-att-value="token"/>
+
+                        <!-- Quick Global Signer Bar -->
+                        <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
+                            <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3 luwa-signoff-reviewer-bar" style="padding: 16px 24px;">
+                                <div class="d-flex align-items-center gap-3 flex-grow-1 luwa-reviewer-input-wrap">
+                                    <label style="font-weight: 700; color: #0f172a; font-size: 13px; white-space: nowrap; margin: 0;">
+                                        Your Full Name (Reviewer):
+                                    </label>
+                                    <input type="text" name="signer_name" class="form-control"
+                                           style="max-width: 320px; border-radius: 8px; font-size: 13px;"
+                                           placeholder="e.g. Eng. Munig Technical Director"
+                                           t-att-value="dossier.client_tech_name or dossier.client_hr_name or dossier.partner_id.name"/>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 luwa-reviewer-btns">
+                                    <button type="button" class="btn btn-sm btn-outline-success"
+                                            style="font-weight: 700; border-radius: 999px; padding: 7px 16px;"
+                                            onclick="document.querySelectorAll('.luwa-client-check').forEach(cb => cb.checked = true);">
+                                        Check All Modules &amp; Submenus
+                                    </button>
+                                    <button type="submit" class="btn btn-sm"
+                                            style="background: #16a34a; color: #fff; font-weight: 700; border-radius: 999px; padding: 7px 20px;">
+                                        Save Progress to Database
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Module-by-Module Grouped Cards -->
+                        <t t-set="grouped_lines" t-value="dossier.get_grouped_lines()"/>
+                        <t t-set="mod_idx" t-value="0"/>
+                        <t t-foreach="grouped_lines.items()" t-as="grp_pair">
+                            <t t-set="mod_idx" t-value="mod_idx + 1"/>
+                            <t t-set="grp_title" t-value="grp_pair[0]"/>
+                            <t t-set="grp_items" t-value="grp_pair[1]"/>
+                            <t t-set="grp_signed_count" t-value="len([x for x in grp_items if x.client_signed or x.client_checked])"/>
+
+                            <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px; overflow: hidden;">
+                                <div class="d-flex flex-wrap justify-content-between align-items-center luwa-mod-card-header"
+                                     style="background: #0f172a; color: #fff; padding: 12px 20px;">
+                                    <div>
+                                        <span style="font-weight: 800; font-size: 15px;" t-esc="grp_title"/>
+                                        <span class="ms-2 badge" style="background: rgba(255,255,255,0.15); color: #e2e8f0; font-size: 11px;">
+                                            <t t-esc="grp_signed_count"/> / <t t-esc="len(grp_items)"/> Submenus Signed
+                                        </span>
+                                    </div>
+                                    <button type="button" class="btn btn-sm"
+                                            style="background: rgba(22,163,74,0.25); color: #86efac; border: 1px solid rgba(22,163,74,0.5); font-size: 11px; font-weight: 700; border-radius: 999px; padding: 3px 12px;"
+                                            t-attf-onclick="document.querySelectorAll('.mod-group-#{mod_idx}').forEach(cb => cb.checked = true);">
+                                        Check All in This Module
+                                    </button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0 luwa-signoff-table" style="font-size: 13px;">
+                                        <thead style="background: #f8fafc; color: #334155; font-size: 11px; text-transform: uppercase;">
+                                            <tr>
+                                                <th style="width: 5%; text-align: center;">No.</th>
+                                                <th style="width: 23%;">Submenu / Feature Path</th>
+                                                <th style="width: 38%;">Complete Submenus, Workflows &amp; Acceptance Scope</th>
+                                                <th style="width: 8%; text-align: center;">Dev Ready</th>
+                                                <th style="width: 10%; text-align: center;">Client Sign-Off</th>
+                                                <th style="width: 16%;">Client Remarks / Feedback</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="grp_items" t-as="line">
+                                                <tr t-attf-style="#{(line.client_signed or line.client_checked) and 'background-color: #f0fdf4;' or ''}">
+                                                    <td class="luwa-col-seq" style="text-align: center; font-weight: 700; color: #64748b;">
+                                                        #<t t-esc="line.sequence"/>
+                                                    </td>
+                                                    <td>
+                                                        <div style="font-weight: 700; color: #0f172a;" t-esc="line.submenu_name"/>
+                                                        <div t-if="line.technical_module" style="font-size: 11px; color: #64748b;">
+                                                            Module: <code t-esc="line.technical_module"/>
+                                                        </div>
+                                                    </td>
+                                                    <td style="color: #334155; font-size: 12.5px; line-height: 1.45;">
+                                                        <t t-esc="line.description"/>
+                                                    </td>
+                                                    <td class="luwa-col-dev" style="text-align: center;">
+                                                        <span t-if="line.dev_done or line.luwatech_qa == 'ready'" class="badge bg-success-subtle text-success" style="font-size: 11px; padding: 5px 8px;">
+                                                            Ready
+                                                        </span>
+                                                        <span t-else="" class="badge bg-secondary-subtle text-secondary" style="font-size: 11px;">
+                                                            Pending
+                                                        </span>
+                                                    </td>
+                                                    <td class="luwa-col-check" style="text-align: center;">
+                                                        <span class="luwa-mob-label">Client Sign-Off:</span>
+                                                        <input type="checkbox"
+                                                               t-attf-name="line_signed_#{line.id}"
+                                                               t-attf-class="form-check-input luwa-client-check mod-group-#{mod_idx}"
+                                                               style="width: 22px; height: 22px; cursor: pointer;"
+                                                               t-att-checked="(line.client_signed or line.client_checked) and 'checked' or None"/>
+                                                        <div t-if="line.signoff_date" style="font-size: 10px; color: #15803d; margin-top: 2px;">
+                                                            <t t-esc="line.signoff_date"/>
+                                                        </div>
+                                                    </td>
+                                                    <td class="luwa-col-remarks">
+                                                        <input type="text"
+                                                               t-attf-name="line_remarks_#{line.id}"
+                                                               class="form-control form-control-sm"
+                                                               style="font-size: 12px; border-radius: 6px;"
+                                                               placeholder="Add remark or approval note..."
+                                                               t-att-value="line.remarks or line.client_remarks or ''"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Final Project Acceptance & Interactive Digital Signature Pads (5 Signatories Including HR) -->
+                        <div class="card border-0 shadow-sm mb-4" style="border-radius: 14px; overflow: hidden;">
+                            <div style="background: #0f172a; color: #fff; padding: 16px 24px;">
+                                <h4 style="margin: 0; font-size: 17px; font-weight: 800; color: #fff;">
+                                    Final Project Acceptance &amp; Digital Signatures
+                                </h4>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: #cbd5e1;">
+                                    Draw your signature directly inside the signature pad below (mouse or touchscreen). Signatures are embedded into the official Project Sign-Off PDF and stored securely in the Luwa Tech database.
+                                </p>
+                            </div>
+                            <div class="card-body bg-white" style="padding: 24px;">
+                                <div class="mb-4">
+                                    <label class="form-label" style="font-weight: 700; color: #0f172a; font-size: 13px;">
+                                        Executive UAT Remarks &amp; Handover Notes
+                                    </label>
+                                    <textarea name="general_remarks" rows="3" class="form-control" style="font-size: 13px; border-radius: 8px;"><t t-esc="dossier.general_remarks or ''"/></textarea>
+                                </div>
+
+                                <div class="row g-4">
+                                    <!-- 1. Luwatech Lead -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; background: #f8fafc; height: 100%;">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong style="color: #0f172a; font-size: 12.5px;">1. Luwatech Implementation Lead</strong>
+                                                <div class="form-check form-switch m-0">
+                                                    <input class="form-check-input" type="checkbox" name="luwa_lead_signed"
+                                                           t-att-checked="dossier.luwa_lead_signed and 'checked' or None"/>
+                                                    <label class="form-check-label" style="font-size: 11px; font-weight: 600;">Signed</label>
+                                                </div>
+                                            </div>
+                                            <input type="text" name="luwa_lead_name" class="form-control form-control-sm mb-2"
+                                                   placeholder="Full Name" t-att-value="dossier.luwa_lead_name or ''"/>
+                                            <div t-if="dossier.luwa_lead_signature" class="mb-2 text-center" style="background: #fff; border: 1px dashed #94a3b8; border-radius: 6px; padding: 4px;">
+                                                <div style="font-size: 10px; color: #64748b;">Saved Signature:</div>
+                                                <img t-att-src="image_data_uri(dossier.luwa_lead_signature)" style="max-height: 48px;"/>
+                                            </div>
+                                            <canvas id="sig_canvas_luwa" width="400" height="100"
+                                                    style="width: 100%; height: 100px; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; cursor: crosshair; touch-action: none;"/>
+                                            <input type="hidden" name="luwa_lead_signature_b64" id="sig_input_luwa"/>
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <span style="font-size: 11px; color: #64748b;">Draw to sign</span>
+                                                <button type="button" class="btn btn-sm btn-link text-danger p-0" style="font-size: 11px;"
+                                                        onclick="clearLuwaPad('sig_canvas_luwa', 'sig_input_luwa')">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. Munig Technical & Operations Lead -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; background: #f8fafc; height: 100%;">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong style="color: #0f172a; font-size: 12.5px;">2. Munig Technical &amp; Operations Lead</strong>
+                                                <div class="form-check form-switch m-0">
+                                                    <input class="form-check-input" type="checkbox" name="client_tech_signed"
+                                                           t-att-checked="dossier.client_tech_signed and 'checked' or None"/>
+                                                    <label class="form-check-label" style="font-size: 11px; font-weight: 600;">Signed</label>
+                                                </div>
+                                            </div>
+                                            <input type="text" name="client_tech_name" class="form-control form-control-sm mb-2"
+                                                   placeholder="Full Name &amp; Title" t-att-value="dossier.client_tech_name or ''"/>
+                                            <div t-if="dossier.client_tech_signature" class="mb-2 text-center" style="background: #fff; border: 1px dashed #94a3b8; border-radius: 6px; padding: 4px;">
+                                                <div style="font-size: 10px; color: #64748b;">Saved Signature:</div>
+                                                <img t-att-src="image_data_uri(dossier.client_tech_signature)" style="max-height: 48px;"/>
+                                            </div>
+                                            <canvas id="sig_canvas_tech" width="400" height="100"
+                                                    style="width: 100%; height: 100px; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; cursor: crosshair; touch-action: none;"/>
+                                            <input type="hidden" name="client_tech_signature_b64" id="sig_input_tech"/>
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <span style="font-size: 11px; color: #64748b;">Draw to sign</span>
+                                                <button type="button" class="btn btn-sm btn-link text-danger p-0" style="font-size: 11px;"
+                                                        onclick="clearLuwaPad('sig_canvas_tech', 'sig_input_tech')">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 3. Munig HR & Administration Lead (NEW) -->
+                                    <div class="col-md-6 col-lg-4">
+                                        <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; background: #f8fafc; height: 100%;">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong style="color: #0f172a; font-size: 12.5px;">3. Munig HR &amp; Administration Lead</strong>
+                                                <div class="form-check form-switch m-0">
+                                                    <input class="form-check-input" type="checkbox" name="client_hr_signed"
+                                                           t-att-checked="dossier.client_hr_signed and 'checked' or None"/>
+                                                    <label class="form-check-label" style="font-size: 11px; font-weight: 600;">Signed</label>
+                                                </div>
+                                            </div>
+                                            <input type="text" name="client_hr_name" class="form-control form-control-sm mb-2"
+                                                   placeholder="Full Name &amp; Title (HR)" t-att-value="dossier.client_hr_name or ''"/>
+                                            <div t-if="dossier.client_hr_signature" class="mb-2 text-center" style="background: #fff; border: 1px dashed #94a3b8; border-radius: 6px; padding: 4px;">
+                                                <div style="font-size: 10px; color: #64748b;">Saved Signature:</div>
+                                                <img t-att-src="image_data_uri(dossier.client_hr_signature)" style="max-height: 48px;"/>
+                                            </div>
+                                            <canvas id="sig_canvas_hr" width="400" height="100"
+                                                    style="width: 100%; height: 100px; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; cursor: crosshair; touch-action: none;"/>
+                                            <input type="hidden" name="client_hr_signature_b64" id="sig_input_hr"/>
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <span style="font-size: 11px; color: #64748b;">Draw to sign</span>
+                                                <button type="button" class="btn btn-sm btn-link text-danger p-0" style="font-size: 11px;"
+                                                        onclick="clearLuwaPad('sig_canvas_hr', 'sig_input_hr')">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 4. Munig Finance & Procurement Lead -->
+                                    <div class="col-md-6 col-lg-6">
+                                        <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; background: #f8fafc; height: 100%;">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong style="color: #0f172a; font-size: 12.5px;">4. Munig Finance &amp; Procurement Lead</strong>
+                                                <div class="form-check form-switch m-0">
+                                                    <input class="form-check-input" type="checkbox" name="client_fin_signed"
+                                                           t-att-checked="dossier.client_fin_signed and 'checked' or None"/>
+                                                    <label class="form-check-label" style="font-size: 11px; font-weight: 600;">Signed</label>
+                                                </div>
+                                            </div>
+                                            <input type="text" name="client_fin_name" class="form-control form-control-sm mb-2"
+                                                   placeholder="Full Name &amp; Title" t-att-value="dossier.client_fin_name or ''"/>
+                                            <div t-if="dossier.client_fin_signature" class="mb-2 text-center" style="background: #fff; border: 1px dashed #94a3b8; border-radius: 6px; padding: 4px;">
+                                                <div style="font-size: 10px; color: #64748b;">Saved Signature:</div>
+                                                <img t-att-src="image_data_uri(dossier.client_fin_signature)" style="max-height: 48px;"/>
+                                            </div>
+                                            <canvas id="sig_canvas_fin" width="400" height="100"
+                                                    style="width: 100%; height: 100px; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; cursor: crosshair; touch-action: none;"/>
+                                            <input type="hidden" name="client_fin_signature_b64" id="sig_input_fin"/>
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <span style="font-size: 11px; color: #64748b;">Draw to sign</span>
+                                                <button type="button" class="btn btn-sm btn-link text-danger p-0" style="font-size: 11px;"
+                                                        onclick="clearLuwaPad('sig_canvas_fin', 'sig_input_fin')">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 5. Munig Managing Director / CEO -->
+                                    <div class="col-md-6 col-lg-6">
+                                        <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 16px; background: #f8fafc; height: 100%;">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <strong style="color: #0f172a; font-size: 12.5px;">5. Munig Managing Director / CEO</strong>
+                                                <div class="form-check form-switch m-0">
+                                                    <input class="form-check-input" type="checkbox" name="client_ceo_signed"
+                                                           t-att-checked="dossier.client_ceo_signed and 'checked' or None"/>
+                                                    <label class="form-check-label" style="font-size: 11px; font-weight: 600;">Signed</label>
+                                                </div>
+                                            </div>
+                                            <input type="text" name="client_ceo_name" class="form-control form-control-sm mb-2"
+                                                   placeholder="Full Name &amp; Title" t-att-value="dossier.client_ceo_name or ''"/>
+                                            <div t-if="dossier.client_ceo_signature" class="mb-2 text-center" style="background: #fff; border: 1px dashed #94a3b8; border-radius: 6px; padding: 4px;">
+                                                <div style="font-size: 10px; color: #64748b;">Saved Signature:</div>
+                                                <img t-att-src="image_data_uri(dossier.client_ceo_signature)" style="max-height: 48px;"/>
+                                            </div>
+                                            <canvas id="sig_canvas_ceo" width="400" height="100"
+                                                    style="width: 100%; height: 100px; background: #fff; border: 1px solid #94a3b8; border-radius: 6px; cursor: crosshair; touch-action: none;"/>
+                                            <input type="hidden" name="client_ceo_signature_b64" id="sig_input_ceo"/>
+                                            <div class="d-flex justify-content-between align-items-center mt-1">
+                                                <span style="font-size: 11px; color: #64748b;">Draw to sign</span>
+                                                <button type="button" class="btn btn-sm btn-link text-danger p-0" style="font-size: 11px;"
+                                                        onclick="clearLuwaPad('sig_canvas_ceo', 'sig_input_ceo')">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 d-flex flex-wrap justify-content-end gap-3 luwa-sig-submit-bar">
+                                    <a t-attf-href="/project/signoff/#{dossier.id}/pdf?token=#{token}"
+                                       target="_blank"
+                                       class="btn btn-outline-dark"
+                                       style="border-radius: 999px; padding: 12px 26px; font-weight: 700;">
+                                        Download Sign-Off PDF
+                                    </a>
+                                    <button type="submit" class="btn"
+                                            style="background: #16a34a; color: #fff; border-radius: 999px; padding: 12px 34px; font-weight: 800; font-size: 15px;">
+                                        Submit Official Sign-Off &amp; Save to Luwa Tech Database
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Interactive HTML5 Canvas Signature Pad Controller -->
+            <script type="text/javascript">
+                function initLuwaPad(canvasId, inputId) {
+                    var canvas = document.getElementById(canvasId);
+                    var input = document.getElementById(inputId);
+                    if (!canvas || !input) return;
+                    var ctx = canvas.getContext('2d');
+                    ctx.strokeStyle = '#0f172a';
+                    ctx.lineWidth = 2.2;
+                    ctx.lineCap = 'round';
+                    var drawing = false;
+                    var dirty = false;
+
+                    function getPos(e) {
+                        var rect = canvas.getBoundingClientRect();
+                        var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                        var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                        return {
+                            x: (clientX - rect.left) * (canvas.width / rect.width),
+                            y: (clientY - rect.top) * (canvas.height / rect.height)
+                        };
+                    }
+
+                    function start(e) {
+                        e.preventDefault();
+                        drawing = true;
+                        dirty = true;
+                        var pos = getPos(e);
+                        ctx.beginPath();
+                        ctx.moveTo(pos.x, pos.y);
+                    }
+
+                    function move(e) {
+                        if (!drawing) return;
+                        e.preventDefault();
+                        var pos = getPos(e);
+                        ctx.lineTo(pos.x, pos.y);
+                        ctx.stroke();
+                    }
+
+                    function stop() {
+                        if (!drawing) return;
+                        drawing = false;
+                        if (dirty) {
+                            input.value = canvas.toDataURL('image/png');
+                        }
+                    }
+
+                    canvas.addEventListener('mousedown', start);
+                    canvas.addEventListener('mousemove', move);
+                    window.addEventListener('mouseup', stop);
+                    canvas.addEventListener('touchstart', start, {passive: false});
+                    canvas.addEventListener('touchmove', move, {passive: false});
+                    canvas.addEventListener('touchend', stop);
+                }
+
+                function clearLuwaPad(canvasId, inputId) {
+                    var canvas = document.getElementById(canvasId);
+                    var input = document.getElementById(inputId);
+                    if (canvas) {
+                        var ctx = canvas.getContext('2d');
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    }
+                    if (input) {
+                        input.value = '';
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    initLuwaPad('sig_canvas_luwa', 'sig_input_luwa');
+                    initLuwaPad('sig_canvas_tech', 'sig_input_tech');
+                    initLuwaPad('sig_canvas_hr', 'sig_input_hr');
+                    initLuwaPad('sig_canvas_fin', 'sig_input_fin');
+                    initLuwaPad('sig_canvas_ceo', 'sig_input_ceo');
+                });
+            </script>
+        </t>
+    </template>
+</odoo>
