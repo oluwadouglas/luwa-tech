@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+import logging
+import re
 from werkzeug.exceptions import NotFound
+
+_logger = logging.getLogger(__name__)
 
 from odoo import http
 from odoo.http import request
@@ -140,6 +144,112 @@ SERVICE_ORDER = [
 
 
 class LuwaSubscriptionWebsite(http.Controller):
+
+    @http.route(
+        "/luwatech/whatsapp/send_direct",
+        type="http",
+        auth="public",
+        methods=["POST"],
+        csrf=False,
+    )
+    def whatsapp_send_direct(self, **post):
+        _logger.info(">>> WHATSAPP SEND DIRECT ENTRY <<< raw post: %s", post)
+        """Dispatches an inquiry message via the background WhatsApp engine (127.0.0.1:3010)
+        directly without opening external chat creation links.
+        Alerts Luwa Tech desk (+256787819453 Oluwa) and sends an automated confirmation
+        to the visitor's WhatsApp number.
+        """
+        params = {}
+        try:
+            if request.httprequest.is_json:
+                data = request.httprequest.get_json(silent=True) or {}
+                params = data.get("params") if "params" in data else data
+            else:
+                params = post
+        except Exception:
+            params = post
+
+        raw_phone = (params.get("visitor_phone") or "").strip()
+        name = (params.get("visitor_name") or "Website Visitor").strip()
+        body = (params.get("message") or "").strip()
+        page = (params.get("source_url") or request.httprequest.referrer or "https://www.luwatech.it").strip()
+
+        if not raw_phone:
+            return request.make_json_response({"ok": False, "error": "Please provide a valid WhatsApp / contact phone number."})
+        if not body:
+            return request.make_json_response({"ok": False, "error": "Message body cannot be empty."})
+
+        # Normalize phone
+        digits = "".join(ch for ch in raw_phone if ch.isdigit())
+        if digits.startswith("00"):
+            digits = digits[2:]
+        if digits.startswith("0") and len(digits) == 10:
+            digits = "256" + digits[1:]
+        elif len(digits) == 9 and digits.startswith("7"):
+            digits = "256" + digits
+
+        if len(digits) < 7:
+            return request.make_json_response({"ok": False, "error": "Please enter a valid phone number with country code."})
+
+        try:
+            cfg = request.env["luwa.whatsapp.config"].sudo().get_solo()
+            desk_phone = cfg.connected_phone or "256787819453"
+
+            # 1. Alert message to Luwa Tech Internal Desk
+            desk_alert = (
+                "*LUWA TECH - NEW DIRECT WEBSITE INQUIRY*\n\n"
+                f"- *From:* {name}\n"
+                f"- *Visitor WhatsApp:* +{digits}\n"
+                f"- *Origin Page:* {page}\n\n"
+                "*Message:*\n"
+                f"{body}\n\n"
+                "_Sent directly via Luwa Tech background WhatsApp engine._"
+            )
+            cfg.send_whatsapp_message(
+                phone=desk_phone,
+                message=desk_alert,
+                trigger_type="manual",
+                queue_if_offline=True,
+            )
+
+            # 2. Automated Confirmation Message to Visitor's WhatsApp
+            visitor_confirm = (
+                "*LUWA TECH - KAMPALA DIGITAL STUDIO*\n\n"
+                f"Hello *{name}*,\n"
+                "Thank you for contacting *Luwa Tech*! Your request has been delivered directly to our solutions desk:\n\n"
+                f"\"{body}\"\n\n"
+                "A solutions specialist is reviewing your requirements and will follow up with you right here on WhatsApp shortly.\n\n"
+                "*Luwa Tech Kampala*\n"
+                "Tel: +256 787 819 453 | Web: https://www.luwatech.it"
+            )
+            cfg.send_whatsapp_message(
+                phone=digits,
+                message=visitor_confirm,
+                trigger_type="manual",
+                queue_if_offline=True,
+            )
+
+            # 3. Create Lead in CRM
+            try:
+                request.env["crm.lead"].sudo().create({
+                    "name": f"WhatsApp Inquiry: {name} - {body[:40]}...",
+                    "contact_name": name,
+                    "phone": f"+{digits}",
+                    "description": f"Source URL: {page}\n\nVisitor WhatsApp Message:\n{body}",
+                    "type": "lead",
+                    "priority": "2",
+                })
+            except Exception as crm_err:
+                _logger.warning("Could not create CRM lead for WA inquiry: %s", crm_err)
+
+            return request.make_json_response({
+                "ok": True,
+                "message": "Your message has been sent directly to the Luwa Tech team via our background engine! Check your WhatsApp for an automated confirmation.",
+            })
+        except Exception as exc:
+            _logger.error("WhatsApp send_direct error: %s", exc)
+            return request.make_json_response({"ok": False, "error": f"WhatsApp service error: {str(exc)}"})
+
 
     @http.route("/subscriptions", type="http", auth="public", website=True, sitemap=True)
     def subscriptions_page(self, **kwargs):

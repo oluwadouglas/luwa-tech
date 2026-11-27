@@ -4000,3 +4000,213 @@ html, body, #wrapwrap {
     justify-content: center !important;
     font-size: 16px !important;
 }
+
+/* ============================================================
+   BLOG POST: COMPLETELY HIDE BOTTOM BANNER & BACKGROUND PICTURE
+   ============================================================ */
+#o_wblog_post_footer,
+#o_wblog_next_container,
+.o_wblog_post_page_cover_footer,
+.o_wblog_post_footer {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    overflow: hidden !important;
+}
+
+/* Copy Link Success State */
+.luwa-share-copy-btn.is-copied {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+    transform: scale(1.04);
+}
+
+/* ============================================================
+   GLOBAL DIRECT WHATSAPP BACKGROUND ENGINE MODAL
+   ============================================================ */
+.luwa-wa-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 22, 40, 0.75);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.luwa-wa-modal-backdrop.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.luwa-wa-modal-card {
+    background: #ffffff;
+    border-radius: 18px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+    overflow: hidden;
+    transform: translateY(20px) scale(0.96);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Kumbh Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.luwa-wa-modal-backdrop.is-active .luwa-wa-modal-card {
+    transform: translateY(0) scale(1);
+}
+
+.luwa-wa-modal-header {
+    background: linear-gradient(135deg, #0b1628 0%, #172c4e 100%);
+    color: #ffffff;
+    padding: 20px 24px;
+    position: relative;
+    border-bottom: 2px solid #25d366;
+}
+
+.luwa-wa-modal-header h4 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+}
+
+.luwa-wa-modal-header .luwa-wa-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(37, 211, 102, 0.16);
+    color: #25d366;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 6px;
+}
+
+.luwa-wa-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #ffffff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    transition: background 0.2s;
+}
+
+.luwa-wa-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.luwa-wa-modal-body {
+    padding: 24px;
+}
+
+.luwa-wa-modal-body .form-label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #0b1628;
+    margin-bottom: 6px;
+}
+
+.luwa-wa-modal-body .form-control {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #0b1628;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.luwa-wa-modal-body .form-control:focus {
+    border-color: #25d366;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.18);
+}
+
+.luwa-wa-btn-submit {
+    background: #25d366;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+    transition: background 0.2s, transform 0.1s;
+}
+
+.luwa-wa-btn-submit:hover {
+    background: #20ba59;
+}
+
+.luwa-wa-btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* Floating Toast */
+.luwa-toast-container {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 1000000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.luwa-toast {
+    background: #0b1628;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    border-left: 4px solid #25d366;
+    pointer-events: auto;
+    animation: luwaToastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luwa-toast.error {
+    border-left-color: #ef4444;
+}
+
+@keyframes luwaToastSlideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}

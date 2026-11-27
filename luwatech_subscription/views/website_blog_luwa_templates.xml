@@ -53,12 +53,13 @@
                         </a>
                         <a t-att-href="luwa_share['whatsapp']"
                            target="_blank" rel="noopener noreferrer"
-                           class="luwa-share-btn luwa-share-btn--whatsapp" aria-label="Share on WhatsApp">
+                           class="luwa-share-btn luwa-share-btn--whatsapp luwa-wa-btn" aria-label="Share on WhatsApp">
                             <i class="fab fa-whatsapp"/> WhatsApp
                         </a>
                         <button type="button"
                                 class="luwa-share-btn luwa-share-btn--copy luwa-share-copy-btn"
-                                t-att-data-share-url="luwa_share['canonical_url']">
+                                t-att-data-share-url="luwa_share['canonical_url']"
+                                aria-label="Copy Article Link">
                             <i class="fas fa-link"/> <span class="luwa-share-copy-label">Copy Link</span>
                         </button>
                     </div>
@@ -76,6 +77,13 @@
                     <a href="/contactus" class="luwa-blog-cta-btn luwa-blog-cta-btn--outline">Talk to Us</a>
                 </div>
             </div>
+        </xpath>
+    </template>
+
+    <!-- Completely eliminate the bottom next-article banner & picture from blog posts -->
+    <template id="luwa_remove_blog_post_footer_banner" inherit_id="website_blog.blog_post_complete" name="Luwa Remove Blog Post Footer Banner" priority="99">
+        <xpath expr="//section[@id='o_wblog_post_footer']" position="replace">
+            <!-- Completely removed bottom banner & picture per user requirement -->
         </xpath>
     </template>
 </odoo>

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Luwa Tech Subscription Management",
-    "version": "19.0.1.3.0",
+    "version": "19.0.1.4.0",
     "category": "Sales/Subscriptions",
     "summary": "Recurring Subscriptions, Client Portal, Project Sign-Off Checklists, Portfolio & Team Showcase",
     "author": "Luwa Tech",
@@ -43,6 +43,7 @@
     "assets": {
         "web.assets_frontend": [
             "luwatech_subscription/static/src/css/luwatech_subscription.css",
+            "luwatech_subscription/static/src/js/luwa_interactive.js",
         ],
     },
     "installable": True,
